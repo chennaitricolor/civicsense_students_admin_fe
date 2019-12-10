@@ -26,18 +26,21 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     height: '100%',
+    borderRight: '1px solid #00000029',
   },
   titleCard: {
-    margin: '0 16px 16px 0',
     height: '8%',
+    boxShadow: 'unset',
+    borderRadius: 'unset',
   },
   paper: {
-    padding: '0 0 16px 16px',
-    marginRight: '16px',
+    padding: '0 0 0 16px',
     textAlign: 'center',
     color: 'theme.palette.text.secondary',
     height: '92%',
     overflow: 'auto',
+    boxShadow: 'unset',
+    borderRadius: 'unset',
   },
   campaignLabel: {
     fontWeight: 'bold',
