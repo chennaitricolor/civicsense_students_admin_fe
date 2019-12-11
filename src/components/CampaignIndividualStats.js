@@ -44,6 +44,12 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     padding: '8px 0',
   },
+    campaignDurationLabel: {
+        color: '#707070',
+        font: 'Medium 20px/26px Roboto;',
+        textAlign: 'left',
+        float: 'right'
+    },
   card: {
     maxWidth: '200px',
     height: '250px',

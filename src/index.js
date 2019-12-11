@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {  MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Provider } from 'react-redux';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import store, { sagaMiddleware } from "./utils/store";
+import saga from "./sagas/saga";
 
 const theme = createMuiTheme({
   typography: {
@@ -99,12 +103,16 @@ const theme = createMuiTheme({
   },
 });
 
+sagaMiddleware.run(saga);
+
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <App />
-  </MuiThemeProvider>,
-  document.getElementById('root'),
-);
+    <Provider store={store}>
+    <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <App/>
+    </MuiThemeProvider>
+    </Provider>,
+    document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

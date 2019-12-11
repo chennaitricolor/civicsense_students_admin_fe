@@ -1,0 +1,1 @@
+export const getAllCampaignsUrl = '/api/csr/campaigns/live';
