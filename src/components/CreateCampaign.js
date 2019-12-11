@@ -66,7 +66,6 @@ const useStyles = makeStyles(theme => ({
   campaignMessageSnackBar: {
     '& div': {
       backgroundColor: '#0084FF',
-      boxShadow: '0px 3px 6px #00000029',
       borderRadius: '10px',
     },
   },
@@ -94,11 +93,7 @@ export const CreateCampaign = props => {
   const styles = useStyles();
   return (
     <div>
-      <Drawer
-        anchor="right"
-        open={props.createCampaign}
-        onClose={props.handleCreateCampaignButtonClick}
-      >
+      <Drawer anchor="right" open={props.createCampaign} onClose={props.handleCreateCampaignButtonClick}>
         <Typography className={styles.createCampaignHeader}>Create Campaign</Typography>
         <TextField
           className={'create-campaign-campaign-name ' + styles.textField}
