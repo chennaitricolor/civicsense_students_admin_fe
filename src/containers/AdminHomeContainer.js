@@ -6,17 +6,17 @@ import { CampaignIndividualStats } from '../components/CampaignIndividualStats';
 import actions from '../actions/getAllCampaignsList';
 
 export const AdminHomeContainer = props => {
-    const dispatch = useDispatch();
-    const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
+  const dispatch = useDispatch();
+  const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
 
-    useEffect(() => {
-        dispatch({
-            type: actions.GET_ALL_CAMPAIGNS_LIST,
-        })
-    }, []);
+  useEffect(() => {
+    dispatch({
+      type: actions.GET_ALL_CAMPAIGNS_LIST,
+    });
+  }, []);
 
   if (props.selectedTab === 0) {
-      console.log('API response: ', getAllCampaignsResponse);
+    console.log('API response: ', getAllCampaignsResponse);
     return (
       <div>
         <CampaignOverallStats selectedTab={props.selectedTab} liveCampaignsCount={21} totalEntriesCount={1029} />
