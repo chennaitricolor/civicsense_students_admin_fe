@@ -17,15 +17,30 @@ export const AdminHomeContainer = props => {
 
   if (props.selectedTab === 0) {
     console.log('API response: ', getAllCampaignsResponse);
+      console.log('API response: ', getAllCampaignsResponse);
+      const totalCampaignsAndEntries = getTotalCampaignsAndEntries(getAllCampaignsResponse);
     return (
       <div>
-        <CampaignOverallStats selectedTab={props.selectedTab} liveCampaignsCount={21} totalEntriesCount={1029} />
+        <CampaignOverallStats selectedTab={props.selectedTab} liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0} totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0} />
         <CampaignIndividualStats />
       </div>
     );
   } else {
     return <p>Reports</p>;
   }
+};
+
+const getTotalCampaignsAndEntries = (campaignsResponse) => {
+    const liveCampaigns  = campaignsResponse.liveCampaigns.campaigns;
+    const totalEntries = liveCampaigns !== undefined ? liveCampaigns.totalEntries : [];
+    const totalEntriesCount = totalEntries !== undefined && totalEntries.length > 0 ? totalEntries[0].count : 0;
+    const campaigns = liveCampaigns !== undefined && liveCampaigns.campaigns !== undefined ? liveCampaigns.campaigns : [];
+    const data = {
+        campaignsCount: campaigns.length,
+        totalEntries: totalEntriesCount
+    };
+    console.log(data);
+    return data;
 };
 
 AdminHomeContainer.propTypes = {
