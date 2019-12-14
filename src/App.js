@@ -3,11 +3,11 @@ import './App.css';
 import { AdminHeader } from './components/AdminHeader';
 import { AdminHomeContainer } from './containers/AdminHomeContainer';
 import CreateCampaignContainer from './containers/CreateCampaignContainer';
-import { LoginContainer } from './containers/LoginContainer';
 
 function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [createCampaign, setCreateCampaign] = useState(false);
+  const router = useRouter();
 
   const handleTabChange = (event, newSelection) => {
     setSelectedTab(newSelection);
@@ -19,18 +19,16 @@ function App() {
 
   return (
     <div>
-      <LoginContainer />
-      {/*<AdminHeader*/}
-      {/*  title={'Agent X Dashboard'}*/}
-      {/*  selectedTab={selectedTab}*/}
-      {/*  handleTabChange={handleTabChange}*/}
-      {/*  handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}*/}
-      {/*/>*/}
-      {/*<AdminHomeContainer selectedTab={selectedTab} />*/}
-      {/*<CreateCampaignContainer*/}
-      {/*  createCampaign={createCampaign}*/}
-      {/*  handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}*/}
-      {/*/>*/}
+      <AdminHeader title={'Agent X Dashboard'}
+     selectedTab={selectedTab}
+      handleTabChange={handleTabChange}
+       handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
+     />
+      <AdminHomeContainer selectedTab={selectedTab} />
+      <CreateCampaignContainer
+       createCampaign={createCampaign}
+        handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
+     />
     </div>
   );
 }

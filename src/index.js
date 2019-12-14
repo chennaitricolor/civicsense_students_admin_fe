@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import store, { sagaMiddleware } from "./utils/store";
 import saga from "./sagas/saga";
+import Routes from './utils/routes';
 
 const theme = createMuiTheme({
   typography: {
@@ -109,7 +110,7 @@ ReactDOM.render(
     <Provider store={store}>
     <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <App/>
+        <Routes />
     </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'));
