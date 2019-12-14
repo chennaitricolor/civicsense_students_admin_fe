@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const proxy = require('http-proxy-middleware');
+const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
+app.use(cookieParser());
 
 const adminAPIProxySettings = {
   target: process.env.AGENT_ADMIN_API_URL || 'http://52.66.148.41:3010',
@@ -30,9 +32,18 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join('build')));
+
 app.get('/', function(req, res) {
-  console.log('called');
-  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
+
+app.get('/home', function(req, res) {
+  if(req.cookies['csr-api-be'] !== undefined && req.cookies['csr-api-be'].length > 0) {
+    res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+  }
+  else {
+    res.redirect('/');
+  }
 });
 
 app.use(proxy(['/api/csr/**'], adminAPIProxySettings));

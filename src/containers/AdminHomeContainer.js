@@ -34,6 +34,7 @@ const getTotalCampaignsAndEntries = (campaignsResponse) => {
     const liveCampaigns  = campaignsResponse.liveCampaigns.campaigns;
     const totalEntries = liveCampaigns !== undefined ? liveCampaigns.totalEntries : [];
     const totalEntriesCount = totalEntries !== undefined && totalEntries.length > 0 ? totalEntries[0].count : 0;
+    console.log('liveCampaigns', liveCampaigns);
     const campaigns = liveCampaigns !== undefined && liveCampaigns.campaigns !== undefined ? liveCampaigns.campaigns : [];
     const data = {
         campaignsCount: campaigns.length,
@@ -46,3 +47,5 @@ const getTotalCampaignsAndEntries = (campaignsResponse) => {
 AdminHomeContainer.propTypes = {
   selectedTab: PropTypes.number.isRequired,
 };
+
+export default AdminHomeContainer;
