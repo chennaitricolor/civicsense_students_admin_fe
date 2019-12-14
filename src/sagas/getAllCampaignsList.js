@@ -6,9 +6,6 @@ import moment from 'moment';
 
 
 export default function* getAllLiveCampaigns() {
-    //TODO: Will be removed after login page integration
-    yield call(callFetchApi, '/api/csr/admin/login', {}, 'POST', {password: 'Abcd12341$',
-        userId:"Maalai"});
 
     const response = yield call(
         callFetchApi,
