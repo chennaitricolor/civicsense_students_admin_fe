@@ -4,10 +4,12 @@ import { CampaignOverallStats } from '../components/CampaignOverallStats';
 import * as PropTypes from 'prop-types';
 import { CampaignIndividualStats } from '../components/CampaignIndividualStats';
 import actions from '../actions/getAllCampaignsList';
+import getCampaignDetailsActions from '../actions/getACampaignDetails';
 
 export const AdminHomeContainer = props => {
   const dispatch = useDispatch();
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
+  const getACampaignDetailsResponse = useSelector(state => state.getACampaignDetailsResponse);
 
   useEffect(() => {
     dispatch({
@@ -15,14 +17,21 @@ export const AdminHomeContainer = props => {
     });
   }, []);
 
+
+  const handleCampaignClickEvent = (event) => {
+      console.log('value+++++', event);
+      dispatch({
+          type: getCampaignDetailsActions.GET_CAMPAIGN_DETAILS,
+          payload: { campaignId: event._id }
+      })
+  };
+
   if (props.selectedTab === 0) {
-    console.log('API response: ', getAllCampaignsResponse);
-      console.log('API response: ', getAllCampaignsResponse);
       const totalCampaignsAndEntries = getTotalCampaignsAndEntries(getAllCampaignsResponse);
     return (
       <div>
         <CampaignOverallStats selectedTab={props.selectedTab} liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0} totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0} />
-        <CampaignIndividualStats />
+        <CampaignIndividualStats campaignDetails={totalCampaignsAndEntries.campaignDetails} onCampaignClick={handleCampaignClickEvent} campaignData={getACampaignDetailsResponse}/>
       </div>
     );
   } else {
@@ -31,17 +40,15 @@ export const AdminHomeContainer = props => {
 };
 
 const getTotalCampaignsAndEntries = (campaignsResponse) => {
-    const liveCampaigns  = campaignsResponse.liveCampaigns.campaigns;
-    const totalEntries = liveCampaigns !== undefined ? liveCampaigns.totalEntries : [];
+    const liveCampaigns  = campaignsResponse.liveCampaigns ? campaignsResponse.liveCampaigns.campaigns : undefined;
+    const totalEntries = liveCampaigns !== undefined ? liveCampaigns[0].totalEntries : [];
     const totalEntriesCount = totalEntries !== undefined && totalEntries.length > 0 ? totalEntries[0].count : 0;
-    console.log('liveCampaigns', liveCampaigns);
-    const campaigns = liveCampaigns !== undefined && liveCampaigns.campaigns !== undefined ? liveCampaigns.campaigns : [];
-    const data = {
+    const campaigns = liveCampaigns !== undefined && liveCampaigns[0].campaigns !== undefined ? liveCampaigns[0].campaigns : [];
+    return {
         campaignsCount: campaigns.length,
-        totalEntries: totalEntriesCount
+        totalEntries: totalEntriesCount,
+        campaignDetails: campaigns
     };
-    console.log(data);
-    return data;
 };
 
 AdminHomeContainer.propTypes = {

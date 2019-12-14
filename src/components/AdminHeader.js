@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    color: '#0099ff',
+    color: '#0084FF',
     fontWeight: 'bold',
     fontSize: '25px',
   },

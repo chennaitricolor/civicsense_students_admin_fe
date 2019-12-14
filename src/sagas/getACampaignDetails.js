@@ -1,25 +1,27 @@
 import { put, call } from 'redux-saga/effects';
-import actions from '../actions/getAllCampaignsList';
-import { getAllCampaignsUrl } from '../utils/constants';
+import actions from '../actions/getACampaignDetails';
+import { getACampaignDetails } from '../utils/constants';
 import { callFetchApi } from '../services/api';
 
 
-export default function* getAllLiveCampaigns() {
+export default function* getCampaignDetails(action) {
+
+    let api_url = `${getACampaignDetails + action.payload.campaignId}`;
 
     const response = yield call(
         callFetchApi,
-        getAllCampaignsUrl,
+        api_url,
         {},
         'GET',
     );
     if (response.data !== undefined) {
         yield put({
-            type: actions.GET_ALL_CAMPAIGNS_LIST_SUCCESS,
+            type: actions.GET_CAMPAIGN_DETAILS_SUCCESS,
             payload: response.data,
         });
     } else {
         yield put({
-            type: actions.GET_ALL_CAMPAIGNS_LIST_FAILURE,
+            type: actions.GET_CAMPAIGN_DETAILS_FAILURE,
             payload: 'Error in fetching Data',
         });
     }
