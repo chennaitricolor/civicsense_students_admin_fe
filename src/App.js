@@ -7,7 +7,6 @@ import CreateCampaignContainer from './containers/CreateCampaignContainer';
 function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [createCampaign, setCreateCampaign] = useState(false);
-  const router = useRouter();
 
   const handleTabChange = (event, newSelection) => {
     setSelectedTab(newSelection);
