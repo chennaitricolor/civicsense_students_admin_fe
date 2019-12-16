@@ -1,4 +1,5 @@
 import actions from '../actions/getAllCampaignsList';
+import toastActions from '../actions/toastActions';
 
 const defaultState = {
   liveCampaigns: '',
@@ -22,6 +23,11 @@ const getAllCampaignsResponse = (state = defaultState, { type, payload }) => {
       return Object.assign({}, state, {
         isLoading: false,
         liveCampaignsError: payload,
+      });
+    case toastActions.CLOSE_NOTIFICATION_DIALOG_OR_TOAST_MESSAGE:
+      return Object.assign({}, state, {
+        isLoading: false,
+        liveCampaignsError: '',
       });
     default:
       return state;

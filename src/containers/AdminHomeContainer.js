@@ -5,6 +5,9 @@ import * as PropTypes from 'prop-types';
 import { CampaignIndividualStats } from '../components/CampaignIndividualStats';
 import actions from '../actions/getAllCampaignsList';
 import getCampaignDetailsActions from '../actions/getACampaignDetails';
+import LoadingComponent from '../components/LoadingComponent';
+import ToastComponent from "../components/ToastComponent";
+import toastActions from '../actions/toastActions';
 
 export const AdminHomeContainer = props => {
   const dispatch = useDispatch();
@@ -19,21 +22,49 @@ export const AdminHomeContainer = props => {
 
 
   const handleCampaignClickEvent = (event) => {
-      console.log('value+++++', event);
       dispatch({
           type: getCampaignDetailsActions.GET_CAMPAIGN_DETAILS,
           payload: { campaignId: event._id }
       })
   };
 
-  if (props.selectedTab === 0) {
+  const handleToastClose = () => {
+      dispatch({
+          type: toastActions.CLOSE_NOTIFICATION_DIALOG_OR_TOAST_MESSAGE,
+      });
+  };
+
+  const getElementsToRender = () => {
       const totalCampaignsAndEntries = getTotalCampaignsAndEntries(getAllCampaignsResponse);
-    return (
-      <div>
-        <CampaignOverallStats selectedTab={props.selectedTab} liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0} totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0} />
-        <CampaignIndividualStats campaignDetails={totalCampaignsAndEntries.campaignDetails} onCampaignClick={handleCampaignClickEvent} campaignData={getACampaignDetailsResponse}/>
-      </div>
-    );
+      if(getAllCampaignsResponse !== undefined) {
+          if(getAllCampaignsResponse.isLoading) {
+              return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading}/>
+          }
+          else if(getAllCampaignsResponse.liveCampaigns !== '' && getAllCampaignsResponse.liveCampaigns !== undefined) {
+              return (
+                  <div>
+                      <CampaignOverallStats selectedTab={props.selectedTab} liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0} totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0} />
+                      <CampaignIndividualStats campaignDetails={totalCampaignsAndEntries.campaignDetails} onCampaignClick={handleCampaignClickEvent} campaignData={getACampaignDetailsResponse}/>
+                  </div>
+              );
+          }
+          else if(getAllCampaignsResponse.liveCampaignsError !== '' && getAllCampaignsResponse.liveCampaignsError !== undefined) {
+              return <ToastComponent
+                  handleClose={handleToastClose}
+                  openToast={getAllCampaignsResponse.liveCampaignsError !== ''}
+                  toastMessage='Error while getting Campaign details. Please try later..'
+                  toastVariant='error'
+              />;
+          }
+          else {
+              return (<div/>)
+          }
+      }
+
+  };
+
+  if (props.selectedTab === 0) {
+      return getElementsToRender();
   } else {
     return <p>Reports</p>;
   }

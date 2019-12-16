@@ -7,6 +7,7 @@ import { callFetchApi } from '../services/api';
 import history from '../utils/history';
 
 export default function* loginSaga(action) {
+  try {
   const response = yield call(callFetchApi, adminLoginUrl, {}, 'POST', action.payload);
   if (response.data !== undefined && response.data.success) {
     yield put({
@@ -19,6 +20,13 @@ export default function* loginSaga(action) {
       payload: { path: '/home'}
     });
   } else {
+    yield put({
+      type: loginActions.LOGIN_FAILURE,
+      response: 'Unauthorized',
+    });
+  }
+  }
+  catch (e) {
     yield put({
       type: loginActions.LOGIN_FAILURE,
       response: 'Unauthorized',

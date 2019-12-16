@@ -5,8 +5,8 @@ import { callFetchApi } from '../services/api';
 
 
 export default function* getCampaignDetails(action) {
-
-    let api_url = `${getACampaignDetails + action.payload.campaignId}`;
+    try {
+        let api_url = `${getACampaignDetails + action.payload.campaignId}`;
 
     const response = yield call(
         callFetchApi,
@@ -20,6 +20,13 @@ export default function* getCampaignDetails(action) {
             payload: response.data,
         });
     } else {
+        yield put({
+            type: actions.GET_CAMPAIGN_DETAILS_FAILURE,
+            payload: 'Error in fetching Data',
+        });
+    }
+    }
+    catch (e) {
         yield put({
             type: actions.GET_CAMPAIGN_DETAILS_FAILURE,
             payload: 'Error in fetching Data',
