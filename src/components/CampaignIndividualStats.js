@@ -112,7 +112,7 @@ export const CampaignIndividualStats = props => {
           <Paper className={classes.paper}>
             <List>
               <Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
-                {campaignData && campaignData.entries ? campaignData.entries.map(value => {
+                {campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries ? campaignData.campaignDetails.entries.map(value => {
                   return (
                     <Grid item xs={12} sm={6} md={3} key={value}>
                       <Card className={classes.card}>
@@ -128,7 +128,7 @@ export const CampaignIndividualStats = props => {
                             <StopIcon style={{ float: 'left', color: 'grey' }} />
                             <ListItemText
                               id={value}
-                              primary={<Typography style={{ float: 'left' }}>{campaignData.entries.locationNm}</Typography>}
+                              primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
                             />
                             <IconButton size="small" className={classes.button} aria-label="delete">
                               <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
@@ -141,36 +141,7 @@ export const CampaignIndividualStats = props => {
                       </Card>
                     </Grid>
                   );
-                }) : [0,1,2,3,4,5,6,7,8].map(value => {
-                  return (
-                      <Grid item xs={12} sm={6} md={3} key={value}>
-                        <Card className={classes.card}>
-                          <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image={require('../images/potholes.jpeg')}
-                                title="Pothole"
-                            />
-                          </CardActionArea>
-                          <List>
-                            <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
-                              <StopIcon style={{ float: 'left', color: 'grey' }} />
-                              <ListItemText
-                                  id={value}
-                                  primary={<Typography style={{ float: 'left' }}>Location</Typography>}
-                              />
-                              <IconButton size="small" className={classes.button} aria-label="delete">
-                                <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
-                              </IconButton>
-                              <IconButton className={classes.button} aria-label="delete">
-                                <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
-                              </IconButton>
-                            </ListItem>
-                          </List>
-                        </Card>
-                      </Grid>
-                  );
-                })}
+                }) : ''}
               </Grid>
             </List>
           </Paper>

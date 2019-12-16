@@ -17,7 +17,7 @@ const getACampaignDetailsResponse = (state = defaultState, { type, payload }) =>
         case actions.GET_CAMPAIGN_DETAILS_SUCCESS:
             return Object.assign({}, state, {
                 isLoading: false,
-                campaignDetails: payload.campaignDetails,
+                campaignDetails: payload,
             });
         case actions.GET_CAMPAIGN_DETAILS_FAILURE:
             return Object.assign({}, state, {

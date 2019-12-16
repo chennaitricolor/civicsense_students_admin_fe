@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects';
 import actions from '../actions/getACampaignDetails';
 import { getACampaignDetails } from '../utils/constants';
 import { callFetchApi } from '../services/api';
+import routeToPathAction from "../actions/routeToPath";
 
 
 export default function* getCampaignDetails(action) {
@@ -27,9 +28,17 @@ export default function* getCampaignDetails(action) {
     }
     }
     catch (e) {
-        yield put({
-            type: actions.GET_CAMPAIGN_DETAILS_FAILURE,
-            payload: 'Error in fetching Data',
-        });
+        if(e.response.status === 401) {
+            yield put({
+                type: routeToPathAction.ROUTE_TO_PATH,
+                payload: { path: '/'}
+            });
+        }
+        else {
+            yield put({
+                type: actions.GET_CAMPAIGN_DETAILS_FAILURE,
+                payload: 'Error in fetching Data',
+            });
+        }
     }
 }
