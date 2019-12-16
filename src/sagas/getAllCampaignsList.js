@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects';
 import actions from '../actions/getAllCampaignsList';
 import { getAllCampaignsUrl } from '../utils/constants';
 import { callFetchApi } from '../services/api';
+import routeToPathAction from '../actions/routeToPath';
 
 
 export default function* getAllLiveCampaigns() {
@@ -14,10 +15,10 @@ export default function* getAllLiveCampaigns() {
         'GET',
     );
     if (response.data !== undefined) {
-        yield put({
-            type: actions.GET_ALL_CAMPAIGNS_LIST_SUCCESS,
-            payload: response.data,
-        });
+            yield put({
+                type: actions.GET_ALL_CAMPAIGNS_LIST_SUCCESS,
+                payload: response.data,
+            });
     } else {
         yield put({
             type: actions.GET_ALL_CAMPAIGNS_LIST_FAILURE,
@@ -26,9 +27,17 @@ export default function* getAllLiveCampaigns() {
     }
     }
     catch (e) {
-        yield put({
-            type: actions.GET_ALL_CAMPAIGNS_LIST_FAILURE,
-            payload: 'Error in fetching Data',
-        });
+        if(e.response.status === 401) {
+            yield put({
+                type: routeToPathAction.ROUTE_TO_PATH,
+                payload: { path: '/'}
+            });
+        }
+        else {
+            yield put({
+                type: actions.GET_ALL_CAMPAIGNS_LIST_FAILURE,
+                payload: 'Error in fetching Data',
+            });
+        }
     }
 }

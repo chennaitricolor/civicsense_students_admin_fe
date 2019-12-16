@@ -22,10 +22,10 @@ export const AdminHomeContainer = props => {
 
 
   const handleCampaignClickEvent = (event) => {
-      dispatch({
+     dispatch({
           type: getCampaignDetailsActions.GET_CAMPAIGN_DETAILS,
           payload: { campaignId: event._id }
-      })
+      });
   };
 
   const handleToastClose = () => {
