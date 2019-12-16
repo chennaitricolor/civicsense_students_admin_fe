@@ -17,6 +17,8 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import IconButton from '@material-ui/core/IconButton';
 import StopIcon from '@material-ui/icons/Stop';
+import Image from 'material-ui-image';
+import {getImageUrl} from "../utils/constants";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -113,13 +115,14 @@ export const CampaignIndividualStats = props => {
             <List>
               <Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
                 {campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries ? campaignData.campaignDetails.entries.map(value => {
+                  const imageUrl = `${getImageUrl + value.photoId}`;
                   return (
                     <Grid item xs={12} sm={6} md={3} key={value}>
                       <Card className={classes.card}>
                         <CardActionArea>
-                          <CardMedia
-                            className={classes.media}
-                            image={require('../images/potholes.jpeg')}
+                          <Image
+                              imageStyle={{height: '200px'}}
+                            src={imageUrl}
                             title="Pothole"
                           />
                         </CardActionArea>
