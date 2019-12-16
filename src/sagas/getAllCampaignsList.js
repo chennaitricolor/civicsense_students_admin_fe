@@ -5,6 +5,7 @@ import { callFetchApi } from '../services/api';
 
 
 export default function* getAllLiveCampaigns() {
+    try {
 
     const response = yield call(
         callFetchApi,
@@ -18,6 +19,13 @@ export default function* getAllLiveCampaigns() {
             payload: response.data,
         });
     } else {
+        yield put({
+            type: actions.GET_ALL_CAMPAIGNS_LIST_FAILURE,
+            payload: 'Error in fetching Data',
+        });
+    }
+    }
+    catch (e) {
         yield put({
             type: actions.GET_ALL_CAMPAIGNS_LIST_FAILURE,
             payload: 'Error in fetching Data',

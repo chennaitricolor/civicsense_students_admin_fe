@@ -1,4 +1,5 @@
 import actions from '../actions/getACampaignDetails';
+import toastActions from "../actions/toastActions";
 
 const defaultState = {
     campaignDetails: '',
@@ -11,17 +12,22 @@ const getACampaignDetailsResponse = (state = defaultState, { type, payload }) =>
         case actions.GET_CAMPAIGN_DETAILS:
             return Object.assign({}, state, {
                 isLoading: true,
-                campaignDetails: payload.campaignDetails,
+                campaignDetails: payload,
             });
         case actions.GET_CAMPAIGN_DETAILS_SUCCESS:
             return Object.assign({}, state, {
                 isLoading: false,
-                campaignDetails: payload,
+                campaignDetails: payload.campaignDetails,
             });
         case actions.GET_CAMPAIGN_DETAILS_FAILURE:
             return Object.assign({}, state, {
                 isLoading: false,
                 campaignDetailsError: payload,
+            });
+        case toastActions.CLOSE_NOTIFICATION_DIALOG_OR_TOAST_MESSAGE:
+            return Object.assign({}, state, {
+                isLoading: false,
+                campaignDetailsError: '',
             });
         default:
             return state;
