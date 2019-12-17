@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 export const CampaignIndividualStats = props => {
   const classes = useStyles();
   const [selectedCampaign, setSelectedCampaign] = React.useState('');
-  const { campaignDetails, campaignData, onCampaignClick } = props;
+  const { campaignDetails, campaignData, onCampaignClick, onEntrySubmissionClick } = props;
 
   return (
     <div className={classes.root}>
@@ -144,10 +144,24 @@ export const CampaignIndividualStats = props => {
                                   id={value}
                                   primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
                                 />
-                                <IconButton size="small" className={classes.button} aria-label="delete">
+                                <IconButton size="small" className={classes.button} aria-label="accept" onClick={() => {
+                                  const eventData = {
+                                    status: 'ACCEPTED',
+                                    campaignId: selectedCampaign,
+                                    entryId: value._id
+                                  };
+                                  onEntrySubmissionClick(eventData);
+                                }}>
                                   <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
                                 </IconButton>
-                                <IconButton className={classes.button} aria-label="delete">
+                                <IconButton className={classes.button} aria-label="reject" onClick={() => {
+                                  const eventData = {
+                                    status: 'REJECTED',
+                                    campaignId: selectedCampaign,
+                                    entryId: value._id
+                                  };
+                                  onEntrySubmissionClick(eventData);
+                                }}>
                                   <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
                                 </IconButton>
                               </ListItem>

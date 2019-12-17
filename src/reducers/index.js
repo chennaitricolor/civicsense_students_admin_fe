@@ -5,6 +5,7 @@ import routesReducer from './routeUrlsReducer';
 import getACampaignDetailsResponse from './getACampaignDetails';
 import fetchLocationListReducer from './fetchLocationListReducer';
 import createCampaignReducer from './createCampaignReducer';
+import entrySubmissionReducer from './approveOrRejectEntryReducer';
 
 const reducers = combineReducers({
   loginResponse,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   getACampaignDetailsResponse,
   fetchLocationListReducer,
   createCampaignReducer,
+  entrySubmissionReducer
 });
 
 export default reducers;

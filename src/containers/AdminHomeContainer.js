@@ -9,11 +9,13 @@ import getCampaignDetailsActions from '../actions/getACampaignDetails';
 import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
+import entrySubmissionAction from '../actions/approveOrRejectEntries';
 
 export const AdminHomeContainer = props => {
   const dispatch = useDispatch();
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
   const getACampaignDetailsResponse = useSelector(state => state.getACampaignDetailsResponse);
+  const entrySubmissionStatus = useSelector(state => state.entrySubmissionReducer);
 
   useEffect(() => {
     dispatch({
@@ -34,10 +36,30 @@ export const AdminHomeContainer = props => {
     });
   };
 
+  const handleEntrySubmissionClickEvent = event => {
+    dispatch({
+               type: entrySubmissionAction.ACCEPT_OR_REJECT_ENTRIES,
+               entryId: event.entryId,
+               payload: { campaignId: event.campaignId,  status: event.status},
+             });
+  };
+
   const handleToastClose = () => {
     dispatch({
       type: toastActions.CLOSE_NOTIFICATION_DIALOG_OR_TOAST_MESSAGE,
     });
+  };
+
+
+  const showToastMessage = (message, toastVariant) => {
+    return (
+        <ToastComponent
+            handleClose={handleToastClose}
+            openToast={true}
+            toastMessage={message}
+            toastVariant={toastVariant}
+        />
+    );
   };
 
   const getElementsToRender = () => {
@@ -45,34 +67,32 @@ export const AdminHomeContainer = props => {
     if (getAllCampaignsResponse !== undefined) {
       if (getAllCampaignsResponse.isLoading) {
         return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading} />;
-      } else if (getAllCampaignsResponse.liveCampaigns !== '' && getAllCampaignsResponse.liveCampaigns !== undefined) {
-        return (
-          <div>
-            <CampaignOverallStats
-              selectedTab={props.selectedTab}
-              liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0}
-              totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0}
-            />
-            <CampaignIndividualStats
-              campaignDetails={totalCampaignsAndEntries.campaignDetails}
-              onCampaignClick={handleCampaignClickEvent}
-              campaignData={getACampaignDetailsResponse}
-            />
-          </div>
-        );
       } else if (
-        getAllCampaignsResponse.liveCampaignsError !== '' &&
+          getAllCampaignsResponse.liveCampaignsError !== '' &&
         getAllCampaignsResponse.liveCampaignsError !== undefined
       ) {
+        return showToastMessage('Error while getting Campaign details. Please try later..', 'error');
+      } else if (getAllCampaignsResponse.liveCampaigns !== '' && getAllCampaignsResponse.liveCampaigns !== undefined) {
         return (
-          <ToastComponent
-            handleClose={handleToastClose}
-            openToast={getAllCampaignsResponse.liveCampaignsError !== ''}
-            toastMessage="Error while getting Campaign details. Please try later.."
-            toastVariant="error"
-          />
+            <div>
+              <CampaignOverallStats
+                  selectedTab={props.selectedTab}
+                  liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0}
+                  totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0}
+              />
+              <CampaignIndividualStats
+                  campaignDetails={totalCampaignsAndEntries.campaignDetails}
+                  onCampaignClick={handleCampaignClickEvent}
+                  campaignData={getACampaignDetailsResponse}
+                  onEntrySubmissionClick={handleEntrySubmissionClickEvent}
+
+              />
+              {(entrySubmissionStatus && entrySubmissionStatus.entrySubmissionError !== '') &&
+                 showToastMessage(entrySubmissionStatus.entrySubmissionError, 'error')}
+            </div>
         );
-      } else {
+      }
+      else {
         return <div />;
       }
     }
