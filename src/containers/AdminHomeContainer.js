@@ -85,6 +85,7 @@ export const AdminHomeContainer = props => {
                   onCampaignClick={handleCampaignClickEvent}
                   campaignData={getACampaignDetailsResponse}
                   onEntrySubmissionClick={handleEntrySubmissionClickEvent}
+                  handleToastClose={handleToastClose}
 
               />
               {(entrySubmissionStatus && entrySubmissionStatus.entrySubmissionError !== '') &&
