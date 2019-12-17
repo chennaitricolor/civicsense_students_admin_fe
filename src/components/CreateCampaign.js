@@ -5,22 +5,20 @@ import Drawer from '@material-ui/core/Drawer';
 import { Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { DatePicker } from '@material-ui/pickers';
-import AutoCompleteDropdown from './AutoCompleteDropdown';
-import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import jsonPath from 'jsonpath-plus';
 
 const useStyles = makeStyles(theme => ({
   createCampaignHeader: {
-    padding: '2% 0 5% 2%',
+    padding: '2% 0 0% 2%',
     color: '#707070',
     fontSize: '24px',
   },
   textField: {
     marginLeft: '2%',
     marginRight: '2%',
+    marginTop: '5%',
 
     '& label': {
       color: '#707070 !important',
@@ -33,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   datePicker: {
     margin: '2%',
-    marginTop: '6%',
+    marginTop: '5%',
     width: '96% !important',
 
     '& label': {
@@ -51,17 +49,22 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     height: '5%',
   },
-  dropDownDiv: {
-    position: 'relative',
+  label: {
+    '& label': {
+      color: '#707070 !important',
+      fontSize: '20px',
+    },
+
+    '& fieldset': {
+      border: '1px solid #707070 !important',
+    },
   },
-  dropDownLabel: {
-    margin: '3% 2% 2% 2%',
-    fontSize: '20px',
-    display: 'block',
-    position: 'absolute',
-    transform: 'translate(0, 1.5px) scale(0.75)',
-    transformOrigin: 'top left',
-    color: 'rgba(0, 0, 0, 0.54)',
+  option: {
+    fontSize: 14,
+    '& > span': {
+      marginRight: 10,
+      fontSize: 18,
+    },
   },
   campaignMessageSnackBar: {
     '& div': {
@@ -69,25 +72,71 @@ const useStyles = makeStyles(theme => ({
       borderRadius: '10px',
     },
   },
-  '@global': {
-    '.Select-placeholder': {
-      fontSize: '20px',
-      fontStyle: 'Italic',
-      color: '#707070',
-    },
-    '.Select-multi-value-wrapper': {
-      fontSize: '20px',
-    },
-  },
 }));
 
 const matchStyle = {
   width: '96%%',
   margin: '2%',
-  paddingTop: '6%',
+  paddingTop: '5%',
 };
 
-const dropDownValues = ['Adyar', 'Alandur', 'Ambattur'];
+const dropDownValues = [
+  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
+  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
+  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
+  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
+  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
+  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
+  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
+  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
+  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
+  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
+  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
+  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
+];
+
+function renderTextField(label, key, campaignDetails, handleOnChange, styles) {
+  return (
+    <TextField
+      className={'create-campaign-' + key + ' ' + styles.textField}
+      label={label}
+      id={key}
+      value={jsonPath({
+        flatten: true,
+        json: campaignDetails,
+        path: key,
+        wrap: false,
+      })}
+      onChange={event => handleOnChange(event, key, 'text')}
+      autoComplete="off"
+      margin={'normal'}
+      variant={'outlined'}
+    />
+  );
+}
+
+function renderDateField(label, key, campaignDetails, handleOnChange, styles) {
+  return (
+    <DatePicker
+      className={'create-campaign-' + key + '-mui-pickers ' + styles.datePicker}
+      key={'create-campaign-' + key + '-mui-pickers-key'}
+      id={'create-campaign-' + key + '-mui-pickers'}
+      label={label}
+      value={jsonPath({
+        flatten: true,
+        json: campaignDetails,
+        path: key,
+        wrap: false,
+      })}
+      onChange={date => handleOnChange(date, key, 'date')}
+      disablePast
+      placeholder="MM/DD/YYYY"
+      format={'MM/DD/YYYY'}
+      inputVariant="outlined"
+      clearable
+    />
+  );
+}
 
 export const CreateCampaign = props => {
   const styles = useStyles();
@@ -95,56 +144,37 @@ export const CreateCampaign = props => {
     <div>
       <Drawer anchor="right" open={props.createCampaign} onClose={props.handleCreateCampaignButtonClick}>
         <Typography className={styles.createCampaignHeader}>Create Campaign</Typography>
-        <TextField
-          className={'create-campaign-campaign-name ' + styles.textField}
-          label={'Campaign Name'}
-          id={'campaignName'}
-          value={props.campaignDetails.campaignName}
-          onChange={event => props.handleOnChange(event, 'campaignName', 'text')}
-          autoComplete="off"
-          margin={'normal'}
-          variant={'outlined'}
-        />
-        <DatePicker
-          className={'create-campaign-start-date-mui-pickers ' + styles.datePicker}
-          key={'create-campaign-start-date-mui-pickers-key'}
-          id={'create-campaign-start-date-mui-pickers'}
-          label={'Start Date'}
-          value={props.campaignDetails.campaignStartDate}
-          onChange={date => props.handleOnChange(date, 'campaignStartDate', 'date')}
-          placeholder="MM/DD/YYYY"
-          format={'MM/DD/YYYY'}
-          inputVariant="outlined"
-          clearable
-        />
-        <DatePicker
-          className={'create-campaign-end-date-mui-pickers ' + styles.datePicker}
-          key={'create-campaign-end-date-mui-pickers-key'}
-          id={'create-campaign-end-date-mui-pickers'}
-          label={'End Date'}
-          value={props.campaignDetails.campaignEndDate}
-          onChange={date => props.handleOnChange(date, 'campaignEndDate', 'date')}
-          placeholder="MM/DD/YYYY"
-          format={'MM/DD/YYYY'}
-          inputVariant="outlined"
-          clearable
-        />
-        <div className={styles.dropDownDiv}>
-          {props.campaignDetails.campaignSearchLocation !== '' ? (
-            <FormLabel className={styles.dropDownLabel}>Location</FormLabel>
-          ) : (
-            <div />
+        {renderTextField('Campaign Name', 'campaignName', props.campaignDetails, props.handleOnChange, styles)}
+        {renderDateField('Start Date', 'campaignStartDate', props.campaignDetails, props.handleOnChange, styles)}
+        {renderDateField('End Date', 'campaignEndDate', props.campaignDetails, props.handleOnChange, styles)}
+        <Autocomplete
+          className={'create-campaign-search-location ' + styles.label}
+          id={'campaignSearchLocation'}
+          value={props.campaignDetails.campaignSearchLocation}
+          style={matchStyle}
+          options={props.locationList !== undefined ? props.locationList : []}
+          loadingText={'Loading'}
+          classes={{
+            option: styles.option,
+          }}
+          getOptionLabel={option => (option.label !== undefined ? option.label : option)}
+          onChange={(event, value) => props.handleOnChange(value, 'campaignSearchLocation', 'dropdown')}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label={'Search Location'}
+              variant={'outlined'}
+              fullWidth
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'disabled',
+              }}
+            />
           )}
-          <AutoCompleteDropdown
-            classNameIdentifier={'create-campaign-dropdown'}
-            styleContainer={matchStyle}
-            id={'searchLocation'}
-            handleOnChangeForDropdown={e => props.handleOnChange(e, 'campaignSearchLocation', 'dropdown')}
-            value={props.campaignDetails.campaignSearchLocation}
-            dropDownList={dropDownValues}
-            placeholder={'Search Location'}
-          />
-        </div>
+        />
+        {renderTextField('Description', 'description', props.campaignDetails, props.handleOnChange, styles)}
+        {renderTextField('Rules', 'rules', props.campaignDetails, props.handleOnChange, styles)}
+        {renderTextField('Rewards', 'rewards', props.campaignDetails, props.handleOnChange, styles)}
         <Button
           id={'create-campaign-create-button'}
           variant="contained"
@@ -155,33 +185,6 @@ export const CreateCampaign = props => {
           CREATE
         </Button>
       </Drawer>
-      <Snackbar
-        className={styles.campaignMessageSnackBar}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-          left: '50%',
-        }}
-        open={props.showSnackBar}
-        autoHideDuration={5000}
-        onClose={props.handleSnackBarExited}
-        onExited={props.handleSnackBarExited}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={<span id="message-id">Campaign Created Successfully</span>}
-        action={
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            className={'campaign-message-snack-bar-close-icon'}
-            onClick={props.handleSnackBarExited}
-          >
-            <CloseIcon />
-          </IconButton>
-        }
-      />
     </div>
   );
 };
@@ -191,6 +194,7 @@ CreateCampaign.propTypes = {
   handleCreateCampaignButtonClick: PropTypes.func.isRequired,
   campaignDetails: PropTypes.object,
   handleOnChange: PropTypes.func,
+  locationList: PropTypes.array,
   isDisabled: PropTypes.bool,
   showSnackBar: PropTypes.bool,
   handleSnackBarExited: PropTypes.func,

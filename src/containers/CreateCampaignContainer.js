@@ -1,9 +1,14 @@
 import React, { useEffect, useReducer, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { CreateCampaign } from '../components/CreateCampaign';
-import { formatDateToMMDDYYYYFormat } from '../utils/helpers/GeneralUtils';
+import { formatDateToMMDDYYYYFormat, formatDateToDDMMYYYYFormat } from '../utils/helpers/GeneralUtils';
+import createCampaignActions from '../actions/createCampaign';
+import LoadingComponent from '../components/LoadingComponent';
+import ToastComponent from '../components/ToastComponent';
+import toastActions from '../actions/toastActions';
 
 const CreateCampaignContainer = props => {
   const [campaign, setCampaign] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -11,9 +16,16 @@ const CreateCampaignContainer = props => {
     campaignStartDate: null,
     campaignEndDate: null,
     campaignSearchLocation: '',
+    campaignSearchLocationId: '',
+    description: '',
+    rules: '',
+    rewards: '',
   });
   const [isDisabled, setIsDisabled] = useState(true);
   const [showSnackBar, setShowSnackBar] = useState(false);
+  const dispatch = useDispatch();
+  const locationListResponse = useSelector(state => state.fetchLocationListReducer);
+  const createCampaignResponse = useSelector(state => state.createCampaignReducer);
 
   useEffect(() => disableCreateButton());
 
@@ -37,11 +49,13 @@ const CreateCampaignContainer = props => {
     if (type === 'dropdown') {
       if (event !== null) {
         setCampaign({
-          [id]: event.value,
+          [id]: event.label,
+          campaignSearchLocationId: event.value,
         });
       } else {
         setCampaign({
           [id]: '',
+          campaignSearchLocationId: '',
         });
       }
     }
@@ -53,13 +67,29 @@ const CreateCampaignContainer = props => {
         campaign.campaignName !== '' &&
         campaign.campaignStartDate !== null &&
         campaign.campaignEndDate !== null &&
-        campaign.campaignSearchLocation !== ''
+        campaign.campaignSearchLocation !== '' &&
+        campaign.description !== '' &&
+        campaign.rules !== '' &&
+        campaign.rewards !== ''
       ),
     );
   };
 
-  const createCampaignEventHandler = event => {
-    console.log(campaign);
+  const createCampaignEventHandler = () => {
+    let locationIds = [];
+    locationIds.push(campaign.campaignSearchLocationId);
+    // dispatch({
+    //   type: createCampaignActions.CREATE_CAMPAIGN,
+    //   payload: {
+    //     campaignName: campaign.campaignName,
+    //     startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
+    //     endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
+    //     description: campaign.description,
+    //     rules: campaign.rules,
+    //     rewards: campaign.rewards,
+    //     locationIds: locationIds,
+    //   },
+    // });
     setShowSnackBar(true);
     props.handleCreateCampaignButtonClick();
     setCampaign({
@@ -67,6 +97,10 @@ const CreateCampaignContainer = props => {
       campaignStartDate: null,
       campaignEndDate: null,
       campaignSearchLocation: '',
+      campaignSearchLocationId: '',
+      description: '',
+      rules: '',
+      rewards: '',
     });
   };
 
@@ -74,20 +108,55 @@ const CreateCampaignContainer = props => {
     setShowSnackBar(false);
   };
 
-  return (
-    <MuiPickersUtilsProvider utils={MomentUtils}>
-      <CreateCampaign
-        createCampaign={props.createCampaign}
-        handleCreateCampaignButtonClick={props.handleCreateCampaignButtonClick}
-        campaignDetails={campaign}
-        handleOnChange={handleOnChange}
-        isDisabled={isDisabled}
-        showSnackBar={showSnackBar}
-        handleSnackBarExited={handleSnackBarExited}
-        createCampaignEventHandler={createCampaignEventHandler}
+  const handleToastClose = () => {
+    dispatch({
+      type: toastActions.CLOSE_NOTIFICATION_DIALOG_OR_TOAST_MESSAGE,
+    });
+  };
+
+  if (locationListResponse.isLoading) {
+    return <LoadingComponent isLoading={locationListResponse.isLoading} />;
+  } else if (
+    createCampaignResponse.createCampaignError !== '' &&
+    createCampaignResponse.createCampaignError !== undefined
+  ) {
+    return (
+      <ToastComponent
+        toastMessage={'Error while saving campaign details. Please try later...'}
+        openToast={createCampaignResponse.createCampaignError !== ''}
+        handleClose={handleToastClose}
+        toastVariant={'error'}
       />
-    </MuiPickersUtilsProvider>
-  );
+    );
+  } else if (
+    createCampaignResponse.createCampaignMessage !== '' &&
+    createCampaignResponse.createCampaignMessage !== undefined
+  ) {
+    return (
+      <ToastComponent
+        toastMessage={'Campaign created successfully'}
+        openToast={createCampaignResponse.createCampaignMessage !== ''}
+        handleClose={handleToastClose}
+        toastVariant={'success'}
+      />
+    );
+  } else {
+    return (
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <CreateCampaign
+          createCampaign={props.createCampaign}
+          handleCreateCampaignButtonClick={props.handleCreateCampaignButtonClick}
+          campaignDetails={campaign}
+          handleOnChange={handleOnChange}
+          locationList={locationListResponse.locationList}
+          isDisabled={isDisabled}
+          showSnackBar={showSnackBar}
+          handleSnackBarExited={handleSnackBarExited}
+          createCampaignEventHandler={createCampaignEventHandler}
+        />
+      </MuiPickersUtilsProvider>
+    );
+  }
 };
 
 CreateCampaignContainer.propTypes = {
