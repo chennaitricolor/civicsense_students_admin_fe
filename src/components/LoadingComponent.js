@@ -6,7 +6,7 @@ const style = {
   position: 'absolute',
   left: '42%',
   color: '#0084FF',
-  width: '50px'
+  width: '50px',
 };
 
 const LoadingComponent = ({ isLoading, error }) => {

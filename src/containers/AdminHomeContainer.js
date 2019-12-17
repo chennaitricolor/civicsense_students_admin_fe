@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CampaignOverallStats } from '../components/CampaignOverallStats';
 import * as PropTypes from 'prop-types';
@@ -38,10 +38,10 @@ export const AdminHomeContainer = props => {
 
   const handleEntrySubmissionClickEvent = event => {
     dispatch({
-               type: entrySubmissionAction.ACCEPT_OR_REJECT_ENTRIES,
-               entryId: event.entryId,
-               payload: { campaignId: event.campaignId,  status: event.status},
-             });
+      type: entrySubmissionAction.ACCEPT_OR_REJECT_ENTRIES,
+      entryId: event.entryId,
+      payload: { campaignId: event.campaignId, status: event.status },
+    });
   };
 
   const handleToastClose = () => {
@@ -50,15 +50,14 @@ export const AdminHomeContainer = props => {
     });
   };
 
-
   const showToastMessage = (message, toastVariant) => {
     return (
-        <ToastComponent
-            handleClose={handleToastClose}
-            openToast={true}
-            toastMessage={message}
-            toastVariant={toastVariant}
-        />
+      <ToastComponent
+        handleClose={handleToastClose}
+        openToast={true}
+        toastMessage={message}
+        toastVariant={toastVariant}
+      />
     );
   };
 
@@ -68,32 +67,31 @@ export const AdminHomeContainer = props => {
       if (getAllCampaignsResponse.isLoading) {
         return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading} />;
       } else if (
-          getAllCampaignsResponse.liveCampaignsError !== '' &&
+        getAllCampaignsResponse.liveCampaignsError !== '' &&
         getAllCampaignsResponse.liveCampaignsError !== undefined
       ) {
         return showToastMessage('Error while getting Campaign details. Please try later..', 'error');
       } else if (getAllCampaignsResponse.liveCampaigns !== '' && getAllCampaignsResponse.liveCampaigns !== undefined) {
         return (
-            <div>
-              <CampaignOverallStats
-                  selectedTab={props.selectedTab}
-                  liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0}
-                  totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0}
-              />
-              <CampaignIndividualStats
-                  campaignDetails={totalCampaignsAndEntries.campaignDetails}
-                  onCampaignClick={handleCampaignClickEvent}
-                  campaignData={getACampaignDetailsResponse}
-                  onEntrySubmissionClick={handleEntrySubmissionClickEvent}
-                  handleToastClose={handleToastClose}
-
-              />
-              {(entrySubmissionStatus && entrySubmissionStatus.entrySubmissionError !== '') &&
-                 showToastMessage(entrySubmissionStatus.entrySubmissionError, 'error')}
-            </div>
+          <div>
+            <CampaignOverallStats
+              selectedTab={props.selectedTab}
+              liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0}
+              totalEntriesCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.totalEntries : 0}
+            />
+            <CampaignIndividualStats
+              campaignDetails={totalCampaignsAndEntries.campaignDetails}
+              onCampaignClick={handleCampaignClickEvent}
+              campaignData={getACampaignDetailsResponse}
+              onEntrySubmissionClick={handleEntrySubmissionClickEvent}
+              handleToastClose={handleToastClose}
+            />
+            {entrySubmissionStatus &&
+              entrySubmissionStatus.entrySubmissionError !== '' &&
+              showToastMessage(entrySubmissionStatus.entrySubmissionError, 'error')}
+          </div>
         );
-      }
-      else {
+      } else {
         return <div />;
       }
     }

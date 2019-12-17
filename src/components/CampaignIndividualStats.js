@@ -9,10 +9,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,8 +16,7 @@ import StopIcon from '@material-ui/icons/Stop';
 import Image from 'material-ui-image';
 import { getImageUrl } from '../utils/constants';
 import ToastComponent from '../components/ToastComponent';
-import LoadingComponent from "./LoadingComponent";
-
+import LoadingComponent from './LoadingComponent';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   grid: {
     height: '100%',
-    //border: '1px solid #00000029',
+    borderRight: '2px solid #00000029',
     borderRadius: '10px',
     boxShadow: '0px 3px 6px #00000029',
   },
@@ -72,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     padding: '0px',
   },
   selectedListItem: { paddingLeft: '0px', color: '#0084FF !important', fontWeight: 'bold' },
-  unSelectedItem: { paddingLeft: '0px' }
+  unSelectedItem: { paddingLeft: '0px' },
 }));
 
 export const CampaignIndividualStats = props => {
@@ -80,63 +75,71 @@ export const CampaignIndividualStats = props => {
   const [selectedCampaign, setSelectedCampaign] = React.useState('');
   const { campaignDetails, campaignData, onCampaignClick, onEntrySubmissionClick, handleToastClose } = props;
 
-  const getElementsToRenderBasedOnProps = (campaignData) => {
-    if(campaignData !== undefined) {
+  const getElementsToRenderBasedOnProps = campaignData => {
+    if (campaignData !== undefined) {
       if (campaignData.isLoading) {
         return <LoadingComponent isLoading={campaignData.isLoading} />;
-      }
-      else if(campaignData.campaignDetailsError !== '') {
-        return (<ToastComponent
+      } else if (campaignData.campaignDetailsError !== '') {
+        return (
+          <ToastComponent
             handleClose={handleToastClose}
             openToast={true}
             toastMessage={'Error in fetching Campaign entries. Please try later..'}
             toastVariant={'error'}
-        />)
-      }
-      else if(campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries) {
+          />
+        );
+      } else if (campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries) {
         campaignData.campaignDetails.entries.map(value => {
           const imageUrl = `${getImageUrl + value.photoId}`;
           return (
-              <Grid item xs={12} sm={6} md={3} key={value}>
-                <Card className={classes.card}>
-                  <CardActionArea>
-                    <Image imageStyle={{ height: '200px' }} src={imageUrl} title="Pothole" />
-                  </CardActionArea>
-                  <List>
-                    <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
-                      <StopIcon style={{ float: 'left', color: 'grey' }} />
-                      <ListItemText
-                          id={value}
-                          primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
-                      />
-                      <IconButton size="small" className={classes.button} aria-label="accept" onClick={() => {
+            <Grid item xs={12} sm={6} md={3} key={value}>
+              <Card className={classes.card}>
+                <CardActionArea>
+                  <Image imageStyle={{ height: '200px' }} src={imageUrl} title="Pothole" />
+                </CardActionArea>
+                <List>
+                  <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
+                    <StopIcon style={{ float: 'left', color: 'grey' }} />
+                    <ListItemText
+                      id={value}
+                      primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
+                    />
+                    <IconButton
+                      size="small"
+                      className={classes.button}
+                      aria-label="accept"
+                      onClick={() => {
                         const eventData = {
                           status: 'ACCEPTED',
                           campaignId: selectedCampaign,
-                          entryId: value._id
+                          entryId: value._id,
                         };
                         onEntrySubmissionClick(eventData);
-                      }}>
-                        <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
-                      </IconButton>
-                      <IconButton className={classes.button} aria-label="reject" onClick={() => {
+                      }}
+                    >
+                      <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
+                    </IconButton>
+                    <IconButton
+                      className={classes.button}
+                      aria-label="reject"
+                      onClick={() => {
                         const eventData = {
                           status: 'REJECTED',
                           campaignId: selectedCampaign,
-                          entryId: value._id
+                          entryId: value._id,
                         };
                         onEntrySubmissionClick(eventData);
-                      }}>
-                        <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
-                      </IconButton>
-                    </ListItem>
-                  </List>
-                </Card>
-              </Grid>
+                      }}
+                    >
+                      <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
+                    </IconButton>
+                  </ListItem>
+                </List>
+              </Card>
+            </Grid>
           );
-        })
-      }
-      else {
+        });
+      } else {
         return '';
       }
     }
@@ -175,6 +178,7 @@ export const CampaignIndividualStats = props => {
                             <Typography style={{ float: 'left', paddingLeft: '10px' }}>{value.campaignName}</Typography>
                           }
                         />
+
                         <ListItemText
                           id={labelId}
                           primary={<Typography style={{ float: 'right' }}>{value.noOfEntries}</Typography>}

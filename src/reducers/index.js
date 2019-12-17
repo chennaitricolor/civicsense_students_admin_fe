@@ -14,7 +14,7 @@ const reducers = combineReducers({
   getACampaignDetailsResponse,
   fetchLocationListReducer,
   createCampaignReducer,
-  entrySubmissionReducer
+  entrySubmissionReducer,
 });
 
 export default reducers;
