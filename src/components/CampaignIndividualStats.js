@@ -18,7 +18,7 @@ import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import IconButton from '@material-ui/core/IconButton';
 import StopIcon from '@material-ui/icons/Stop';
 import Image from 'material-ui-image';
-import {getImageUrl} from "../utils/constants";
+import { getImageUrl } from '../utils/constants';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     //border: '1px solid #00000029',
     borderRadius: '10px',
-    boxShadow: '0px 3px 6px #00000029'
+    boxShadow: '0px 3px 6px #00000029',
   },
   titleCard: {
     height: '8%',
@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 export const CampaignIndividualStats = props => {
   const classes = useStyles();
   const [selectedCampaign, setSelectedCampaign] = React.useState('');
-  const { campaignDetails, campaignData, onCampaignClick} = props;
+  const { campaignDetails, campaignData, onCampaignClick } = props;
 
   return (
     <div className={classes.root}>
@@ -86,22 +86,36 @@ export const CampaignIndividualStats = props => {
           </Card>
           <Paper className={classes.paper}>
             <List>
-              {campaignDetails ? campaignDetails.map(value => {
-                const labelId = `checkbox-list-label-${value._id}`;
+              {campaignDetails
+                ? campaignDetails.map(value => {
+                    const labelId = `checkbox-list-label-${value._id}`;
 
-                return (
-                  <ListItem key={value._id} role={undefined} button style={{ paddingLeft: '0px' }} selected={selectedCampaign === value._id} onClick={() => {
-                    setSelectedCampaign(value._id);
-                    onCampaignClick(value);
-                  }}>
-                    <ListItemText
-                      id={labelId}
-                      primary={<Typography style={{ float: 'left', paddingLeft: '10px' }}>{value.campaignName}</Typography>}
-                    />
-                    <ListItemText id={labelId} primary={<Typography style={{ float: 'right' }}>{value.noOfEntries}</Typography>} />
-                  </ListItem>
-                );
-              }) : '' }
+                    return (
+                      <ListItem
+                        key={value._id}
+                        role={undefined}
+                        button
+                        style={{ paddingLeft: '0px' }}
+                        selected={selectedCampaign === value._id}
+                        onClick={() => {
+                          setSelectedCampaign(value._id);
+                          onCampaignClick(value);
+                        }}
+                      >
+                        <ListItemText
+                          id={labelId}
+                          primary={
+                            <Typography style={{ float: 'left', paddingLeft: '10px' }}>{value.campaignName}</Typography>
+                          }
+                        />
+                        <ListItemText
+                          id={labelId}
+                          primary={<Typography style={{ float: 'right' }}>{value.noOfEntries}</Typography>}
+                        />
+                      </ListItem>
+                    );
+                  })
+                : ''}
             </List>
           </Paper>
         </Grid>
@@ -114,37 +128,35 @@ export const CampaignIndividualStats = props => {
           <Paper className={classes.paper}>
             <List>
               <Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
-                {campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries ? campaignData.campaignDetails.entries.map(value => {
-                  const imageUrl = `${getImageUrl + value.photoId}`;
-                  return (
-                    <Grid item xs={12} sm={6} md={3} key={value}>
-                      <Card className={classes.card}>
-                        <CardActionArea>
-                          <Image
-                              imageStyle={{height: '200px'}}
-                            src={imageUrl}
-                            title="Pothole"
-                          />
-                        </CardActionArea>
-                        <List>
-                          <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
-                            <StopIcon style={{ float: 'left', color: 'grey' }} />
-                            <ListItemText
-                              id={value}
-                              primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
-                            />
-                            <IconButton size="small" className={classes.button} aria-label="delete">
-                              <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
-                            </IconButton>
-                            <IconButton className={classes.button} aria-label="delete">
-                              <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
-                            </IconButton>
-                          </ListItem>
-                        </List>
-                      </Card>
-                    </Grid>
-                  );
-                }) : ''}
+                {campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries
+                  ? campaignData.campaignDetails.entries.map(value => {
+                      const imageUrl = `${getImageUrl + value.photoId}`;
+                      return (
+                        <Grid item xs={12} sm={6} md={3} key={value}>
+                          <Card className={classes.card}>
+                            <CardActionArea>
+                              <Image imageStyle={{ height: '200px' }} src={imageUrl} title="Pothole" />
+                            </CardActionArea>
+                            <List>
+                              <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
+                                <StopIcon style={{ float: 'left', color: 'grey' }} />
+                                <ListItemText
+                                  id={value}
+                                  primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
+                                />
+                                <IconButton size="small" className={classes.button} aria-label="delete">
+                                  <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
+                                </IconButton>
+                                <IconButton className={classes.button} aria-label="delete">
+                                  <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
+                                </IconButton>
+                              </ListItem>
+                            </List>
+                          </Card>
+                        </Grid>
+                      );
+                    })
+                  : ''}
               </Grid>
             </List>
           </Paper>

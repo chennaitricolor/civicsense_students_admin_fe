@@ -30,7 +30,7 @@ export const LoginContainer = () => {
     event.preventDefault();
   };
 
-  const handleLogin = event => {
+  const handleLogin = () => {
     dispatch({
       type: actions.INITIATE_LOGIN,
       payload: {

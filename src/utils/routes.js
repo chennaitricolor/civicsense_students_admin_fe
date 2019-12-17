@@ -6,21 +6,20 @@ import LoadingComponent from '../components/LoadingComponent';
 import App from '../App';
 
 const AsyncLogin = Loadable({
-    loader: () => import('../containers/LoginContainer'),
-    loading: LoadingComponent,
+  loader: () => import('../containers/LoginContainer'),
+  loading: LoadingComponent,
 });
 
 const AsyncHome = Loadable({
-    loader: () => import('../App'),
-    loading: LoadingComponent,
+  loader: () => import('../App'),
+  loading: LoadingComponent,
 });
 
-
 export default props => (
-    <Router history={history}>
-        <Switch>
-            <Route exact path="/" component={AsyncLogin} />
-            <Route exact path="/home" component={AsyncHome} />
-        </Switch>
-    </Router>
+  <Router history={history}>
+    <Switch>
+      <Route exact path="/" component={AsyncLogin} />
+      <Route exact path="/home" component={AsyncHome} />
+    </Switch>
+  </Router>
 );

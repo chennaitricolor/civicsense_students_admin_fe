@@ -64,7 +64,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const Login = props => {
-  console.log(props);
   const styles = useStyles();
   return (
     <div className={styles.loginContainer}>

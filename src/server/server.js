@@ -34,14 +34,13 @@ app.use((req, res, next) => {
 app.use(express.static(path.join('build')));
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
 });
 
 app.get('/home', function(req, res) {
-  if(req.cookies['csr-api-be'] !== undefined && req.cookies['csr-api-be'].length > 0) {
+  if (req.cookies['csr-api-be'] !== undefined && req.cookies['csr-api-be'].length > 0) {
     res.sendFile(path.join(__dirname, '../../build', 'index.html'));
-  }
-  else {
+  } else {
     res.redirect('/');
   }
 });
