@@ -71,6 +71,8 @@ const useStyles = makeStyles(theme => ({
   button: {
     padding: '0px',
   },
+  selectedListItem: { paddingLeft: '0px', color: '#0084FF !important', fontWeight: 'bold' },
+  unSelectedItem: { paddingLeft: '0px' }
 }));
 
 export const CampaignIndividualStats = props => {
@@ -160,7 +162,7 @@ export const CampaignIndividualStats = props => {
                         key={value._id}
                         role={undefined}
                         button
-                        style={{ paddingLeft: '0px' }}
+                        className={selectedCampaign === value._id ? classes.selectedListItem : classes.unSelectedItem}
                         selected={selectedCampaign === value._id}
                         onClick={() => {
                           setSelectedCampaign(value._id);
