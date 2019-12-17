@@ -80,21 +80,6 @@ const matchStyle = {
   paddingTop: '5%',
 };
 
-const dropDownValues = [
-  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
-  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
-  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
-  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
-  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
-  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
-  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
-  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
-  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
-  { label: 'Zone 1 Tiruvottiyur', value: '5ddac5f9515e130bc9ec47e8' },
-  { label: 'Zone 2 Manali', value: '5ddac7fe515e130bc9ec47e9' },
-  { label: 'Zone 3 Madhavaram', value: '5ddac848515e130bc9ec47ea' },
-];
-
 function renderTextField(label, key, campaignDetails, handleOnChange, styles) {
   return (
     <TextField

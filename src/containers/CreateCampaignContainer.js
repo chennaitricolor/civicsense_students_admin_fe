@@ -78,18 +78,18 @@ const CreateCampaignContainer = props => {
   const createCampaignEventHandler = () => {
     let locationIds = [];
     locationIds.push(campaign.campaignSearchLocationId);
-    // dispatch({
-    //   type: createCampaignActions.CREATE_CAMPAIGN,
-    //   payload: {
-    //     campaignName: campaign.campaignName,
-    //     startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
-    //     endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
-    //     description: campaign.description,
-    //     rules: campaign.rules,
-    //     rewards: campaign.rewards,
-    //     locationIds: locationIds,
-    //   },
-    // });
+    dispatch({
+      type: createCampaignActions.CREATE_CAMPAIGN,
+      payload: {
+        campaignName: campaign.campaignName,
+        startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
+        endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
+        description: campaign.description,
+        rules: campaign.rules,
+        rewards: campaign.rewards,
+        locationIds: locationIds,
+      },
+    });
     setShowSnackBar(true);
     props.handleCreateCampaignButtonClick();
     setCampaign({
