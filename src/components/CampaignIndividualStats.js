@@ -76,6 +76,7 @@ export const CampaignIndividualStats = props => {
   const { campaignDetails, campaignData, onCampaignClick, onEntrySubmissionClick, handleToastClose } = props;
 
   const getElementsToRenderBasedOnProps = campaignData => {
+    let campaignEntriesList = [];
     if (campaignData !== undefined) {
       if (campaignData.isLoading) {
         return <LoadingComponent isLoading={campaignData.isLoading} />;
@@ -91,7 +92,7 @@ export const CampaignIndividualStats = props => {
       } else if (campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries) {
         campaignData.campaignDetails.entries.map(value => {
           const imageUrl = `${getImageUrl + value.photoId}`;
-          return (
+          campaignEntriesList.push(
             <Grid item xs={12} sm={6} md={3} key={value}>
               <Card className={classes.card}>
                 <CardActionArea>
@@ -139,6 +140,7 @@ export const CampaignIndividualStats = props => {
             </Grid>
           );
         });
+        return campaignEntriesList;
       } else {
         return '';
       }
@@ -199,7 +201,9 @@ export const CampaignIndividualStats = props => {
           <Paper className={classes.paper}>
             <List>
               <Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
-                {getElementsToRenderBasedOnProps(campaignData)}
+                {
+                  getElementsToRenderBasedOnProps(campaignData)
+                }
               </Grid>
             </List>
           </Paper>
