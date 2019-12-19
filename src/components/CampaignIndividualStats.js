@@ -17,6 +17,7 @@ import Image from 'material-ui-image';
 import { getImageUrl } from '../utils/constants';
 import ToastComponent from '../components/ToastComponent';
 import LoadingComponent from './LoadingComponent';
+import { Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     maxWidth: '200px',
-    height: '250px',
+    height: '270px',
   },
   media: {
     height: 200,
@@ -103,7 +104,15 @@ export const CampaignIndividualStats = props => {
                     <StopIcon style={{ float: 'left', color: 'grey' }} />
                     <ListItemText
                       id={value}
-                      primary={<Typography style={{ float: 'left' }}>{value.locationNm}</Typography>}
+                      primary={
+                        <Tooltip title={value.locationNm}>
+                          <Typography
+                            style={{ float: 'left', width: '80px', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                          >
+                            {value.locationNm}
+                          </Typography>
+                        </Tooltip>
+                      }
                     />
                     <IconButton
                       size="small"
@@ -137,7 +146,7 @@ export const CampaignIndividualStats = props => {
                   </ListItem>
                 </List>
               </Card>
-            </Grid>
+            </Grid>,
           );
         });
         return campaignEntriesList;
@@ -201,9 +210,7 @@ export const CampaignIndividualStats = props => {
           <Paper className={classes.paper}>
             <List>
               <Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
-                {
-                  getElementsToRenderBasedOnProps(campaignData)
-                }
+                {getElementsToRenderBasedOnProps(campaignData)}
               </Grid>
             </List>
           </Paper>

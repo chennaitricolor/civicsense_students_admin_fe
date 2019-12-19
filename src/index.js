@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {  MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import store, { sagaMiddleware } from "./utils/store";
-import saga from "./sagas/saga";
+import store, { sagaMiddleware } from './utils/store';
+import saga from './sagas/saga';
 import Routes from './utils/routes';
 
 const theme = createMuiTheme({
@@ -83,6 +83,19 @@ const theme = createMuiTheme({
         },
       },
     },
+    MuiPickersYear: {
+      current: {
+        color: '#0084FF',
+      },
+      yearSelected: {
+        color: '#fff',
+        backgroundColor: '#0084FF',
+
+        '&:hover': {
+          backgroundColor: '#0084FF',
+        },
+      },
+    },
     MuiButton: {
       textPrimary: {
         color: '#0084FF',
@@ -107,13 +120,14 @@ const theme = createMuiTheme({
 sagaMiddleware.run(saga);
 
 ReactDOM.render(
-    <Provider store={store}>
+  <Provider store={store}>
     <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <Routes />
+      <CssBaseline />
+      <Routes />
     </MuiThemeProvider>
-    </Provider>,
-    document.getElementById('root'));
+  </Provider>,
+  document.getElementById('root'),
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
