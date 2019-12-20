@@ -1,0 +1,75 @@
+    <pipeline name="civicsense_students_admin_fe">
+      <environmentvariables>
+        <variable name="IMAGETAG">
+          <value>students_admin_fe</value>
+        </variable>
+        <variable name="REGISTRY">
+          <value>registry.app.local</value>
+        </variable>
+        <variable name="STACK_NAME">
+          <value>students_admin_fe</value>
+        </variable>
+        <variable name="TRAEFIK_FRONTEND_HOST">
+          <value>Host:</value>
+        </variable>
+        <variable name="TRAEFIK_PORT">
+          <value>8000</value>
+        </variable>
+        <variable name="TRAEFIK_NETWORK">
+          <value>apps</value>
+        </variable>
+        <variable name="COMPOSE_FILE_NAME">
+          <value>docker-compose-env.yml</value>
+        </variable>
+      </environmentvariables>
+      <materials>
+        <git url="https://github.com/dhileepbalaji/civicsense_students_admin_fe.git" />
+      </materials>
+      <stage name="Docker.Build.Push.Image" cleanWorkingDir="true">
+        <approval type="success" allowOnlyOnSuccess="true" />
+        <jobs>
+          <job name="Build.Push">
+            <tasks>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker build --no-cache -t ${REGISTRY}/${IMAGETAG}:${GO_REVISION} .</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker push  ${REGISTRY}/${IMAGETAG}:${GO_REVISION}</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="dev">
+        <approval type="success" allowOnlyOnSuccess="true" />
+        <jobs>
+          <job name="Docker_Stack_deploy">
+            <tasks>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker stack deploy -c ${COMPOSE_FILE_NAME} ${STACK_NAME}_${GO_STAGE_NAME}</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="prod">
+        <approval type="manual" allowOnlyOnSuccess="true" />
+        <jobs>
+          <job name="Docker_Stack_Deploy">
+            <tasks>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker stack deploy -c ${COMPOSE_FILE_NAME} ${STACK_NAME}_${GO_STAGE_NAME}</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
