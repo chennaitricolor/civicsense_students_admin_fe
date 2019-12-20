@@ -97,7 +97,7 @@ export const CampaignIndividualStats = props => {
             <Grid item xs={12} sm={6} md={3} key={value}>
               <Card className={classes.card}>
                 <CardActionArea>
-                  <Image imageStyle={{ height: '200px' }} src={imageUrl} title="Pothole" />
+                  <Image imageStyle={{ height: '200px' }} src={imageUrl} title="" />
                 </CardActionArea>
                 <List>
                   <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
