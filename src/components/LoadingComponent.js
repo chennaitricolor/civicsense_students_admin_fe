@@ -1,15 +1,8 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const style = {
-  top: '40%',
-  position: 'absolute',
-  left: '42%',
-  color: '#0084FF',
-  width: '50px',
-};
 
-const LoadingComponent = ({ isLoading, error }) => {
+const LoadingComponent = ({ isLoading, error, style }) => {
   // Handle the loading state
   if (isLoading) {
     return <CircularProgress style={style} />;

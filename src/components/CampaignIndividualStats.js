@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import * as PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -8,16 +7,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
-import IconButton from '@material-ui/core/IconButton';
-import StopIcon from '@material-ui/icons/Stop';
-import Image from 'material-ui-image';
-import { getImageUrl } from '../utils/constants';
-import ToastComponent from '../components/ToastComponent';
-import LoadingComponent from './LoadingComponent';
-import { Tooltip } from '@material-ui/core';
+import InfiniteScrollContainer from '../containers/InfiniteScrollContainer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,6 +50,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: '200px',
     height: '270px',
+    margin: '5px'
   },
   media: {
     height: 200,
@@ -68,93 +59,14 @@ const useStyles = makeStyles(theme => ({
     padding: '0px',
   },
   selectedListItem: { paddingLeft: '0px', color: '#0084FF !important', fontWeight: 'bold' },
-  unSelectedItem: { paddingLeft: '0px' },
+  unSelectedItem: { paddingLeft: '0px' }
 }));
 
 export const CampaignIndividualStats = props => {
   const classes = useStyles();
   const [selectedCampaign, setSelectedCampaign] = React.useState('');
-  const { campaignDetails, campaignData, onCampaignClick, onEntrySubmissionClick, handleToastClose } = props;
+  const { campaignDetails, onCampaignClick, onEntrySubmissionClick, handleToastClose } = props;
 
-  const getElementsToRenderBasedOnProps = campaignData => {
-    let campaignEntriesList = [];
-    if (campaignData !== undefined) {
-      if (campaignData.isLoading) {
-        return <LoadingComponent isLoading={campaignData.isLoading} />;
-      } else if (campaignData.campaignDetailsError !== '') {
-        return (
-          <ToastComponent
-            handleClose={handleToastClose}
-            openToast={true}
-            toastMessage={'Error in fetching Campaign entries. Please try later..'}
-            toastVariant={'error'}
-          />
-        );
-      } else if (campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries) {
-        campaignData.campaignDetails.entries.map(value => {
-          const imageUrl = `${getImageUrl + value.photoId}`;
-          campaignEntriesList.push(
-            <Grid item xs={12} sm={6} md={3} key={value}>
-              <Card className={classes.card}>
-                <CardActionArea>
-                  <Image imageStyle={{ height: '200px' }} src={imageUrl} title="" />
-                </CardActionArea>
-                <List>
-                  <ListItem style={{ paddingTop: '0px', paddingLeft: '0px' }}>
-                    <StopIcon style={{ float: 'left', color: 'grey' }} />
-                    <ListItemText
-                      id={value}
-                      primary={
-                        <Tooltip title={value.locationNm}>
-                          <Typography
-                            style={{ float: 'left', width: '80px', textOverflow: 'ellipsis', overflow: 'hidden' }}
-                          >
-                            {value.locationNm}
-                          </Typography>
-                        </Tooltip>
-                      }
-                    />
-                    <IconButton
-                      size="small"
-                      className={classes.button}
-                      aria-label="accept"
-                      onClick={() => {
-                        const eventData = {
-                          status: 'ACCEPTED',
-                          campaignId: selectedCampaign,
-                          entryId: value._id,
-                        };
-                        onEntrySubmissionClick(eventData);
-                      }}
-                    >
-                      <CheckBoxIcon style={{ color: '#00AB88', fontSize: '40px' }} />
-                    </IconButton>
-                    <IconButton
-                      className={classes.button}
-                      aria-label="reject"
-                      onClick={() => {
-                        const eventData = {
-                          status: 'REJECTED',
-                          campaignId: selectedCampaign,
-                          entryId: value._id,
-                        };
-                        onEntrySubmissionClick(eventData);
-                      }}
-                    >
-                      <CancelPresentationIcon style={{ color: '#AEAEAE', fontSize: '40px' }} />
-                    </IconButton>
-                  </ListItem>
-                </List>
-              </Card>
-            </Grid>,
-          );
-        });
-        return campaignEntriesList;
-      } else {
-        return '';
-      }
-    }
-  };
 
   return (
     <div className={classes.root}>
@@ -207,13 +119,7 @@ export const CampaignIndividualStats = props => {
               ENTRIES
             </Typography>
           </Card>
-          <Paper className={classes.paper}>
-            <List>
-              <Grid container spacing={2} direction="row" justify="flex-start" alignItems="flex-start">
-                {getElementsToRenderBasedOnProps(campaignData)}
-              </Grid>
-            </List>
-          </Paper>
+          <InfiniteScrollContainer onEntrySubmissionClick={onEntrySubmissionClick} handleToastClose={handleToastClose}/>
         </Grid>
       </Grid>
     </div>

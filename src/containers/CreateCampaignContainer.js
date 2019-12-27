@@ -10,6 +10,14 @@ import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 
+const loadingComponentStyle = {
+  top: '40%',
+  position: 'absolute',
+  left: '42%',
+  color: '#0084FF',
+  width: '50px',
+};
+
 const CreateCampaignContainer = props => {
   const [campaign, setCampaign] = useReducer((state, newState) => ({ ...state, ...newState }), {
     campaignName: '',
@@ -115,7 +123,7 @@ const CreateCampaignContainer = props => {
   };
 
   if (locationListResponse.isLoading) {
-    return <LoadingComponent isLoading={locationListResponse.isLoading} />;
+    return <LoadingComponent isLoading={locationListResponse.isLoading} style={loadingComponentStyle}/>;
   } else if (
     createCampaignResponse.createCampaignError !== '' &&
     createCampaignResponse.createCampaignError !== undefined

@@ -11,10 +11,17 @@ import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 import entrySubmissionAction from '../actions/approveOrRejectEntries';
 
+const loadingComponentStyle = {
+  top: '40%',
+  position: 'absolute',
+  left: '42%',
+  color: '#0084FF',
+  width: '50px',
+};
+
 export const AdminHomeContainer = props => {
   const dispatch = useDispatch();
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
-  const getACampaignDetailsResponse = useSelector(state => state.getACampaignDetailsResponse);
   const entrySubmissionStatus = useSelector(state => state.entrySubmissionReducer);
 
   useEffect(() => {
@@ -32,7 +39,7 @@ export const AdminHomeContainer = props => {
   const handleCampaignClickEvent = event => {
     dispatch({
       type: getCampaignDetailsActions.GET_CAMPAIGN_DETAILS,
-      payload: { campaignId: event._id },
+      payload: { campaignId: event._id, lastRecordCreatedAt: '' },
     });
   };
 
@@ -65,7 +72,7 @@ export const AdminHomeContainer = props => {
     const totalCampaignsAndEntries = getTotalCampaignsAndEntries(getAllCampaignsResponse);
     if (getAllCampaignsResponse !== undefined) {
       if (getAllCampaignsResponse.isLoading) {
-        return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading} />;
+        return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading} style={loadingComponentStyle}/>;
       } else if (
         getAllCampaignsResponse.liveCampaignsError !== '' &&
         getAllCampaignsResponse.liveCampaignsError !== undefined
@@ -82,7 +89,6 @@ export const AdminHomeContainer = props => {
             <CampaignIndividualStats
               campaignDetails={totalCampaignsAndEntries.campaignDetails}
               onCampaignClick={handleCampaignClickEvent}
-              campaignData={getACampaignDetailsResponse}
               onEntrySubmissionClick={handleEntrySubmissionClickEvent}
               handleToastClose={handleToastClose}
             />

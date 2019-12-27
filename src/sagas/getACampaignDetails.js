@@ -6,10 +6,15 @@ import routeToPathAction from '../actions/routeToPath';
 
 export default function* getCampaignDetails(action) {
   try {
-    let api_url = `${getACampaignDetails + action.payload.campaignId}`;
-
+    let lastRecordCreatedAt = action.payload.lastRecordCreatedAt ? `${'?lastRecordCreatedAt=' + action.payload.lastRecordCreatedAt}` : '';
+    let api_url = `${getACampaignDetails + action.payload.campaignId + lastRecordCreatedAt}`;
     const response = yield call(callFetchApi, api_url, {}, 'GET');
     if (response.data !== undefined) {
+      if(lastRecordCreatedAt === '') {
+        yield put({
+          type: actions.CLEAR_CAMPAIGN_ENTRIES
+        });
+      }
       yield put({
         type: actions.GET_CAMPAIGN_DETAILS_SUCCESS,
         payload: response.data,
@@ -21,7 +26,7 @@ export default function* getCampaignDetails(action) {
       });
     }
   } catch (e) {
-    if (e.response.status === 401) {
+    if (e.response !== undefined && e.response.status === 401) {
       yield put({
         type: routeToPathAction.ROUTE_TO_PATH,
         payload: { path: '/' },
