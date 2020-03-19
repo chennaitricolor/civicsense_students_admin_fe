@@ -6,6 +6,7 @@ import getACampaignDetailsResponse from './getACampaignDetails';
 import fetchLocationListReducer from './fetchLocationListReducer';
 import createCampaignReducer from './createCampaignReducer';
 import entrySubmissionReducer from './approveOrRejectEntryReducer';
+import getOTPReducer from './getOTPReducer';
 
 const reducers = combineReducers({
   loginResponse,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
   fetchLocationListReducer,
   createCampaignReducer,
   entrySubmissionReducer,
+  getOTPReducer
 });
 
 export default reducers;

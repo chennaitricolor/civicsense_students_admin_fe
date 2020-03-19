@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import { Login } from '../components/Login';
 import { useDispatch, useSelector } from 'react-redux';
 import actions from '../actions/login';
+import otpAction from '../actions/getOTP';
 
 export const LoginContainer = () => {
   const [loginDetails, setLoginDetails] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -11,6 +12,7 @@ export const LoginContainer = () => {
   });
   const dispatch = useDispatch();
   const getLoginResponse = useSelector(state => state.loginResponse);
+  const getOTPResponse = useSelector(state => state.getOTPReducer);
 
   useEffect(() => {}, [getLoginResponse]);
 
@@ -35,7 +37,16 @@ export const LoginContainer = () => {
       type: actions.INITIATE_LOGIN,
       payload: {
         userId: loginDetails.userId,
-        password: loginDetails.password,
+        otp: loginDetails.password,
+      },
+    });
+  };
+
+  const handleGetOTP = () => {
+    dispatch({
+      type: otpAction.GET_LOGIN_OTP,
+      payload: {
+        userId: loginDetails.userId,
       },
     });
   };
@@ -45,10 +56,10 @@ export const LoginContainer = () => {
       <Login
         loginDetails={loginDetails}
         handleOnChange={handleOnChange}
-        handleClickShowPassword={handleClickShowPassword}
-        handleMouseDownPassword={handleMouseDownPassword}
         handleLogin={handleLogin}
         getLoginResponse={getLoginResponse}
+        getOTPResponse={getOTPResponse}
+        handleGetOTP={handleGetOTP}
       />
     </div>
   );
