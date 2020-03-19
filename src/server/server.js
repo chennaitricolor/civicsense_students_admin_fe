@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const proxy = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 8000;
@@ -45,7 +45,7 @@ app.get('/home', function(req, res) {
   }
 });
 
-app.use(proxy(['/api/csr/**'], adminAPIProxySettings));
+app.use(createProxyMiddleware(['/api/csr/**'], adminAPIProxySettings));
 
 app.listen(PORT, error => {
   if (error) {
