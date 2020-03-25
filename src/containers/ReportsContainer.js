@@ -58,7 +58,9 @@ export const ReportsContainer = props => {
         });
     }, []);
 
-    const columns = [{name: "Photo URL", options: { filter: false, sort: false}}, "Campaign Name", "Location Name", "Contact Phone", {name: "Image Full URL", options: { display: false}}];
+    const columns = [{name: "Photo URL", options: { filter: false, sort: false}}, "Campaign Name", "Location Name", "Contact Phone", {name: "Image Full URL", options: { display: false}},
+        {name: "Latitude", options: { display: false}},
+        {name: "Longitude", options: { display: false}}];
 
     const headerNames = [
         {
@@ -79,6 +81,14 @@ export const ReportsContainer = props => {
         },
         {
             name: 'Image Full URL',
+            download: true,
+        },
+        {
+            name: 'Latitude',
+            download: true,
+        },
+        {
+            name: 'Latitude',
             download: true,
         },
     ];
@@ -140,6 +150,8 @@ export const ReportsContainer = props => {
             rowData.push(lc.locationNm);
             rowData.push(lc.userId !== undefined && lc.userId !== '' ? lc.userId :'NA');
             rowData.push(process.env.AGENT_ADMIN_API_URL || 'http://52.66.148.41' + `${getImageUrl + lc.photoId}`);
+            rowData.push(lc.location.coordinates[0]);
+            rowData.push(lc.location.coordinates[1]);
             resultData.push(rowData);
         });
         return (  <MuiThemeProvider theme={muiTheme}>
