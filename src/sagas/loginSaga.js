@@ -14,7 +14,7 @@ export default function* loginSaga(action) {
       });
       yield put({
         type: routeToPathAction.ROUTE_TO_PATH,
-        payload: { path: '/home' },
+        payload: { path: '/dashboard' },
       });
     } else {
       yield put({
