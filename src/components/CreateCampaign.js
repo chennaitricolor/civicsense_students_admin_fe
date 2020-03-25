@@ -152,7 +152,7 @@ export const CreateCampaign = props => {
               fullWidth
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'disabled',
+                autoComplete: 'off',
               }}
             />
           )}

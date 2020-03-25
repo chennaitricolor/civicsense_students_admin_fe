@@ -85,7 +85,13 @@ const CreateCampaignContainer = props => {
 
   const createCampaignEventHandler = () => {
     let locationIds = [];
-    locationIds.push(campaign.campaignSearchLocationId);
+    if (campaign.campaignSearchLocationId === 'all') {
+      locationListResponse.locationList.forEach(location => {
+        if (location.value !== 'all') locationIds.push(location.value);
+      });
+    } else {
+      locationIds.push(campaign.campaignSearchLocationId);
+    }
     dispatch({
       type: createCampaignActions.CREATE_CAMPAIGN,
       payload: {
@@ -123,7 +129,7 @@ const CreateCampaignContainer = props => {
   };
 
   if (locationListResponse.isLoading) {
-    return <LoadingComponent isLoading={locationListResponse.isLoading} style={loadingComponentStyle}/>;
+    return <LoadingComponent isLoading={locationListResponse.isLoading} style={loadingComponentStyle} />;
   } else if (
     createCampaignResponse.createCampaignError !== '' &&
     createCampaignResponse.createCampaignError !== undefined

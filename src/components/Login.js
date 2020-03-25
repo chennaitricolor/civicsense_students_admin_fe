@@ -6,9 +6,6 @@ import Button from '@material-ui/core/Button';
 import agentXLoginLogo from '../images/loginVector.png';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles(theme => ({
   loginContainer: {
@@ -43,10 +40,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     color: 'red',
   },
-    successMessage: {
-      textAlign: 'center',
-        color: 'green'
-    },
+  successMessage: {
+    textAlign: 'center',
+    color: 'green',
+  },
   textField: {
     width: '94%',
     margin: '5% 2% 0% 2%',
@@ -67,20 +64,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const getOTPStatusMessage = (OTPResponse) => {
-  if(OTPResponse) {
-    if(OTPResponse.generateOTPResponse === 'Failed to Generate OTP') {
-      return (<div style={{textAlign: 'center',color: 'red'}}>Failed to Generate OTP. Please try later..</div>);
+const getOTPStatusMessage = OTPResponse => {
+  if (OTPResponse) {
+    if (OTPResponse.generateOTPResponse === 'Failed to Generate OTP') {
+      return <div style={{ textAlign: 'center', color: 'red' }}>Failed to Generate OTP. Please try later..</div>;
+    } else if (OTPResponse.generateOTPResponse === 'OTP Sent') {
+      return <div style={{ textAlign: 'center', color: 'green' }}>OTP sent successfully!!!</div>;
+    } else {
+      return <div />;
     }
-    else if(OTPResponse.generateOTPResponse === 'OTP Sent') {
-      return (<div style={{textAlign: 'center',color: 'green'}}>OTP sent successfully!!!</div>);
-    }
-    else {
-      return (<div />);
-    }
-  }
-  else {
-    return (<div />);
+  } else {
+    return <div />;
   }
 };
 
@@ -110,27 +104,24 @@ export const Login = props => {
         variant={'outlined'}
       />
       <TextField
-          className={styles.textField + ' agent-x-login-password'}
-          label={'OTP'}
-          id={'password'}
-          value={props.loginDetails.password}
-          onChange={event => props.handleOnChange(event, 'password', 'text')}
-          type={props.loginDetails.showPassword ? 'text' : 'password'}
-          autoComplete="off"
-          margin={'normal'}
-          variant={'outlined'}
-          InputProps={{
-            endAdornment: (
-                <InputAdornment position="end">
-                  <Button
-                      variant="contained"
-                      onClick={props.handleGetOTP}
-                  >
-                    Get OTP
-                  </Button>
-                </InputAdornment>
-            ),
-          }}
+        className={styles.textField + ' agent-x-login-password'}
+        label={'OTP'}
+        id={'password'}
+        value={props.loginDetails.password}
+        onChange={event => props.handleOnChange(event, 'password', 'text')}
+        type={props.loginDetails.showPassword ? 'text' : 'password'}
+        autoComplete="off"
+        margin={'normal'}
+        variant={'outlined'}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Button variant="contained" onClick={props.handleGetOTP}>
+                Get OTP
+              </Button>
+            </InputAdornment>
+          ),
+        }}
       />
       <Button
         id={'agent-x-sign-in-button'}
@@ -149,6 +140,6 @@ Login.propTypes = {
   handleOnChange: PropTypes.func,
   handleLogin: PropTypes.func,
   getLoginResponse: PropTypes.string,
-    getOTPResponse: PropTypes.string,
-    handleGetOTP: PropTypes.func
+  getOTPResponse: PropTypes.string,
+  handleGetOTP: PropTypes.func,
 };
