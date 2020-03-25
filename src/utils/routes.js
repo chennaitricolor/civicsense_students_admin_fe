@@ -19,7 +19,7 @@ export default props => (
   <Router history={history}>
     <Switch>
       <Route exact path="/" component={AsyncLogin} />
-      <Route exact path="/home" component={AsyncHome} />
+      <Route exact path="/dashboard" component={AsyncHome} />
     </Switch>
   </Router>
 );

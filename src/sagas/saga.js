@@ -8,6 +8,7 @@ import fetchLocationListActions from '../actions/fetchLocationList';
 import createCampaignActions from '../actions/createCampaign';
 import entriesSubmissionActions from '../actions/approveOrRejectEntries';
 import getOTPActions from '../actions/getOTP';
+import getAcceptedEntriesForReportActions from '../actions/getAcceptedEntriesForReport';
 import loginSaga from './loginSaga';
 import routesSaga from './routeUrlsSaga';
 import getACampaignDetailsSaga from './getACampaignDetails';
@@ -15,6 +16,7 @@ import createCampaignSaga from './createCampaignSaga';
 import fetchLocationListSaga from './fetchLocationListSaga';
 import approveOrRejectEntry from './approveOrRejectEntries';
 import getOTP from './getOTPSaga';
+import getAcceptedEntriesForReportSaga from './getAcceptedEntriesForReportSaga';
 
 export default function* saga() {
   yield takeLatest(loginActions.INITIATE_LOGIN, loginSaga);
@@ -25,4 +27,5 @@ export default function* saga() {
   yield takeLatest(createCampaignActions.CREATE_CAMPAIGN, createCampaignSaga);
   yield takeLatest(entriesSubmissionActions.ACCEPT_OR_REJECT_ENTRIES, approveOrRejectEntry);
   yield takeLatest(getOTPActions.GET_LOGIN_OTP, getOTP);
+  yield takeLatest(getAcceptedEntriesForReportActions.GET_ACCEPTED_ENTRIES, getAcceptedEntriesForReportSaga);
 }

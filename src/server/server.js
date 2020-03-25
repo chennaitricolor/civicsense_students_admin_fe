@@ -37,7 +37,7 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../../build', 'index.html'));
 });
 
-app.get('/home', function(req, res) {
+app.get('/dashboard', function(req, res) {
   if (req.cookies['csr-api-be'] !== undefined && req.cookies['csr-api-be'].length > 0) {
     res.sendFile(path.join(__dirname, '../../build', 'index.html'));
   } else {

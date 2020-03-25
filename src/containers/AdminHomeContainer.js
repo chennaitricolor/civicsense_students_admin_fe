@@ -10,6 +10,7 @@ import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 import entrySubmissionAction from '../actions/approveOrRejectEntries';
+import ReportsContainer from "./ReportsContainer";
 
 const loadingComponentStyle = {
   top: '40%',
@@ -106,7 +107,7 @@ export const AdminHomeContainer = props => {
   if (props.selectedTab === 0) {
     return getElementsToRender();
   } else {
-    return <p>Reports</p>;
+    return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)}/>;
   }
 };
 
