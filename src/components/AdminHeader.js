@@ -53,6 +53,7 @@ export const AdminHeader = props => {
           >
             <Tab className={classes.tabTitle} label="Home" />
             <Tab className={classes.tabTitle} label="Reports" />
+            <Tab className={classes.tabTitle} label="Map View" />
           </Tabs>
           <Button
             style={buttonStyle}

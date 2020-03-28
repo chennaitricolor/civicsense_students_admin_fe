@@ -55,15 +55,13 @@ export const ReportsContainer = props => {
     useEffect(() => {
         dispatch({
             type: actions.GET_ACCEPTED_ENTRIES,
-            payload: {lastRecordCreatedAt: '', applyLimit: false, campaignId: ''}
+            payload: {lastRecordCreatedAt: '', applyLimit: true}
         });
     }, []);
 
-    const columns = [{name: "Photo URL", options: { filter: false, sort: false}}, "Campaign Name", "Location Name", {name: "Contact Phone", options: {
-        filter: false
-        }}, {name: "Image Full URL", options: { filter: false, display: false}},
-        {name: "Latitude", options: { filter: false, display: false}},
-        {name: "Longitude", options: { filter: false, display: false}}];
+    const columns = [{name: "Photo URL", options: { filter: false, sort: false}}, "Campaign Name", "Location Name", "Contact Phone", {name: "Image Full URL", options: { display: false}},
+        {name: "Latitude", options: { display: false}},
+        {name: "Longitude", options: { display: false}}];
 
     const headerNames = [
         {
@@ -102,7 +100,7 @@ export const ReportsContainer = props => {
         const lastRecordCreatedAtParamValue = lastAcceptedEntry !== '' ? lastAcceptedEntry.createdAt : '';
         dispatch({
             type: actions.GET_ACCEPTED_ENTRIES,
-            payload: {lastRecordCreatedAt: lastRecordCreatedAtParamValue, applyLimit: false, campaignId: ''}
+            payload: {lastRecordCreatedAt: lastRecordCreatedAtParamValue, applyLimit: true}
         });
 
     };
@@ -111,10 +109,10 @@ export const ReportsContainer = props => {
         filterType: 'dropdown',
         searchText: '',
         selectableRows: 'none',
-        //count: 1000,
-       // rowsPerPage: 25,
-        //serverSide: true,
-        //rowsPerPageOptions: [25],
+        count: 7,
+        rowsPerPage: 2,
+        serverSide: true,
+        rowsPerPageOptions: [2],
         downloadOptions: {
             filename: 'CSR_AgentX_Reports.csv',
             filterOptions: {
@@ -127,7 +125,7 @@ export const ReportsContainer = props => {
             buildBody(
                 data
             ),
-       /* onTableChange: (action, tableState) => {
+        onTableChange: (action, tableState) => {
 
             console.log(action, tableState);
             // a developer could react to change on an action basis or
@@ -138,7 +136,7 @@ export const ReportsContainer = props => {
                     changePage(tableState.page);
                     break;
             }
-        }*/
+        }
 
     };
 
@@ -223,3 +221,4 @@ ReportsContainer.propTypes = {
 
 
 export default ReportsContainer;
+

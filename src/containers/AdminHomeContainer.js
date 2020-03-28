@@ -11,6 +11,7 @@ import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 import entrySubmissionAction from '../actions/approveOrRejectEntries';
 import ReportsContainer from "./ReportsContainer";
+import MapContainer from "./MapContainer";
 
 const loadingComponentStyle = {
   top: '40%',
@@ -106,8 +107,11 @@ export const AdminHomeContainer = props => {
 
   if (props.selectedTab === 0) {
     return getElementsToRender();
-  } else {
+  } else if(props.selectedTab === 1){
     return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)}/>;
+  }
+  else if(props.selectedTab === 2) {
+    return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)}/>
   }
 };
 
