@@ -81,7 +81,7 @@ class InfiniteScrollContainer extends React.Component {
             } else if (campaignData && campaignData.campaignDetails && campaignData.campaignDetails.entries) {
                 return (
                     <InfiniteScroll
-                dataLength={campaignData.campaignDetails.entries.length}
+                dataLength={campaignData.allEntries.length}
                 next={this.loadMore}
                 hasMore={campaignData.campaignDetails.entries.length > 0}
                 loader={<LoadingComponent isLoading={true} style={loadingComponentStyle}/>}
