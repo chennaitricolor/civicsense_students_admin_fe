@@ -13,3 +13,7 @@ export function formatDateToDDMMYYYYFormat(date) {
   }
   return moment(date).format('DD-MM-YYYY');
 }
+
+export const isSameDates = (date1, date2) => {
+  return moment(date1).isSame(date2);
+};

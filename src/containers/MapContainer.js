@@ -1,98 +1,34 @@
-import React, { useState, useEffect } from "react";
-import {
-    withGoogleMap,
-    withScriptjs,
-    GoogleMap,
-    Marker,
-    InfoWindow,
-    KmlLayer
-} from "react-google-maps";
 import * as PropTypes from 'prop-types';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import actions from "../actions/getAcceptedEntriesForReport";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import Image from 'material-ui-image';
-import {getImageUrl} from "../utils/constants";
+import { DatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
+import MomentUtils from '@date-io/moment';
+import { formatDateToMMDDYYYYFormat } from '../utils/helpers/GeneralUtils';
+import {MapWrappedComponent} from "../components/MapComponent";
+import React, {useState} from "react";
 
-const MapWrapped = withScriptjs(withGoogleMap(props => {
-    //const [selectedCampaign] = props;
-    console.log('props', props);
-
-    const getAcceptedEntries = useSelector(state => state.getAcceptedEntriesForReport);
-    const [selectedEntry, setSelectedEntry] = useState(null);
-
-    useEffect(() => {
-        const listener = e => {
-            if (e.key === "Escape") {
-                setSelectedEntry(null);
-            }
-        };
-        window.addEventListener("keydown", listener);
-
-        return () => {
-            window.removeEventListener("keydown", listener);
-        };
-    }, []);
-
-    const getMarkers = () => {
-        if(getAcceptedEntries !== undefined && getAcceptedEntries.reportDetails !== undefined && getAcceptedEntries.reportDetails !== '') {
-            return (getAcceptedEntries.reportDetails.map(entry => (
-                <Marker
-                    key={entry._id}
-                    position={{
-                        lat: entry.location.coordinates[1],
-                        lng: entry.location.coordinates[0]
-                    }}
-                    onClick={() => {
-                        setSelectedEntry(entry);
-                    }}
-                />
-            )));
+const  useStyle = makeStyles(theme => ({
+    datepickerStyle : {
+        marginTop: '20%',
+        '& label': {
+            color: '#707070 !important',
+            fontSize: '20px',
+        },
+        '&& fieldset': {
+            border: '1px solid #707070 !important',
         }
-        else {
-            return '';
-        }
-    };
-
-    return (
-        <GoogleMap
-            defaultZoom={10}
-            defaultCenter={{ lat: 13.0827, lng: 80.2707 }}
-        >
-            <KmlLayer
-                url="/Zone_Boundary.kml"
-                options={{ preserveViewport: true }}
-            />
-            {props.selectedCampaign !== '' ? getMarkers() : ''}
-
-            {selectedEntry && (
-
-                <InfoWindow
-                    onCloseClick={() => {
-                        setSelectedEntry(null);
-                    }}
-                    position={{
-                        lat: selectedEntry.location.coordinates[1],
-                        lng: selectedEntry.location.coordinates[0]
-                    }}
-                >
-                    <div>
-                        <h2>Location: {selectedEntry.locationNm}</h2>
-                        <ul>
-                            <li>Phone: {selectedEntry.userId}</li>
-                        </ul>
-                        <Image imageStyle={{ height: '200px', background: 'grey' }} src={ `${getImageUrl + selectedEntry.photoId}`} title="" />
-                    </div>
-                </InfoWindow>
-            )}
-        </GoogleMap>
-    );
+    }
 }));
 
 export const  MapContainer = (props) => {
-    const [campaignId, setCampaignId] = React.useState('');
+    const style = useStyle();
+    const [campaignId, setCampaignId] = useState('');
+    const [selectedDate, setSelectedDate] = useState(null);
     const { campaignDetails } = props;
     const dispatch = useDispatch();
 
@@ -105,9 +41,16 @@ export const  MapContainer = (props) => {
             });
         }
     };
+
+    const handleDateChange = (date) => {
+        const dateValue = date !== null ? formatDateToMMDDYYYYFormat(new Date(date.valueOf())) : null;
+        setSelectedDate(dateValue);
+    };
+
     return (
         <div>
-        <div style={{ float: 'right', margin: '2%'}}>
+        <div style={{ float: 'right', margin: '2%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+            <div>
             <InputLabel id="demo-simple-select-label">Select Campaign</InputLabel>
             <Select
                 labelId="demo-simple-select-label"
@@ -122,9 +65,24 @@ export const  MapContainer = (props) => {
                     })
                 }
             </Select>
+            </div>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+                <DatePicker
+                    className={'map-date-picker ' + style.datepickerStyle}
+                    key={'map-date-picker-key'}
+                    id={'map-date-picker-id'}
+                    label='Select Date'
+                    value={selectedDate}
+                    onChange={date => handleDateChange(date)}
+                    placeholder="MM/DD/YYYY"
+                    format={'MM/DD/YYYY'}
+                    inputVariant="outlined"
+                    clearable
+                />
+            </MuiPickersUtilsProvider>
         </div>
         <div style={{width: "100vw", height: "100vh"}}>
-            <MapWrapped
+            <MapWrappedComponent
                 googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
                     process.env.REACT_APP_GOOGLE_KEY !== undefined ?  process.env.REACT_APP_GOOGLE_KEY : 'AIzaSyDFIVNy3804eaed33ukPN4zUURrJpZFJJY'
                     }`}
@@ -132,6 +90,7 @@ export const  MapContainer = (props) => {
                 containerElement={<div style={{height: `100%`}}/>}
                 mapElement={<div style={{height: `100%`}}/>}
                 selectedCampaign = {campaignId}
+                selectedDate = {selectedDate}
             />
         </div>
         </div>
