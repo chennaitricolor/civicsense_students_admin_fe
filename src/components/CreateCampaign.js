@@ -8,10 +8,12 @@ import { DatePicker } from '@material-ui/pickers';
 import Button from '@material-ui/core/Button';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import jsonPath from 'jsonpath-plus';
-import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import FormLabel from '@material-ui/core/FormLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 
 const useStyles = makeStyles(theme => ({
   createCampaignHeader: {
@@ -22,11 +24,11 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: '2%',
     marginRight: '2%',
-    marginTop: '5%',
+    marginTop: '3%',
 
     '& label': {
       color: '#707070 !important',
-      fontSize: '20px',
+      fontSize: '16px',
     },
 
     '& fieldset': {
@@ -35,12 +37,12 @@ const useStyles = makeStyles(theme => ({
   },
   datePicker: {
     margin: '2%',
-    marginTop: '5%',
+    marginTop: '3%',
     width: '46% !important',
 
     '& label': {
       color: '#707070 !important',
-      fontSize: '20px',
+      fontSize: '16px',
     },
 
     '& fieldset': {
@@ -55,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   label: {
     '& label': {
       color: '#707070 !important',
-      fontSize: '20px',
+      fontSize: '16px',
     },
 
     '& fieldset': {
@@ -77,21 +79,45 @@ const useStyles = makeStyles(theme => ({
   },
   newFieldsDiv: {
     margin: '2%',
-    marginTop: '5%',
+    marginTop: '3%',
   },
   dynamicFields: {
-    border: '2px solid #707070',
+    border: '1px solid #707070',
     margin: '2%',
+    marginBottom: '5%',
+  },
+  '@global': {
+    '.create-campaign-rules': {
+      width: '46%',
+    },
+    '.create-campaign-rewards': {
+      width: '46%',
+    },
+    '.create-campaign-form-dynamic-fields-label': {
+      width: '46%',
+      marginTop: '5%',
+    },
+    '.create-campaign-form-dynamic-fields-data': {
+      width: '96%',
+      marginTop: '5%',
+    },
   },
 }));
 
 const matchStyle = {
-  width: '46%',
+  width: '96%',
   margin: '2%',
-  paddingTop: '5%',
+  marginTop: '3%',
 };
 
-const typeList = ['string', 'number', 'dropdown'];
+const matchStyleForDynamicField = {
+  width: '46%',
+  margin: '2%',
+  marginTop: '5%',
+  display: 'inline-block',
+};
+
+const typeList = ['dropdown', 'number', 'string'];
 
 function renderTextField(label, key, campaignDetails, handleOnChange, styles) {
   return (
@@ -106,6 +132,20 @@ function renderTextField(label, key, campaignDetails, handleOnChange, styles) {
         wrap: false,
       })}
       onChange={event => handleOnChange(event, key, 'text')}
+      autoComplete="off"
+      margin={'normal'}
+      variant={'outlined'}
+    />
+  );
+}
+
+function renderTextFieldForDynamicFields(idx, label, key, handleChangeForDynamicFields, type, styles) {
+  return (
+    <TextField
+      className={'create-campaign-form-dynamic-fields-' + key + ' ' + styles.textField}
+      label={label}
+      id={key}
+      onChange={e => handleChangeForDynamicFields(idx, e, type, key)}
       autoComplete="off"
       margin={'normal'}
       variant={'outlined'}
@@ -136,7 +176,7 @@ function renderDateField(label, key, campaignDetails, handleOnChange, styles) {
   );
 }
 
-function renderDropDownField(label, key, dropdownList, handleOnChange, styles, idx) {
+function renderDropDownField(label, key, dropdownList, handleOnChange, styles, idx, matchStyle) {
   return (
     <Autocomplete
       className={'create-campaign-' + key + ' ' + styles.label}
@@ -169,9 +209,10 @@ export const CreateCampaign = props => {
   const styles = useStyles();
   return (
     <div>
-      <Drawer anchor="right" open={props.createCampaign} onClose={props.handleCreateCampaignButtonClick}>
+      <Drawer anchor="right" open={props.createCampaign} onClose={props.handleSnackBarExited}>
         <Typography className={styles.createCampaignHeader}>Create Campaign</Typography>
         {renderTextField('Campaign Name', 'campaignName', props.campaignDetails, props.handleOnChange, styles)}
+        {renderTextField('Description', 'description', props.campaignDetails, props.handleOnChange, styles)}
         <div>
           {renderDateField('Start Date', 'campaignStartDate', props.campaignDetails, props.handleOnChange, styles)}
           {renderDateField('End Date', 'campaignEndDate', props.campaignDetails, props.handleOnChange, styles)}
@@ -201,7 +242,6 @@ export const CreateCampaign = props => {
             />
           )}
         />
-        {renderTextField('Description', 'description', props.campaignDetails, props.handleOnChange, styles)}
         <div>
           {renderTextField('Rules', 'rules', props.campaignDetails, props.handleOnChange, styles)}
           {renderTextField('Rewards', 'rewards', props.campaignDetails, props.handleOnChange, styles)}
@@ -209,23 +249,24 @@ export const CreateCampaign = props => {
         <div className={styles.newFieldsDiv}>
           <FormControlLabel
             style={{
-              width: '30%',
+              marginLeft: '0',
+              marginRight: '2%',
             }}
+            labelPlacement="start"
             control={
-              <Checkbox
+              <Switch
                 checked={props.campaignDetails.needForm}
                 onChange={event => props.handleOnChange(event, 'needForm', 'checkbox')}
                 name="needForm"
               />
             }
-            label="Need Form"
+            label="Enable Form"
           />
           {props.campaignDetails.needForm ? (
-            <div style={{ display: 'inline-block', width: '60%' }}>
+            <div style={{ display: 'inline-block', float: 'right' }}>
               <Button variant="contained" style={{ display: 'inline-block' }} onClick={() => props.handleAdd()}>
-                <AddIcon />
+                + Add new field
               </Button>
-              <Typography style={{ display: 'inline-block', marginLeft: '2%' }}>Add New Field(s)</Typography>
             </div>
           ) : (
             ''
@@ -236,42 +277,56 @@ export const CreateCampaign = props => {
             {props.fields.map((field, idx) => {
               return (
                 <div key={`${field}-${idx}`} className={styles.dynamicFields}>
-                  <TextField
-                    className={'create-campaign-form-dynamic-fields' + ' ' + styles.textField}
-                    label={'Enter Label'}
-                    id={'label'}
-                    onChange={e => props.handleChangeForDynamicFields(idx, e, 'text', 'label')}
-                    autoComplete="off"
-                    margin={'normal'}
-                    variant={'outlined'}
-                  />
-                  {renderDropDownField('Enter Type', 'type', typeList, props.handleChangeForDynamicFields, styles, idx)}
-                  {field.type === 'dropdown' ? (
-                    <TextField
-                      className={'create-campaign-form-dynamic-fields' + ' ' + styles.textField}
-                      label={'Enter Dropdown Values'}
-                      id={'data'}
-                      onChange={e => props.handleChangeForDynamicFields(idx, e, 'dropdownData', 'data')}
-                      autoComplete="off"
-                      margin={'normal'}
-                      variant={'outlined'}
-                    />
-                  ) : (
-                    ''
+                  {renderTextFieldForDynamicFields(
+                    idx,
+                    'Enter Field Label',
+                    'label',
+                    props.handleChangeForDynamicFields,
+                    'text',
+                    styles,
                   )}
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={field.isRequired}
-                        onChange={event => props.handleChangeForDynamicFields(idx, event, 'checkbox', 'isRequired')}
-                        name="isRequired"
-                      />
-                    }
-                    label="Required"
-                  />
-                  <Button variant="contained" onClick={() => props.handleRemove(idx)}>
-                    <CloseIcon />
-                  </Button>
+                  {renderDropDownField(
+                    'Enter Field Type',
+                    'type',
+                    typeList,
+                    props.handleChangeForDynamicFields,
+                    styles,
+                    idx,
+                    matchStyleForDynamicField,
+                  )}
+                  {field.type === 'dropdown'
+                    ? renderTextFieldForDynamicFields(
+                        idx,
+                        'Enter Dropdown Values',
+                        'data',
+                        props.handleChangeForDynamicFields,
+                        'dropdownData',
+                        styles,
+                      )
+                    : ''}
+
+                  <div>
+                    <FormLabel style={{ float: 'left', margin: '3%' }} component="legend">
+                      Required Field?
+                    </FormLabel>
+                    <RadioGroup
+                      style={{ display: 'inline-block' }}
+                      aria-label="requiredField"
+                      name="requiredField"
+                      value={field.isRequired ? 'yes' : 'no'}
+                      onChange={e => props.handleChangeForDynamicFields(idx, e, 'radio', 'isRequired')}
+                    >
+                      <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                      <FormControlLabel value="no" control={<Radio />} label="No" />
+                    </RadioGroup>
+                    <Button
+                      variant="outlined"
+                      style={{ border: 'none', color: 'red', float: 'right', padding: '0', marginTop: '2%' }}
+                      onClick={() => props.handleRemove(idx)}
+                    >
+                      <CloseIcon />
+                    </Button>
+                  </div>
                 </div>
               );
             })}

@@ -130,9 +130,9 @@ const CreateCampaignContainer = props => {
           }
         }
 
-        if (type === 'checkbox') {
+        if (type === 'radio') {
           if (event !== null) {
-            temp.splice(i, 1, { ...a, [id]: event.target.checked });
+            temp.splice(i, 1, { ...a, [id]: event.target.value === 'yes' });
           } else {
             temp.splice(i, 1, { ...a, [id]: false });
           }
@@ -229,11 +229,38 @@ const CreateCampaignContainer = props => {
       rewards: '',
       needForm: false,
     });
-    setFields([]);
+    setFields([
+      {
+        label: '',
+        type: '',
+        data: '',
+        isRequired: false,
+      },
+    ]);
   };
 
   const handleSnackBarExited = () => {
     setShowSnackBar(false);
+    setCampaign({
+      campaignName: '',
+      campaignStartDate: null,
+      campaignEndDate: null,
+      campaignSearchLocation: '',
+      campaignSearchLocationId: '',
+      description: '',
+      rules: '',
+      rewards: '',
+      needForm: false,
+    });
+    props.handleCreateCampaignButtonClick();
+    setFields([
+      {
+        label: '',
+        type: '',
+        data: '',
+        isRequired: false,
+      },
+    ]);
   };
 
   const handleToastClose = () => {
