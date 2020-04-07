@@ -249,8 +249,8 @@ export const CreateCampaign = props => {
         <div className={styles.newFieldsDiv}>
           <FormControlLabel
             style={{
-              marginLeft: '0',
-              marginRight: '2%',
+              marginLeft: '1%',
+              color: '#707070',
             }}
             labelPlacement="start"
             control={
