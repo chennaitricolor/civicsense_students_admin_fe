@@ -8,7 +8,7 @@ const app = express();
 app.use(cookieParser());
 
 const adminAPIProxySettings = {
-  target: process.env.AGENT_ADMIN_API_URL !== undefined ?  process.env.AGENT_ADMIN_API_URL : 'http://52.66.148.41/dev',
+  target: process.env.AGENT_ADMIN_API_URL !== undefined ?  process.env.AGENT_ADMIN_API_URL : 'http://52.66.148.41:1080',
   changeOrigin: true,
   ws: true,
   secure: false,

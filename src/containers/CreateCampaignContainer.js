@@ -28,7 +28,18 @@ const CreateCampaignContainer = props => {
     description: '',
     rules: '',
     rewards: '',
+    needForm: false,
   });
+
+  const [fields, setFields] = useState([
+    {
+      label: '',
+      type: '',
+      data: '',
+      isRequired: false,
+    },
+  ]);
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [showSnackBar, setShowSnackBar] = useState(false);
   const dispatch = useDispatch();
@@ -67,6 +78,17 @@ const CreateCampaignContainer = props => {
         });
       }
     }
+    if (type === 'checkbox') {
+      if (event !== null) {
+        setCampaign({
+          [id]: event.target.checked,
+        });
+      } else {
+        setCampaign({
+          [id]: false,
+        });
+      }
+    }
   };
 
   const disableCreateButton = () => {
@@ -83,8 +105,64 @@ const CreateCampaignContainer = props => {
     );
   };
 
+  const handleChangeForDynamicFields = (i, event, type, id) => {
+    let temp = [];
+    temp = temp.concat(...fields);
+
+    temp.forEach((a, index) => {
+      if (index === i) {
+        if (type === 'text') {
+          temp.splice(i, 1, { ...a, [id]: event.target.value });
+        }
+
+        if (type === 'dropdownData') {
+          let value = event.target.value;
+          let array = value.split(',');
+          array = array.map(string => string.trim());
+          temp.splice(i, 1, { ...a, [id]: array });
+        }
+
+        if (type === 'dropdown') {
+          if (event !== null) {
+            temp.splice(i, 1, { ...a, [id]: event });
+          } else {
+            temp.splice(i, 1, { ...a, [id]: null });
+          }
+        }
+
+        if (type === 'checkbox') {
+          if (event !== null) {
+            temp.splice(i, 1, { ...a, [id]: event.target.checked });
+          } else {
+            temp.splice(i, 1, { ...a, [id]: false });
+          }
+        }
+      }
+    });
+
+    setFields(temp);
+  };
+
+  const handleAdd = () => {
+    const values = [...fields];
+    values.push({
+      label: '',
+      type: '',
+      data: '',
+      isRequired: false,
+    });
+    setFields(values);
+  };
+
+  const handleRemove = i => {
+    const values = [...fields];
+    values.splice(i, 1);
+    setFields(values);
+  };
+
   const createCampaignEventHandler = () => {
     let locationIds = [];
+    let dynamicFields = [];
     if (campaign.campaignSearchLocationId === 'all') {
       locationListResponse.locationList.forEach(location => {
         if (location.value !== 'all') locationIds.push(location.value);
@@ -92,18 +170,52 @@ const CreateCampaignContainer = props => {
     } else {
       locationIds.push(campaign.campaignSearchLocationId);
     }
-    dispatch({
-      type: createCampaignActions.CREATE_CAMPAIGN,
-      payload: {
-        campaignName: campaign.campaignName,
-        startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
-        endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
-        description: campaign.description,
-        rules: campaign.rules,
-        rewards: campaign.rewards,
-        locationIds: locationIds,
-      },
-    });
+
+    if (!campaign.needForm) setFields([]);
+    else {
+      fields.map(field => {
+        if (field.type === 'dropdown') {
+          dynamicFields.push(field);
+        } else {
+          let tempFields = {};
+          tempFields.label = field.label;
+          tempFields.type = field.type;
+          tempFields.isRequired = field.isRequired;
+          dynamicFields.push(tempFields);
+        }
+      });
+    }
+    if (campaign.needForm) {
+      dispatch({
+        type: createCampaignActions.CREATE_CAMPAIGN,
+        payload: {
+          campaignName: campaign.campaignName,
+          startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
+          endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
+          description: campaign.description,
+          rules: campaign.rules,
+          rewards: campaign.rewards,
+          locationIds: locationIds,
+          needForm: campaign.needForm,
+          formFields: dynamicFields,
+        },
+      });
+    } else {
+      dispatch({
+        type: createCampaignActions.CREATE_CAMPAIGN,
+        payload: {
+          campaignName: campaign.campaignName,
+          startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
+          endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
+          description: campaign.description,
+          rules: campaign.rules,
+          rewards: campaign.rewards,
+          locationIds: locationIds,
+          needForm: campaign.needForm,
+        },
+      });
+    }
+
     setShowSnackBar(true);
     props.handleCreateCampaignButtonClick();
     setCampaign({
@@ -115,7 +227,9 @@ const CreateCampaignContainer = props => {
       description: '',
       rules: '',
       rewards: '',
+      needForm: false,
     });
+    setFields([]);
   };
 
   const handleSnackBarExited = () => {
@@ -163,6 +277,10 @@ const CreateCampaignContainer = props => {
           campaignDetails={campaign}
           handleOnChange={handleOnChange}
           locationList={locationListResponse.locationList}
+          handleAdd={handleAdd}
+          handleRemove={handleRemove}
+          handleChangeForDynamicFields={handleChangeForDynamicFields}
+          fields={fields}
           isDisabled={isDisabled}
           showSnackBar={showSnackBar}
           handleSnackBarExited={handleSnackBarExited}
