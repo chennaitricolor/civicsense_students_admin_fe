@@ -91,7 +91,7 @@ const matchStyle = {
   paddingTop: '5%',
 };
 
-const typeList = ['string', 'integer', 'dropdown'];
+const typeList = ['string', 'number', 'dropdown'];
 
 function renderTextField(label, key, campaignDetails, handleOnChange, styles) {
   return (
