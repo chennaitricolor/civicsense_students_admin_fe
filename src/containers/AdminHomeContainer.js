@@ -10,8 +10,8 @@ import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 import entrySubmissionAction from '../actions/approveOrRejectEntries';
-import ReportsContainer from "./ReportsContainer";
-import MapContainer from "./MapContainer";
+import ReportsContainer from './ReportsContainer';
+import MapContainer from './MapContainer';
 
 const loadingComponentStyle = {
   top: '40%',
@@ -74,7 +74,7 @@ export const AdminHomeContainer = props => {
     const totalCampaignsAndEntries = getTotalCampaignsAndEntries(getAllCampaignsResponse);
     if (getAllCampaignsResponse !== undefined) {
       if (getAllCampaignsResponse.isLoading) {
-        return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading} style={loadingComponentStyle}/>;
+        return <LoadingComponent isLoading={getAllCampaignsResponse.isLoading} style={loadingComponentStyle} />;
       } else if (
         getAllCampaignsResponse.liveCampaignsError !== '' &&
         getAllCampaignsResponse.liveCampaignsError !== undefined
@@ -107,11 +107,10 @@ export const AdminHomeContainer = props => {
 
   if (props.selectedTab === 0) {
     return getElementsToRender();
-  } else if(props.selectedTab === 1){
-    return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)}/>;
-  }
-  else if(props.selectedTab === 2) {
-    return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)}/>
+  } else if (props.selectedTab === 1) {
+    return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
+  } else if (props.selectedTab === 2) {
+    return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
   }
 };
 

@@ -18,7 +18,7 @@ const reducers = combineReducers({
   createCampaignReducer,
   entrySubmissionReducer,
   getOTPReducer,
-  getAcceptedEntriesForReport
+  getAcceptedEntriesForReport,
 });
 
 export default reducers;

@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     maxWidth: '200px',
     height: '270px',
-    margin: '5px'
+    margin: '5px',
   },
   media: {
     height: 200,
@@ -59,14 +59,13 @@ const useStyles = makeStyles(theme => ({
     padding: '0px',
   },
   selectedListItem: { paddingLeft: '0px', color: '#0084FF !important', fontWeight: 'bold' },
-  unSelectedItem: { paddingLeft: '0px' }
+  unSelectedItem: { paddingLeft: '0px' },
 }));
 
 export const CampaignIndividualStats = props => {
   const classes = useStyles();
   const [selectedCampaign, setSelectedCampaign] = React.useState('');
   const { campaignDetails, onCampaignClick, onEntrySubmissionClick, handleToastClose } = props;
-
 
   return (
     <div className={classes.root}>
@@ -119,7 +118,10 @@ export const CampaignIndividualStats = props => {
               ENTRIES
             </Typography>
           </Card>
-          <InfiniteScrollContainer onEntrySubmissionClick={onEntrySubmissionClick} handleToastClose={handleToastClose}/>
+          <InfiniteScrollContainer
+            onEntrySubmissionClick={onEntrySubmissionClick}
+            handleToastClose={handleToastClose}
+          />
         </Grid>
       </Grid>
     </div>
