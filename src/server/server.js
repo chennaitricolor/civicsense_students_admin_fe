@@ -46,6 +46,10 @@ app.get('/dashboard', function(req, res) {
   }
 });
 
+app.get('/hotzones', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
+
 app.use(createProxyMiddleware(['/api/csr/**'], adminAPIProxySettings));
 
 app.listen(PORT, error => {
