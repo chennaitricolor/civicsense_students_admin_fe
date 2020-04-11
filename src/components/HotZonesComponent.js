@@ -2,7 +2,7 @@ import { GoogleMap, KmlLayer, withGoogleMap, withScriptjs } from 'react-google-m
 import React from 'react';
 
 const kmlFileUrl = () => {
-    return window.location.host.includes('localhost') ? 'https://coviddev.gccservice.in/hotzones.kml' : window.location.host + '/hotzones.kml';
+    return window.location.host.includes('localhost') ? 'https://coviddev.gccservice.in/hotzones.kml' : 'https://' + window.location.host + '/hotzones.kml';
 };
 
 export const HotZonesComponent = withScriptjs(
