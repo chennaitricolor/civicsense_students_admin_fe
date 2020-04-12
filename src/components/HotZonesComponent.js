@@ -3,7 +3,7 @@ import React from 'react';
 import { getHotZonesUrl } from '../utils/constants';
 
 const kmlFileUrl = () => {
-    return window.location.host.includes('localhost') ? 'https://coviddev.gccservice.in/api/csr/hotspots' : window.location.protocol + '//' + window.location.host + getHotZonesUrl;
+    return window.location.host.includes('localhost') ? 'https://coviddev.gccservice.in/api/csr/hotspots' + "?dummy="+(new Date()).getTime() : window.location.protocol + '//' + window.location.host + getHotZonesUrl + +"?dummy="+(new Date()).getTime();
 };
 
 export const HotZonesComponent = withScriptjs(
