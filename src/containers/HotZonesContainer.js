@@ -7,7 +7,7 @@ const HotZonesContainer = () => {
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${
                 process.env.REACT_APP_GOOGLE_KEY !== undefined
                     ? process.env.REACT_APP_GOOGLE_KEY
-                    : 'AIzaSyDFIVNy3804eaed33ukPN4zUURrJpZFJJY'
+                    : 'AIzaSyCJEqkjxBs_65tsJuM_nJKVYkfe5O38kM8'
             }`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%` }} />}
