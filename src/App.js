@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div>
-      <AdminHeader title={'Agent X Dashboard'}
+      <AdminHeader title={'GCC - COVID Tracker'}
      selectedTab={selectedTab}
       handleTabChange={handleTabChange}
        handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
