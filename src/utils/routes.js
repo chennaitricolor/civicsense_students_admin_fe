@@ -25,6 +25,7 @@ export default props => (
       <Route exact path="/" component={AsyncLogin} />
       <Route exact path="/dashboard" component={AsyncHome} />
       <Route exact path="/hotzones" component={AsyncHotZones}/>
+        <Route exact path="/containmentzones" component={AsyncHotZones}/>
     </Switch>
   </Router>
 );
