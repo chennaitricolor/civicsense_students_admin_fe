@@ -122,10 +122,6 @@ export const ReportsContainer = props => {
     filterType: 'dropdown',
     searchText: '',
     selectableRows: 'none',
-    // count: 1000,
-    // rowsPerPage: 25,
-    // serverSide: true,
-    // rowsPerPageOptions: [25],
     downloadOptions: {
       filename: 'Reports.csv',
       filterOptions: {
@@ -134,17 +130,6 @@ export const ReportsContainer = props => {
       },
     },
     onDownload: (buildHead, buildBody, columns, data) => buildHead(headerNames(columns)) + buildBody(data),
-    // onTableChange: (action, tableState) => {
-    //   console.log(action, tableState);
-    //   // a developer could react to change on an action basis or
-    //   // examine the state as a whole and do whatever they want
-    //
-    //   switch (action) {
-    //     case 'changePage':
-    //       changePage(tableState.page);
-    //       break;
-    //   }
-    // },
   };
 
   const handleToastClose = () => {

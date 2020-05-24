@@ -14,6 +14,13 @@ export function formatDateToDDMMYYYYFormat(date) {
   return moment(date).format('DD-MM-YYYY');
 }
 
+export function formatDateFromOneFormatToAnother(date, oldFormat, newFormat) {
+  if (date === null || date === undefined) {
+    return '';
+  }
+  return moment(date, oldFormat).format(newFormat);
+}
+
 export const isSameDates = (date1, date2) => {
   return moment(date1).isSame(date2);
 };

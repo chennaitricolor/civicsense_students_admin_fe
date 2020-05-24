@@ -8,7 +8,6 @@ const kmlFileUrl = () => {
 
 export const HotZonesComponent = withScriptjs(
     withGoogleMap(props => {
-        console.log('host is: ', kmlFileUrl());
         return (
             <GoogleMap defaultZoom={10} defaultCenter={{ lat: 13.0827, lng: 80.2707 }}>
                 <KmlLayer url={kmlFileUrl()} options={{ preserveViewport: true }} zIndex={100}/>

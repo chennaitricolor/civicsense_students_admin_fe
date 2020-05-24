@@ -3,19 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import actions from '../actions/getPositiveEntriesForReport';
-import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
-import * as PropTypes from 'prop-types';
 import { getImageUrl } from '../utils/constants';
-
-const loadingComponentStyle = {
-  top: '40%',
-  position: 'absolute',
-  left: '42%',
-  color: '#0084FF',
-  width: '50px',
-};
+import { formatDateFromOneFormatToAnother } from '../utils/helpers/GeneralUtils';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import TextField from '@material-ui/core/TextField';
 
 const muiTheme = createMuiTheme({
   typography: {
@@ -56,34 +50,10 @@ const AlertsContainer = props => {
     });
   }, []);
 
-  // campaignName: "Positive Cases"
-  // createdAt: "2020-05-24T06:28:56.274Z"
-  // createdBy: 9003593601
-  // description: "To get the positive cases"
-  // endDate: "2021-01-30T00:00:00.000Z"
-  // formFields: [{data: [], label: "Name", type: "string", isRequired: true},…]
-  // 0: {data: [], label: "Name", type: "string", isRequired: true}
-  // 1: {data: [], label: "Age", type: "string", isRequired: true}
-  // 2: {data: [], label: "Oxygen Level", type: "number", isRequired: true}
-  // 3: {data: [], label: "Pulse", type: "number", isRequired: true}
-  // 4: {data: [], label: "Temperature", type: "number", isRequired: true}
-  // 5: {data: [], label: "Respiratory Rate", type: "number", isRequired: true}
-  // locationIds: ["5e88490f1f1a8c0011245192"]
-  // needForm: true
-  // noOfEntries: 3
-  // rewards: 50
-  // rules: "Post the cases"
-  // startDate: "2020-05-24T00:00:00.000Z"
-  // updatedAt: "2020-05-24T12:00:57.080Z"
-  // __v: 0
-  // _id: "5eca14287543c90011642d86"
-  // campaignId: "5eca14287543c90011642d86"
-  // createdAt: "2020-05-24T07:46:45.042Z"
-
   const headerNames = rowDetails => {
     let header = [];
     rowDetails.forEach(row => {
-      header.push({ name: row.label, download: true });
+      if (row.download) header.push({ name: row.label, download: true });
     });
     return header;
   };
@@ -92,8 +62,9 @@ const AlertsContainer = props => {
     filterType: 'dropdown',
     searchText: '',
     selectableRows: 'none',
+    print: false,
     downloadOptions: {
-      filename: 'CSR_AgentX_Reports.csv',
+      filename: 'Positive_Records_Reports.csv',
       filterOptions: {
         useDisplayedColumnsOnly: false,
         useDisplayedRowsOnly: true,
@@ -102,11 +73,10 @@ const AlertsContainer = props => {
     onDownload: (buildHead, buildBody, columns, data) => buildHead(headerNames(columns)) + buildBody(data),
   };
 
-  const columns = rowDetails => {
+  const columns = () => {
     let column = [];
-    column.push({ label: 'Photo URL', name: 'photoUrl', options: { filter: false, sort: false } });
-    column.push({ label: 'Campaign Name', name: 'campaignName' });
-    column.push({ label: 'Location Name', name: 'locationName' });
+    column.push({ label: 'Name', name: 'Name' });
+    column.push({ label: 'Age', name: 'Age' });
     column.push({
       label: 'Contact Phone',
       name: 'userId',
@@ -114,13 +84,100 @@ const AlertsContainer = props => {
         filter: false,
       },
     });
-    column.push({ label: 'Name', name: 'Name' });
-    column.push({ label: 'Age', name: 'Age' });
-    column.push({ label: 'Temperature', name: 'Temperature' });
-    column.push({ label: 'Oxygen Level', name: 'Oxygen Level' });
-    column.push({ label: 'Pulse', name: 'Pulse' });
-    column.push({ label: 'Respiratory Rate', name: 'Respiratory Rate' });
-    column.push({ label: 'Indicator', name: 'indicator' });
+    column.push({ label: 'Location Name', name: 'locationName' });
+    column.push({
+      label: 'Temperature',
+      name: 'Temperature',
+      options: { filter: false },
+    });
+    column.push({ label: 'Oxygen Level', name: 'Oxygen Level', options: { filter: false } });
+    column.push({ label: 'Pulse', name: 'Pulse', options: { filter: false } });
+    column.push({ label: 'Respiratory Rate', name: 'Respiratory Rate', options: { filter: false } });
+    column.push({ label: 'Indicator', name: 'indicator', options: { filter: false } });
+    column.push({ label: 'Campaign Name', name: 'campaignName' });
+    column.push({ label: 'Photo URL', name: 'photoUrl', options: { filter: false, sort: false, download: false } });
+    column.push({
+      label: 'Submitted On',
+      name: 'submittedOn',
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'custom',
+        customFilterListRender: v => {
+          if (v[0] && v[1]) {
+            return `Start Date: ${v[0]}, End Date: ${v[1]}`;
+          } else if (v[0]) {
+            return `Start Date: ${v[0]}`;
+          } else if (v[1]) {
+            return `End Date: ${v[1]}`;
+          }
+          return false;
+        },
+        filterOptions: {
+          names: [],
+          logic(date, filters) {
+            let convertedDate = formatDateFromOneFormatToAnother(date, 'DD-MM-YYYY HH:mm:ss', 'YYYY-MM-DD');
+            let check = new Date(convertedDate);
+            let from = new Date(filters[0]);
+            let to = new Date(filters[1]);
+            from.setDate(from.getDate());
+            to.setDate(to.getDate());
+            from = new Date(from).setHours(0, 0, 0, 0);
+            to = new Date(to).setHours(23, 59, 59, 59);
+
+            if (filters[0] && filters[1] && check >= to && check <= from) {
+              return true;
+            } else if (filters[0] && check >= to) {
+              return true;
+            } else if (filters[1] && check <= from) {
+              return true;
+            }
+            return false;
+          },
+          display: (filterList, onChange, index, column) => (
+            <div style={{ marginTop: '2%' }}>
+              <FormLabel>Date</FormLabel>
+              <FormGroup row>
+                <TextField
+                  id="startDate"
+                  label="From"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder={'DD/MM/YYYY'}
+                  defaultValue={'DD/MM/YYYY'}
+                  value={filterList[index][0] || ''}
+                  onChange={event => {
+                    filterList[index][0] = event.target.value;
+                    onChange(filterList[index], index, column);
+                  }}
+                  style={{ width: '48%', marginRight: '2%', marginTop: '5%' }}
+                />
+                <TextField
+                  id="endDate"
+                  label="To"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  placeholder={'DD/MM/YYYY'}
+                  defaultValue={'DD/MM/YYYY'}
+                  value={filterList[index][1] || ''}
+                  onChange={event => {
+                    filterList[index][1] = event.target.value;
+                    onChange(filterList[index], index, column);
+                  }}
+                  style={{ width: '48%', marginRight: '2%', marginTop: '5%' }}
+                />
+              </FormGroup>
+            </div>
+          ),
+        },
+        print: false,
+      },
+    });
+    column.push({ label: 'Image Full URL', name: 'imageFullURL', options: { filter: false, display: false } });
     return column;
   };
 
@@ -144,6 +201,8 @@ const AlertsContainer = props => {
         campaignName: entry.campaign.campaignName,
         locationName: entry.locationNm,
         userId: entry.userId !== undefined && entry.userId !== '' ? entry.userId : 'NA',
+        imageFullURL: process.env.AGENT_ADMIN_API_URL || 'http://52.66.148.41' + `${getImageUrl + entry.photoId}`,
+        submittedOn: formatDateFromOneFormatToAnother(entry.createdAt, 'YYYY-MM-DDTHH:mm:ss', 'DD-MM-YYYY HH:mm:ss'),
       };
       if (entry.formData !== undefined) {
         Object.keys(entry.formData).forEach(form => {
@@ -161,12 +220,7 @@ const AlertsContainer = props => {
     return (
       <MuiThemeProvider theme={muiTheme}>
         <div style={{ margin: '5%' }}>
-          <MUIDataTable
-            title={'Positive Entries'}
-            data={resultData}
-            columns={columns(positiveEntries)}
-            options={options}
-          />
+          <MUIDataTable title={'Positive Entries'} data={resultData} columns={columns()} options={options} />
         </div>
       </MuiThemeProvider>
     );
