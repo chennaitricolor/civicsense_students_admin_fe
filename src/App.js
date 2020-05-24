@@ -18,16 +18,17 @@ function App() {
 
   return (
     <div>
-      <AdminHeader title={'Agent X Dashboard'}
-     selectedTab={selectedTab}
-      handleTabChange={handleTabChange}
-       handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
-     />
+      <AdminHeader
+        title={'Agent X Dashboard'}
+        selectedTab={selectedTab}
+        handleTabChange={handleTabChange}
+        handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
+      />
       <AdminHomeContainer selectedTab={selectedTab} />
       <CreateCampaignContainer
-       createCampaign={createCampaign}
+        createCampaign={createCampaign}
         handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
-     />
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import createCampaignReducer from './createCampaignReducer';
 import entrySubmissionReducer from './approveOrRejectEntryReducer';
 import getOTPReducer from './getOTPReducer';
 import getAcceptedEntriesForReport from './getAcceptedEntriesForReportReducer';
+import getPositiveEntriesForReportReducer from './getPositiveEntriesForReportReducer';
 
 const reducers = combineReducers({
   loginResponse,
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   entrySubmissionReducer,
   getOTPReducer,
   getAcceptedEntriesForReport,
+  getPositiveEntriesForReportReducer,
 });
 
 export default reducers;

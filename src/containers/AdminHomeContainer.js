@@ -12,6 +12,7 @@ import toastActions from '../actions/toastActions';
 import entrySubmissionAction from '../actions/approveOrRejectEntries';
 import ReportsContainer from './ReportsContainer';
 import MapContainer from './MapContainer';
+import AlertsContainer from './AlertsContainer';
 
 const loadingComponentStyle = {
   top: '40%',
@@ -111,6 +112,8 @@ export const AdminHomeContainer = props => {
     return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
   } else if (props.selectedTab === 2) {
     return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
+  } else if (props.selectedTab === 3) {
+    return <AlertsContainer />;
   }
 };
 

@@ -41,7 +41,7 @@ export const AdminHeader = props => {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{ minHeight: '48px' }}>
           <Typography variant="h6" className={classes.title}>
             {props.title}
           </Typography>
@@ -54,6 +54,7 @@ export const AdminHeader = props => {
             <Tab className={classes.tabTitle} label="Home" />
             <Tab className={classes.tabTitle} label="Reports" />
             <Tab className={classes.tabTitle} label="Map View" />
+            <Tab className={classes.tabTitle} label="Alerts" />
           </Tabs>
           <Button
             style={buttonStyle}

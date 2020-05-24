@@ -7,3 +7,4 @@ export const createCampaignURL = '/api/csr/campaigns';
 export const approveOrRejectEntriesURL = '/api/csr/submission/';
 export const getOTPUrl = 'api/csr/user/generate-otp';
 export const getReportsUrl = 'api/csr/reports';
+export const getPositiveEntriesUrl = 'api/csr/positive-reports?status=OPEN';
