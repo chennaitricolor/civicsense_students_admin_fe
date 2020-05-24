@@ -83,7 +83,7 @@ export const Login = props => {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginInformationContainer}>
-        <Typography className={styles.agentXTitle}>Agent X Dashboard</Typography>
+        <Typography className={styles.agentXTitle}>GCC - COVID Tracker</Typography>
         <img className={styles.agentXLoginLogo} alt={'loginLogo'} src={agentXLoginLogo} />
         <Typography className={styles.agentXSignInInformation}>Sign in by entering the information below</Typography>
       </div>

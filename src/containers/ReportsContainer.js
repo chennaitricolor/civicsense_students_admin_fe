@@ -127,7 +127,7 @@ export const ReportsContainer = props => {
     // serverSide: true,
     // rowsPerPageOptions: [25],
     downloadOptions: {
-      filename: 'CSR_AgentX_Reports.csv',
+      filename: 'Reports.csv',
       filterOptions: {
         useDisplayedColumnsOnly: false,
         useDisplayedRowsOnly: true,
