@@ -62,7 +62,6 @@ const AlertsContainer = props => {
     filterType: 'dropdown',
     searchText: '',
     selectableRows: 'none',
-    print: false,
     downloadOptions: {
       filename: 'Positive_Records_Reports.csv',
       filterOptions: {
@@ -174,7 +173,6 @@ const AlertsContainer = props => {
             </div>
           ),
         },
-        print: false,
       },
     });
     column.push({ label: 'Image Full URL', name: 'imageFullURL', options: { filter: false, display: false } });
