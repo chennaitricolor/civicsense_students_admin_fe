@@ -9,6 +9,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import InfiniteScrollContainer from '../containers/InfiniteScrollContainer';
 
+const isChennaiApp = process.env.REACT_APP_IS_GCC;
+
 const useStyles = makeStyles(theme => ({
   root: {
     marginRight: '5%',
@@ -60,6 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectedListItem: { paddingLeft: '0px', color: '#0084FF !important', fontWeight: 'bold' },
   unSelectedItem: { paddingLeft: '0px' },
+  readonly: { opacity: '1 !important' },
 }));
 
 export const CampaignIndividualStats = props => {
@@ -87,12 +90,16 @@ export const CampaignIndividualStats = props => {
                         key={value._id}
                         role={undefined}
                         button
-                        className={selectedCampaign === value._id ? classes.selectedListItem : classes.unSelectedItem}
+                        classes={{
+                          root: selectedCampaign === value._id ? classes.selectedListItem : classes.unSelectedItem,
+                          disabled: classes.readonly,
+                        }}
                         selected={selectedCampaign === value._id}
                         onClick={() => {
                           setSelectedCampaign(value._id);
                           onCampaignClick(value);
                         }}
+                        disabled={!isChennaiApp}
                       >
                         <ListItemText
                           id={labelId}
