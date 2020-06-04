@@ -202,7 +202,7 @@ export const ReportsContainer = props => {
       <MuiThemeProvider theme={muiTheme}>
         <div style={{ margin: '5%' }}>
           <MUIDataTable
-            title={'Accepted Campaign Entries'}
+            title={'Campaign Entries'}
             data={resultData}
             columns={columns(reportDetails)}
             options={options}
