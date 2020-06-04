@@ -15,8 +15,8 @@ const AsyncHome = Loadable({
 });
 
 const AsyncHotZones = Loadable({
-    loader: () => import('../containers/HotZonesContainer'),
-    loading: LoadingComponent
+  loader: () => import('../containers/HotZonesContainer'),
+  loading: LoadingComponent,
 });
 
 export default props => (
@@ -24,8 +24,8 @@ export default props => (
     <Switch>
       <Route exact path="/" component={AsyncLogin} />
       <Route exact path="/dashboard" component={AsyncHome} />
-      <Route exact path="/hotzones" component={AsyncHotZones}/>
-        <Route exact path="/containmentzones" component={AsyncHotZones}/>
+      <Route exact path="/hotzones" component={AsyncHotZones} />
+      <Route exact path="/containmentzones" component={AsyncHotZones} />
     </Switch>
   </Router>
 );

@@ -3,6 +3,7 @@ import { Login } from '../components/Login';
 import { useDispatch, useSelector } from 'react-redux';
 import actions from '../actions/login';
 import otpAction from '../actions/getOTP';
+import { Helmet } from 'react-helmet';
 
 export const LoginContainer = () => {
   const [loginDetails, setLoginDetails] = useReducer((state, newState) => ({ ...state, ...newState }), {
@@ -13,6 +14,7 @@ export const LoginContainer = () => {
   const dispatch = useDispatch();
   const getLoginResponse = useSelector(state => state.loginResponse);
   const getOTPResponse = useSelector(state => state.getOTPReducer);
+  const getConfig = useSelector(state => state.getConfigReducer.config);
 
   useEffect(() => {}, [getLoginResponse]);
 
@@ -53,7 +55,12 @@ export const LoginContainer = () => {
 
   return (
     <div>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{getConfig !== null ? getConfig.APP_TITLE : 'GCC - COVID Tracker'}</title>
+      </Helmet>
       <Login
+        title={getConfig !== null ? getConfig.APP_TITLE : 'GCC - COVID Tracker'}
         loginDetails={loginDetails}
         handleOnChange={handleOnChange}
         handleLogin={handleLogin}

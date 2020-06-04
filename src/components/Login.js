@@ -83,7 +83,7 @@ export const Login = props => {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginInformationContainer}>
-        <Typography className={styles.agentXTitle}>GCC - COVID Tracker</Typography>
+        <Typography className={styles.agentXTitle}>{props.title}</Typography>
         <img className={styles.agentXLoginLogo} alt={'loginLogo'} src={agentXLoginLogo} />
         <Typography className={styles.agentXSignInInformation}>Sign in by entering the information below</Typography>
       </div>
@@ -136,6 +136,7 @@ export const Login = props => {
 };
 
 Login.propTypes = {
+  title: PropTypes.string,
   loginDetails: PropTypes.object,
   handleOnChange: PropTypes.func,
   handleLogin: PropTypes.func,

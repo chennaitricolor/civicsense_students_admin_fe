@@ -92,7 +92,6 @@ const AlertsContainer = props => {
     column.push({ label: 'Oxygen Level', name: 'Oxygen Level', options: { filter: false } });
     column.push({ label: 'Pulse', name: 'Pulse', options: { filter: false } });
     column.push({ label: 'Respiratory Rate', name: 'Respiratory Rate', options: { filter: false } });
-    column.push({ label: 'Indicator', name: 'indicator', options: { filter: false } });
     column.push({ label: 'Campaign Name', name: 'campaignName' });
     column.push({ label: 'Photo URL', name: 'photoUrl', options: { filter: false, sort: false, download: false } });
     column.push({

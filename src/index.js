@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
@@ -9,6 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import store, { sagaMiddleware } from './utils/store';
 import saga from './sagas/saga';
 import Routes from './utils/routes';
+import actions from './actions/configActions';
 
 const theme = createMuiTheme({
   typography: {
@@ -118,6 +118,8 @@ const theme = createMuiTheme({
 });
 
 sagaMiddleware.run(saga);
+
+store.dispatch({ type: actions.GET_CONFIG });
 
 ReactDOM.render(
   <Provider store={store}>

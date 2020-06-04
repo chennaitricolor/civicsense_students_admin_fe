@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import actions from '../actions/getAcceptedEntriesForReport';
+import actions from '../actions/getAllEntriesForReport';
 import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
@@ -48,13 +48,12 @@ const muiTheme = createMuiTheme({
 
 export const ReportsContainer = props => {
   const dispatch = useDispatch();
-  const getAcceptedEntries = useSelector(state => state.getAcceptedEntriesForReport);
+  const getAcceptedEntries = useSelector(state => state.getAllEntriesForReportReducer);
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
 
   useEffect(() => {
     dispatch({
-      type: actions.GET_ACCEPTED_ENTRIES,
-      payload: { lastRecordCreatedAt: '', applyLimit: false, campaignId: '' },
+      type: actions.GET_ALL_ENTRIES,
     });
   }, []);
 
@@ -63,6 +62,7 @@ export const ReportsContainer = props => {
 
     column.push({ label: 'Photo URL', name: 'photoUrl', options: { filter: false, sort: false } });
     column.push({ label: 'Campaign Name', name: 'campaignName' });
+    column.push({ label: 'Status', name: 'status' });
     column.push({ label: 'Location Name', name: 'locationName' });
     column.push({
       label: 'Contact Phone',
@@ -178,6 +178,7 @@ export const ReportsContainer = props => {
       rowData = {
         photoUrl: photoUrl,
         campaignName: lc.campaign.campaignName,
+        status: lc.status,
         locationName: lc.locationNm,
         userId: lc.userId !== undefined && lc.userId !== '' ? lc.userId : 'NA',
         imageFullURL: process.env.AGENT_ADMIN_API_URL || 'http://52.66.148.41' + `${getImageUrl + lc.photoId}`,

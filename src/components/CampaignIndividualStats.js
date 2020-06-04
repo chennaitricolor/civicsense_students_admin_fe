@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -8,8 +9,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Card from '@material-ui/core/Card';
 import InfiniteScrollContainer from '../containers/InfiniteScrollContainer';
-
-const isChennaiApp = process.env.REACT_APP_IS_GCC;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -67,8 +66,17 @@ const useStyles = makeStyles(theme => ({
 
 export const CampaignIndividualStats = props => {
   const classes = useStyles();
+
   const [selectedCampaign, setSelectedCampaign] = React.useState('');
+  const [isChennaiApp, setIsChennaiApp] = React.useState(true);
   const { campaignDetails, onCampaignClick, onEntrySubmissionClick, handleToastClose } = props;
+  const getConfig = useSelector(state => state.getConfigReducer.config);
+
+  useEffect(() => {
+    if (getConfig !== null) setIsChennaiApp(getConfig.IS_GCC === 'true');
+  }, [isChennaiApp]);
+
+  console.log(isChennaiApp);
 
   return (
     <div className={classes.root}>
@@ -122,7 +130,7 @@ export const CampaignIndividualStats = props => {
         <Grid item xs={9} className={classes.grid}>
           <Card className={classes.titleCard}>
             <Typography color="textSecondary" className={classes.campaignLabel}>
-              ENTRIES
+              {isChennaiApp ? 'ENTRIES' : ''}
             </Typography>
           </Card>
           <InfiniteScrollContainer

@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
+const config = require('./config');
+
 app.use(cookieParser());
 
 const adminAPIProxySettings = {
@@ -52,6 +54,10 @@ app.get('/hotzones', (req, res) => {
 
 app.get('/containmentzones', (req, res) => {
   res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
+
+app.get('/api/config', (req, res) => {
+  res.send(config);
 });
 
 app.use(createProxyMiddleware(['/api/csr/**'], adminAPIProxySettings));

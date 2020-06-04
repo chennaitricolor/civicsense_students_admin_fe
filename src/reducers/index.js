@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import getConfigReducer from './getConfigReducer';
 import loginResponse from './loginResponse';
 import getAllCampaignsResponse from './getAllCampaignsList';
 import routesReducer from './routeUrlsReducer';
@@ -8,9 +9,11 @@ import createCampaignReducer from './createCampaignReducer';
 import entrySubmissionReducer from './approveOrRejectEntryReducer';
 import getOTPReducer from './getOTPReducer';
 import getAcceptedEntriesForReport from './getAcceptedEntriesForReportReducer';
+import getAllEntriesForReportReducer from './getAllEntriesForReportReducer';
 import getPositiveEntriesForReportReducer from './getPositiveEntriesForReportReducer';
 
 const reducers = combineReducers({
+  getConfigReducer,
   loginResponse,
   getAllCampaignsResponse,
   routesReducer,
@@ -20,6 +23,7 @@ const reducers = combineReducers({
   entrySubmissionReducer,
   getOTPReducer,
   getAcceptedEntriesForReport,
+  getAllEntriesForReportReducer,
   getPositiveEntriesForReportReducer,
 });
 
