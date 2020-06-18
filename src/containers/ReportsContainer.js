@@ -191,7 +191,10 @@ export const ReportsContainer = props => {
 
   const handleZoneSelectionChange = (event) => {
     setZoneName(event.target.value);
-    setButtonDisabled(selectedDate === '' || zoneName === '');
+    setButtonDisabled(selectedDate === '' || zoneName === '' || selectedDate === null);
+    dispatch({
+      type: actions.CLEAR_ALL_ENTRIES,
+    });
   };
 
   const handleGetReportsButtonClick = () => {
@@ -271,7 +274,10 @@ export const ReportsContainer = props => {
     const dateValue = date !== null ? formatDateToDateTime(new Date(date.valueOf()), 'YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss.SSS') : null;
     setSelectedDate(dateValue);
     setRawDate(date);
-    setButtonDisabled(selectedDate === '' || zoneName === '');
+    setButtonDisabled(date === '' || zoneName === '' || date === null || dateValue === 'Invalid date');
+    dispatch({
+      type: actions.CLEAR_ALL_ENTRIES,
+    });
   };
 
   const getElementsToRender = () => {
