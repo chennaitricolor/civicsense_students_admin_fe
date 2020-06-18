@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -8,6 +8,18 @@ import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 import * as PropTypes from 'prop-types';
 import { getImageUrl } from '../utils/constants';
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import FormControl from '@material-ui/core/FormControl';
+import {InputLabel} from "@material-ui/core";
+import MomentUtils from "@date-io/moment";
+import {formatDateToDateTime} from "../utils/helpers/GeneralUtils";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import Button from "@material-ui/core/Button";
 
 const loadingComponentStyle = {
   top: '40%',
@@ -15,6 +27,24 @@ const loadingComponentStyle = {
   left: '42%',
   color: '#0084FF',
   width: '50px',
+};
+
+const buttonStyle = {
+      //margin: '5% 0% 10% 2%',
+      fontSize: '20px',
+      width: '10%',
+      //bottom: '0',
+};
+
+const datePickerStyle = {
+  marginTop: '20%',
+  '& label': {
+    color: '#707070 !important',
+    fontSize: '20px',
+  },
+  '&& fieldset': {
+    border: '1px solid #707070 !important',
+  },
 };
 
 const muiTheme = createMuiTheme({
@@ -48,12 +78,17 @@ const muiTheme = createMuiTheme({
 
 export const ReportsContainer = props => {
   const dispatch = useDispatch();
+  const [zoneName, setZoneName] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [rawDate, setRawDate] = useState('');
   const getAcceptedEntries = useSelector(state => state.getAllEntriesForReportReducer);
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
+  const allZonesList = useSelector(state => state.fetchLocationListReducer);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   useEffect(() => {
     dispatch({
-      type: actions.GET_ALL_ENTRIES,
+      type: actions.CLEAR_ALL_ENTRIES,
     });
   }, []);
 
@@ -118,12 +153,16 @@ export const ReportsContainer = props => {
     });
   };
 
+  const getReportsFileName = () => {
+    return zoneName+ '_' + rawDate + '.csv';
+  };
+
   const options = {
     filterType: 'dropdown',
     searchText: '',
     selectableRows: 'none',
     downloadOptions: {
-      filename: 'Reports.csv',
+      filename: getReportsFileName(),
       filterOptions: {
         useDisplayedColumnsOnly: false,
         useDisplayedRowsOnly: true,
@@ -131,6 +170,7 @@ export const ReportsContainer = props => {
     },
     onDownload: (buildHead, buildBody, columns, data) => buildHead(headerNames(columns)) + buildBody(data),
   };
+
 
   const handleToastClose = () => {
     dispatch({
@@ -147,6 +187,21 @@ export const ReportsContainer = props => {
         toastVariant={toastVariant}
       />
     );
+  };
+
+  const handleZoneSelectionChange = (event) => {
+    setZoneName(event.target.value);
+    setButtonDisabled(selectedDate === '' || zoneName === '');
+  };
+
+  const handleGetReportsButtonClick = () => {
+    dispatch({
+      type: actions.GET_ALL_ENTRIES,
+      payload: {
+        locationNm: zoneName,
+        lastRecordCreatedAt: selectedDate
+      }
+    });
   };
 
   const getDataTable = reportDetails => {
@@ -212,6 +267,13 @@ export const ReportsContainer = props => {
     );
   };
 
+  const handleDateChange = date => {
+    const dateValue = date !== null ? formatDateToDateTime(new Date(date.valueOf()), 'YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss.SSS') : null;
+    setSelectedDate(dateValue);
+    setRawDate(date);
+    setButtonDisabled(selectedDate === '' || zoneName === '');
+  };
+
   const getElementsToRender = () => {
     if (getAcceptedEntries !== undefined) {
       if (getAcceptedEntries.isLoading) {
@@ -225,8 +287,47 @@ export const ReportsContainer = props => {
       }
     }
   };
+  return (  <div>
+      <div style={{ display: 'flex', flexDirection: 'row', margin: '5%', justifyContent: 'space-around'}}>
+        <FormControl>
+          <InputLabel id='zone-name-list'>Select a Zone</InputLabel>
+    <Select
+        labelId="zone-name-list"
+        id="zone-name-list"
+        value={zoneName}
+        onChange={handleZoneSelectionChange}
+        style={{ width: '200px' }}
+    >
+      {allZonesList &&
+      allZonesList.locationList &&
+      allZonesList.locationList.map(value => {
+        return <MenuItem value={value.label}>{value.label}</MenuItem>;
+      })}
+    </Select>
+        </FormControl>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <KeyboardDatePicker
+              id="date-picker-dialog"
+              label="Pick a date"
+              format="YYYY-MM-DD"
+              value={selectedDate}
+              onChange={handleDateChange}
+          />
+        </MuiPickersUtilsProvider>
+        <Button
+            id={'agent-x-sign-in-button'}
+            variant="contained"
+            className={buttonStyle}
+            onClick={handleGetReportsButtonClick}
+            disabled={buttonDisabled}
+        >
+          Get Report
+        </Button>
+  </div>
+    { getElementsToRender()}
+  </div>)
 
-  return getElementsToRender();
+  //return getElementsToRender();
 };
 
 ReportsContainer.propTypes = {

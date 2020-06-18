@@ -21,6 +21,13 @@ export function formatDateFromOneFormatToAnother(date, oldFormat, newFormat) {
   return moment(date, oldFormat).format(newFormat);
 }
 
+export function formatDateToDateTime(date, oldFormat, newFormat) {
+  if (date === null || date === undefined) {
+    return '';
+  }
+  return moment(date, oldFormat).format(newFormat);
+}
+
 export const isSameDates = (date1, date2) => {
   return moment(date1).isSame(date2);
 };

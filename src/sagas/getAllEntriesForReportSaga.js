@@ -3,7 +3,7 @@ import actions from '../actions/getAllEntriesForReport';
 import { callFetchApi } from '../services/api';
 import { getReportsUrl } from '../utils/constants';
 
-export default function* getAcceptedEntriesForReportSaga() {
+export default function* getAcceptedEntriesForReportSaga(action) {
   try {
     const response = yield call(
       callFetchApi,
@@ -11,6 +11,8 @@ export default function* getAcceptedEntriesForReportSaga() {
       {
         status: 'OPEN,ACCEPTED,SUBMITTED,CLOSED,REJECTED',
         live: false,
+        locationNm: action.payload.locationNm,
+        lastRecordCreatedAt: action.payload.lastRecordCreatedAt
       },
       'GET',
     );
