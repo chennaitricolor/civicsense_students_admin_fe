@@ -80,7 +80,6 @@ export const ReportsContainer = props => {
   const dispatch = useDispatch();
   const [zoneName, setZoneName] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
-  const [rawDate, setRawDate] = useState('');
   const getAcceptedEntries = useSelector(state => state.getAllEntriesForReportReducer);
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
   const allZonesList = useSelector(state => state.fetchLocationListReducer);
@@ -154,7 +153,7 @@ export const ReportsContainer = props => {
   };
 
   const getReportsFileName = () => {
-    return zoneName+ '_' + rawDate + '.csv';
+    return zoneName+ '_' + selectedDate + '.csv';
   };
 
   const options = {
@@ -191,18 +190,21 @@ export const ReportsContainer = props => {
 
   const handleZoneSelectionChange = (event) => {
     setZoneName(event.target.value);
-    setButtonDisabled(selectedDate === '' || zoneName === '' || selectedDate === null);
+    setButtonDisabled(selectedDate === '' || event.target.value === '' || event.target.value === undefined || event.target.value === null || selectedDate === null);
     dispatch({
       type: actions.CLEAR_ALL_ENTRIES,
     });
   };
 
   const handleGetReportsButtonClick = () => {
+    const dateObject = new Date(selectedDate);
+    const dateString = dateObject !== null ? dateObject.getFullYear() + '-' + str_pad(dateObject.getMonth() + 1) + '-' + str_pad(dateObject.getDate()) : '';
+    const finalString =  dateString !== '' ? dateString + 'T00:00:00.000Z' : null;
     dispatch({
       type: actions.GET_ALL_ENTRIES,
       payload: {
         locationNm: zoneName,
-        lastRecordCreatedAt: selectedDate
+        lastRecordCreatedAt: finalString
       }
     });
   };
@@ -270,10 +272,13 @@ export const ReportsContainer = props => {
     );
   };
 
+  const  str_pad = (n) => {
+    return String("00" + n).slice(-2);
+  }
+
   const handleDateChange = date => {
     const dateValue = date !== null ? formatDateToDateTime(new Date(date.valueOf()), 'YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss.SSS') : null;
     setSelectedDate(dateValue);
-    setRawDate(date);
     setButtonDisabled(date === '' || zoneName === '' || date === null || dateValue === 'Invalid date');
     dispatch({
       type: actions.CLEAR_ALL_ENTRIES,

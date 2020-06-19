@@ -2,6 +2,7 @@ import { put, call } from 'redux-saga/effects';
 import actions from '../actions/getAllEntriesForReport';
 import { callFetchApi } from '../services/api';
 import { getReportsUrl } from '../utils/constants';
+import routeToPathAction from "../actions/routeToPath";
 
 export default function* getAcceptedEntriesForReportSaga(action) {
   try {
@@ -28,9 +29,17 @@ export default function* getAcceptedEntriesForReportSaga(action) {
       });
     }
   } catch (e) {
-    yield put({
-      type: actions.GET_ALL_ENTRIES_FAILURE,
-      payload: 'Error in fetching Data',
-    });
+    if (e.response !== undefined && e.response.status === 401) {
+      yield put({
+        type: routeToPathAction.ROUTE_TO_PATH,
+        payload: { path: '/' },
+      });
+    }
+    else {
+      yield put({
+        type: actions.GET_ALL_ENTRIES_FAILURE,
+        payload: 'Error in fetching Data',
+      });
+    }
   }
 }
