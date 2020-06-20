@@ -19,6 +19,16 @@ const AsyncHotZones = Loadable({
   loading: LoadingComponent,
 });
 
+const AsyncTestingCenters = Loadable({
+  loader: () => import('../containers/TestingCenterContainer'),
+  loading: LoadingComponent,
+});
+
+const AsyncHealthCenters = Loadable({
+  loader: () => import('../containers/HealthCenterContainer'),
+  loading: LoadingComponent,
+});
+
 export default props => (
   <Router history={history}>
     <Switch>
@@ -26,6 +36,8 @@ export default props => (
       <Route exact path="/dashboard" component={AsyncHome} />
       <Route exact path="/hotzones" component={AsyncHotZones} />
       <Route exact path="/containmentzones" component={AsyncHotZones} />
+      <Route exact path="/testingCenters" component={AsyncTestingCenters} />
+      <Route exact path="/healthCenters" component={AsyncHealthCenters} />
     </Switch>
   </Router>
 );
