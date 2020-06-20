@@ -56,6 +56,14 @@ app.get('/containmentzones', (req, res) => {
   res.sendFile(path.join(__dirname, '../../build', 'index.html'));
 });
 
+app.get('/testingCenters', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
+
+app.get('/healthCenters', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
+
 app.get('/api/config', (req, res) => {
   res.send(config);
 });
