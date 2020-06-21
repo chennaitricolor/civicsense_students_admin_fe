@@ -13,7 +13,9 @@ export default function* getAcceptedEntriesForReportSaga(action) {
         status: 'OPEN,ACCEPTED,SUBMITTED,CLOSED,REJECTED',
         live: false,
         locationNm: action.payload.locationNm,
-        lastRecordCreatedAt: action.payload.lastRecordCreatedAt
+        lastRecordCreatedAt: action.payload.lastRecordCreatedAt,
+        limit: 1000,
+        applyLimit: true
       },
       'GET',
     );
