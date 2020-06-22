@@ -14,6 +14,7 @@ export default function* getAcceptedEntriesForReportSaga(action) {
         live: false,
         locationNm: action.payload.locationNm,
         lastRecordCreatedAt: action.payload.lastRecordCreatedAt,
+        campaignId: action.payload.campaignId,
         limit: 1000,
         applyLimit: true
       },

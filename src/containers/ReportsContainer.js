@@ -221,7 +221,8 @@ export const ReportsContainer = props => {
       type: actions.GET_ALL_ENTRIES,
       payload: {
         locationNm: zoneName,
-        lastRecordCreatedAt: finalString
+        lastRecordCreatedAt: finalString,
+        campaignId: campaignName
       }
     });
   };
