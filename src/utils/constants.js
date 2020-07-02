@@ -10,3 +10,14 @@ export const getOTPUrl = 'api/csr/user/generate-otp';
 export const getReportsUrl = 'api/csr/reports';
 export const getPositiveEntriesUrl = 'api/csr/positive-reports?status=OPEN';
 export const getHotZonesUrl = '/api/csr/hotspots';
+
+export const personasList = [
+  'NGO',
+  'Treatment centres',
+  'Testing centres',
+  'Staff',
+  'Health worker',
+  'HQIMS volunteer',
+  'Admin',
+  'Citizen',
+];

@@ -29,6 +29,8 @@ const CreateCampaignContainer = props => {
     rules: '',
     rewards: '',
     needForm: false,
+    needMedia: false,
+    personas: [],
   });
 
   const [fields, setFields] = useState([
@@ -89,6 +91,11 @@ const CreateCampaignContainer = props => {
         });
       }
     }
+    if (type === 'multiselect') {
+      if (event !== null) {
+        setCampaign({ [id]: event });
+      }
+    }
   };
 
   const disableCreateButton = () => {
@@ -100,7 +107,8 @@ const CreateCampaignContainer = props => {
         campaign.campaignSearchLocation !== '' &&
         campaign.description !== '' &&
         campaign.rules !== '' &&
-        campaign.rewards !== ''
+        campaign.rewards !== '' &&
+        campaign.personas.length
       ),
     );
   };
@@ -197,6 +205,8 @@ const CreateCampaignContainer = props => {
           rewards: campaign.rewards,
           locationIds: locationIds,
           needForm: campaign.needForm,
+          needMedia: campaign.needMedia,
+          persona: campaign.personas,
           formFields: dynamicFields,
         },
       });
@@ -212,6 +222,8 @@ const CreateCampaignContainer = props => {
           rewards: campaign.rewards,
           locationIds: locationIds,
           needForm: campaign.needForm,
+          needMedia: campaign.needMedia,
+          persona: campaign.personas,
         },
       });
     }
@@ -228,6 +240,8 @@ const CreateCampaignContainer = props => {
       rules: '',
       rewards: '',
       needForm: false,
+      needMedia: false,
+      personas: [],
     });
     setFields([
       {
@@ -251,6 +265,8 @@ const CreateCampaignContainer = props => {
       rules: '',
       rewards: '',
       needForm: false,
+      needMedia: false,
+      personas: [],
     });
     props.handleCreateCampaignButtonClick();
     setFields([
