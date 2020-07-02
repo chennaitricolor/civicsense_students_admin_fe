@@ -10,6 +10,9 @@ export const getOTPUrl = 'api/csr/user/generate-otp';
 export const getReportsUrl = 'api/csr/reports';
 export const getPositiveEntriesUrl = 'api/csr/positive-reports?status=OPEN';
 export const getHotZonesUrl = '/api/csr/hotspots';
+export const getTestingCentersUrl = '/api/csr/testingCenters';
+export const getHealthCentersUrl = '/api/csr/healthCenters';
+export const reportsFileFromServerUrl = '/api/csr/v2/reports?download=true'
 
 export const personasList = [
   'NGO',

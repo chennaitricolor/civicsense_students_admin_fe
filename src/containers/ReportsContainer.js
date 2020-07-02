@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -7,7 +7,21 @@ import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
 import * as PropTypes from 'prop-types';
-import { getImageUrl } from '../utils/constants';
+import { getImageUrl, reportsFileFromServerUrl } from '../utils/constants';
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import FormControl from '@material-ui/core/FormControl';
+import {InputLabel} from "@material-ui/core";
+import MomentUtils from "@date-io/moment";
+import {formatDateToDateTime} from "../utils/helpers/GeneralUtils";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import Button from "@material-ui/core/Button";
+import IconButton from '@material-ui/core/IconButton';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const loadingComponentStyle = {
   top: '40%',
@@ -15,6 +29,35 @@ const loadingComponentStyle = {
   left: '42%',
   color: '#0084FF',
   width: '50px',
+};
+
+const buttonStyle = {
+      //margin: '5% 0% 10% 2%',
+      fontSize: '20px',
+      width: '10%',
+      //bottom: '0',
+};
+
+const downloadReportButtonStyle = {
+  fontSize: '1.1rem',
+  color: '#0084FF',
+  borderRadius: '0'
+};
+
+const isDisabledDownload  = {
+  cursor: 'not-allowed',
+  opacity: '0.5',
+}
+
+const datePickerStyle = {
+  marginTop: '20%',
+  '& label': {
+    color: '#707070 !important',
+    fontSize: '20px',
+  },
+  '&& fieldset': {
+    border: '1px solid #707070 !important',
+  },
 };
 
 const muiTheme = createMuiTheme({
@@ -48,12 +91,18 @@ const muiTheme = createMuiTheme({
 
 export const ReportsContainer = props => {
   const dispatch = useDispatch();
+  const [zoneName, setZoneName] = useState('');
+  const [campaignName, setCampaignName] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
   const getAcceptedEntries = useSelector(state => state.getAllEntriesForReportReducer);
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
+  const allZonesList = useSelector(state => state.fetchLocationListReducer);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [downloadButtonDisabled, setDownloadButtonDisabled] = useState(true);
 
   useEffect(() => {
     dispatch({
-      type: actions.GET_ALL_ENTRIES,
+      type: actions.CLEAR_ALL_ENTRIES,
     });
   }, []);
 
@@ -107,30 +156,25 @@ export const ReportsContainer = props => {
     return header;
   };
 
-  const changePage = page => {
-    const acceptedEntries = getAcceptedEntries && getAcceptedEntries.reportDetails;
-    const lastAcceptedEntry =
-      acceptedEntries !== '' && acceptedEntries.length > 0 ? acceptedEntries[acceptedEntries.length - 1] : '';
-    const lastRecordCreatedAtParamValue = lastAcceptedEntry !== '' ? lastAcceptedEntry.createdAt : '';
-    dispatch({
-      type: actions.GET_ACCEPTED_ENTRIES,
-      payload: { lastRecordCreatedAt: lastRecordCreatedAtParamValue, applyLimit: false, campaignId: '' },
-    });
+  const getReportsFileName = () => {
+    return zoneName+ '_' + selectedDate + '.csv';
   };
 
   const options = {
     filterType: 'dropdown',
     searchText: '',
     selectableRows: 'none',
-    downloadOptions: {
-      filename: 'Reports.csv',
+    download: false,
+    /*downloadOptions: {
+      filename: getReportsFileName(),
       filterOptions: {
         useDisplayedColumnsOnly: false,
         useDisplayedRowsOnly: true,
       },
-    },
+    },*/
     onDownload: (buildHead, buildBody, columns, data) => buildHead(headerNames(columns)) + buildBody(data),
   };
+
 
   const handleToastClose = () => {
     dispatch({
@@ -147,6 +191,45 @@ export const ReportsContainer = props => {
         toastVariant={toastVariant}
       />
     );
+  };
+
+  const handleZoneSelectionChange = (event) => {
+    setZoneName(event.target.value);
+    const isAllZones = event.target.value.toLowerCase() === 'gcc' || event.target.value.toLowerCase() === 'tamil nadu';
+    setDownloadButtonDisabled(selectedDate === '' || event.target.value === '' || event.target.value === undefined || event.target.value === null || selectedDate === null || campaignName === '');
+    setButtonDisabled(selectedDate === '' || event.target.value === '' || event.target.value === undefined || event.target.value === null || selectedDate === null || isAllZones || campaignName === '');
+    dispatch({
+      type: actions.CLEAR_ALL_ENTRIES,
+    });
+  };
+
+  const handleCampaignSelectionChange = (event) => {
+    setCampaignName(event.target.value);
+    const isAllZones = zoneName === 'GCC' || zoneName === 'Tamil Nadu';
+    setDownloadButtonDisabled(selectedDate === '' || event.target.value === undefined || event.target.value === null || event.target.value.trim() === '' || selectedDate === null || zoneName === '');
+    setButtonDisabled(selectedDate === '' || event.target.value === undefined || event.target.value === null || event.target.value.trim() === '' || selectedDate === null || zoneName === '' || isAllZones);
+    dispatch({
+      type: actions.CLEAR_ALL_ENTRIES,
+    });
+  };
+
+  const handleGetReportsButtonClick = () => {
+    const dateObject = new Date(selectedDate);
+    const dateString = dateObject !== null ? dateObject.getFullYear() + '-' + str_pad(dateObject.getMonth() + 1) + '-' + str_pad(dateObject.getDate()) : '';
+    const finalString =  dateString !== '' ? dateString + 'T00:00:00.000Z' : null;
+    dispatch({
+      type: actions.GET_ALL_ENTRIES,
+      payload: {
+        locationNm: zoneName,
+        lastRecordCreatedAt: finalString,
+        campaignId: campaignName
+      }
+    });
+  };
+
+  const getCampaignsList = () => {
+    const allCampaignsObject = getAllCampaignsResponse && getAllCampaignsResponse.liveCampaigns && getAllCampaignsResponse.liveCampaigns.campaigns ? getAllCampaignsResponse.liveCampaigns.campaigns : [];
+    return allCampaignsObject[0] ? allCampaignsObject[0].campaigns : [];
   };
 
   const getDataTable = reportDetails => {
@@ -202,7 +285,7 @@ export const ReportsContainer = props => {
       <MuiThemeProvider theme={muiTheme}>
         <div style={{ margin: '5%' }}>
           <MUIDataTable
-            title={'Accepted Campaign Entries'}
+            title={'Campaign Entries'}
             data={resultData}
             columns={columns(reportDetails)}
             options={options}
@@ -211,6 +294,35 @@ export const ReportsContainer = props => {
       </MuiThemeProvider>
     );
   };
+
+  const  str_pad = (n) => {
+    return String("00" + n).slice(-2);
+  }
+
+  const handleDateChange = date => {
+    const dateValue = date !== null ? formatDateToDateTime(new Date(date.valueOf()), 'YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss.SSS') : null;
+    setSelectedDate(dateValue);
+    const isAllZones = zoneName === 'GCC' || zoneName === 'Tamil Nadu';
+    setDownloadButtonDisabled(date === '' || zoneName === '' || date === null || dateValue === 'Invalid date' || campaignName === '');
+    setButtonDisabled(date === '' || zoneName === '' || date === null || dateValue === 'Invalid date' || isAllZones || campaignName === '');
+    dispatch({
+      type: actions.CLEAR_ALL_ENTRIES,
+    });
+  };
+
+  const downloadReportsFullUrl = () => {
+    const dateObject = new Date(selectedDate);
+    const dateString = dateObject !== null ? dateObject.getFullYear() + '-' + str_pad(dateObject.getMonth() + 1) + '-' + str_pad(dateObject.getDate()) : '';
+    const finalString =  dateString !== '' ? dateString + 'T00:00:00.000Z' : null;
+    const zoneFinalName = zoneName.toLowerCase() === 'gcc' || zoneName.toLowerCase() === 'tamil nadu' ? '' : zoneName;
+    const zoneParam = zoneFinalName !== '' ? 'locationNm='+zoneFinalName : '';
+    let queryParams = '&campaignId=' + campaignName + '&lastRecordCreatedAt=' + finalString;
+    if(zoneParam !== '') {
+      queryParams = queryParams + '&' + zoneParam;
+    }
+    return reportsFileFromServerUrl + queryParams;
+
+  }
 
   const getElementsToRender = () => {
     if (getAcceptedEntries !== undefined) {
@@ -225,8 +337,67 @@ export const ReportsContainer = props => {
       }
     }
   };
-
-  return getElementsToRender();
+  return (  <div>
+      <div style={{ display: 'flex', flexDirection: 'row', margin: '5%', justifyContent: 'space-around'}}>
+        <FormControl>
+          <InputLabel id='zone-name-list'>Select a Zone</InputLabel>
+    <Select
+        labelId="zone-name-list"
+        id="zone-name-list"
+        value={zoneName}
+        onChange={handleZoneSelectionChange}
+        style={{ width: '200px' }}
+    >
+      {allZonesList &&
+      allZonesList.locationList &&
+      allZonesList.locationList.map(value => {
+        return <MenuItem value={value.label}>{value.label}</MenuItem>;
+      })}
+    </Select>
+        </FormControl>
+        <FormControl>
+          <InputLabel id='campaign-name-list'>Select a Campaign</InputLabel>
+          <Select
+              labelId="campaign-name-list"
+              id="campaign-name-list"
+              value={campaignName}
+              onChange={handleCampaignSelectionChange}
+              style={{ width: '200px' }}
+          >
+            {getCampaignsList().map(value => {
+              return <MenuItem value={value._id}>{value.campaignName}</MenuItem>;
+            })}
+          </Select>
+        </FormControl>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <KeyboardDatePicker
+              id="date-picker-dialog"
+              label="Pick a date"
+              format="YYYY-MM-DD"
+              value={selectedDate}
+              onChange={handleDateChange}
+          />
+        </MuiPickersUtilsProvider>
+        <Button
+            id={'agent-x-sign-in-button'}
+            variant="contained"
+            className={buttonStyle}
+            onClick={handleGetReportsButtonClick}
+            disabled={buttonDisabled}
+        >
+          Get Report
+        </Button>
+        <a href={downloadReportsFullUrl()} target="_blank" rel="noopener noreferrer" style={downloadButtonDisabled ? isDisabledDownload : {}} download={getReportsFileName()}>
+          <IconButton
+                  style={downloadReportButtonStyle}
+          disabled={downloadButtonDisabled}>
+            <GetAppIcon />
+            Download Report
+          </IconButton>
+        </a>
+  </div>
+    { getElementsToRender()}
+  </div>)
 };
 
 ReportsContainer.propTypes = {
