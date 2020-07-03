@@ -123,6 +123,8 @@ export const AdminHomeContainer = props => {
     return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
   } else if (props.selectedTab === 3) {
     return <AlertsContainer />;
+  } else if (props.selectedTab === 4) {
+    return <h1>HQIMS Dashboard - in development</h1>;
   }
 };
 

@@ -1,6 +1,6 @@
 {
-  "short_name": "GCC - COVID Tracker",
-  "name": "GCC - COVID Tracker",
+  "short_name": "COVID Tracker",
+  "name": "COVID Tracker",
   "icons": [
     {
       "src": "favicon.ico",
