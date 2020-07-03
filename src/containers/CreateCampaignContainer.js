@@ -47,7 +47,7 @@ const CreateCampaignContainer = props => {
   const dispatch = useDispatch();
   const locationListResponse = useSelector(state => state.fetchLocationListReducer);
   const createCampaignResponse = useSelector(state => state.createCampaignReducer);
-  const loginResponse = useSelector(state => state.loginResponse);
+  const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
   const metadataResponse = useSelector(state => state.getMetadataReducer);
 
   useEffect(() => disableCreateButton());
@@ -173,7 +173,7 @@ const CreateCampaignContainer = props => {
 
   const getPersonasList = () => {
     if (metadataResponse.metadata && metadataResponse.metadata.region) {
-      const regionMetadata = metadataResponse.metadata.region[loginResponse.region];
+      const regionMetadata = metadataResponse.metadata.region[loginRegion];
       return regionMetadata ? regionMetadata.userPersona : [];
     }
     return [];

@@ -97,6 +97,7 @@ export const ReportsContainer = props => {
   const getAcceptedEntries = useSelector(state => state.getAllEntriesForReportReducer);
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
   const allZonesList = useSelector(state => state.fetchLocationListReducer);
+  const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [downloadButtonDisabled, setDownloadButtonDisabled] = useState(true);
 
@@ -104,7 +105,7 @@ export const ReportsContainer = props => {
     dispatch({
       type: actions.CLEAR_ALL_ENTRIES,
     });
-  }, []);
+  }, [dispatch]);
 
   const columns = rowDetails => {
     let column = [];
@@ -195,7 +196,7 @@ export const ReportsContainer = props => {
 
   const handleZoneSelectionChange = (event) => {
     setZoneName(event.target.value);
-    const isAllZones = event.target.value.toLowerCase() === 'gcc' || event.target.value.toLowerCase() === 'tamil nadu';
+    const isAllZones = event.target.value.toLowerCase() === loginRegion.toLowerCase() || event.target.value.toLowerCase() === 'tamil nadu';
     setDownloadButtonDisabled(selectedDate === '' || event.target.value === '' || event.target.value === undefined || event.target.value === null || selectedDate === null || campaignName === '');
     setButtonDisabled(selectedDate === '' || event.target.value === '' || event.target.value === undefined || event.target.value === null || selectedDate === null || isAllZones || campaignName === '');
     dispatch({
@@ -205,7 +206,7 @@ export const ReportsContainer = props => {
 
   const handleCampaignSelectionChange = (event) => {
     setCampaignName(event.target.value);
-    const isAllZones = zoneName === 'GCC' || zoneName === 'Tamil Nadu';
+    const isAllZones = zoneName === loginRegion || zoneName === 'Tamil Nadu';
     setDownloadButtonDisabled(selectedDate === '' || event.target.value === undefined || event.target.value === null || event.target.value.trim() === '' || selectedDate === null || zoneName === '');
     setButtonDisabled(selectedDate === '' || event.target.value === undefined || event.target.value === null || event.target.value.trim() === '' || selectedDate === null || zoneName === '' || isAllZones);
     dispatch({
@@ -302,7 +303,7 @@ export const ReportsContainer = props => {
   const handleDateChange = date => {
     const dateValue = date !== null ? formatDateToDateTime(new Date(date.valueOf()), 'YYYY-MM-DD', 'YYYY-MM-DD[T]HH:mm:ss.SSS') : null;
     setSelectedDate(dateValue);
-    const isAllZones = zoneName === 'GCC' || zoneName === 'Tamil Nadu';
+    const isAllZones = zoneName === loginRegion || zoneName === 'Tamil Nadu';
     setDownloadButtonDisabled(date === '' || zoneName === '' || date === null || dateValue === 'Invalid date' || campaignName === '');
     setButtonDisabled(date === '' || zoneName === '' || date === null || dateValue === 'Invalid date' || isAllZones || campaignName === '');
     dispatch({
@@ -314,7 +315,7 @@ export const ReportsContainer = props => {
     const dateObject = new Date(selectedDate);
     const dateString = dateObject !== null ? dateObject.getFullYear() + '-' + str_pad(dateObject.getMonth() + 1) + '-' + str_pad(dateObject.getDate()) : '';
     const finalString =  dateString !== '' ? dateString + 'T00:00:00.000Z' : null;
-    const zoneFinalName = zoneName.toLowerCase() === 'gcc' || zoneName.toLowerCase() === 'tamil nadu' ? '' : zoneName;
+    const zoneFinalName = zoneName.toLowerCase() === loginRegion.toLowerCase() || zoneName.toLowerCase() === 'tamil nadu' ? '' : zoneName;
     const zoneParam = zoneFinalName !== '' ? 'locationNm='+zoneFinalName : '';
     let queryParams = '&campaignId=' + campaignName + '&lastRecordCreatedAt=' + finalString;
     if(zoneParam !== '') {

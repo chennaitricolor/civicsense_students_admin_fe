@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -37,6 +38,7 @@ const buttonStyle = {
 
 export const AdminHeader = props => {
   const classes = useStyles();
+  const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
 
   return (
     <div className={classes.root}>
@@ -55,6 +57,7 @@ export const AdminHeader = props => {
             <Tab className={classes.tabTitle} label="Reports" />
             <Tab className={classes.tabTitle} label="Map View" />
             <Tab className={classes.tabTitle} label="Alerts" />
+            {loginRegion === 'GCC' && <Tab className={classes.tabTitle} label="HQIMS" />}
           </Tabs>
           <Button
             style={buttonStyle}

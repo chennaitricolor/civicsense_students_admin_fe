@@ -10,7 +10,7 @@ function App() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [createCampaign, setCreateCampaign] = useState(false);
 
-  const getConfig = useSelector(state => state.getConfigReducer.config);
+  const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
 
   const handleTabChange = (event, newSelection) => {
     setSelectedTab(newSelection);
@@ -24,10 +24,10 @@ function App() {
     <div>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{getConfig !== null ? getConfig.APP_TITLE : 'GCC - COVID Tracker'}</title>
+        <title>{`${loginRegion} - COVID Tracker`}</title>
       </Helmet>
       <AdminHeader
-        title={getConfig !== null ? getConfig.APP_TITLE : 'GCC - COVID Tracker'}
+        title={`${loginRegion} - COVID Tracker`}
         selectedTab={selectedTab}
         handleTabChange={handleTabChange}
         handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}

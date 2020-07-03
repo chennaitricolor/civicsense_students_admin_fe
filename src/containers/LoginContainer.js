@@ -57,10 +57,10 @@ export const LoginContainer = () => {
     <div>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{getConfig !== null ? getConfig.APP_TITLE : 'GCC - COVID Tracker'}</title>
+        <title>COVID Tracker</title>
       </Helmet>
       <Login
-        title={getConfig !== null ? getConfig.APP_TITLE : 'GCC - COVID Tracker'}
+        title="COVID Tracker"
         loginDetails={loginDetails}
         handleOnChange={handleOnChange}
         handleLogin={handleLogin}
