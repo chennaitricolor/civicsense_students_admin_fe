@@ -275,6 +275,14 @@ export const CreateCampaign = props => {
             />
           )}
         />
+        {renderMultiSelectInput(
+          'Applicable Personas',
+          'personas',
+          personasList,
+          props.handleOnChange,
+          styles,
+          matchStyle,
+        )}
         <div>
           {renderTextField('Rules', 'rules', props.campaignDetails, props.handleOnChange, styles)}
           {renderTextField('Rewards', 'rewards', props.campaignDetails, props.handleOnChange, styles)}
@@ -296,14 +304,6 @@ export const CreateCampaign = props => {
             label="Enable Media"
           />
         </div>
-        {renderMultiSelectInput(
-          'Applicable Personas',
-          'personas',
-          personasList,
-          props.handleOnChange,
-          styles,
-          matchStyle,
-        )}
         <div className={styles.newFieldsDiv}>
           <FormControlLabel
             style={{
