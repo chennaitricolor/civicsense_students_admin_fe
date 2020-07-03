@@ -17,7 +17,6 @@ import Switch from '@material-ui/core/Switch';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import { personasList } from '../utils/constants';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -278,7 +277,7 @@ export const CreateCampaign = props => {
         {renderMultiSelectInput(
           'Applicable Personas',
           'personas',
-          personasList,
+          props.personasList,
           props.handleOnChange,
           styles,
           matchStyle,
@@ -420,4 +419,5 @@ CreateCampaign.propTypes = {
   showSnackBar: PropTypes.bool,
   handleSnackBarExited: PropTypes.func,
   createCampaignEventHandler: PropTypes.func.isRequired,
+  personasList: PropTypes.array.isRequired,
 };

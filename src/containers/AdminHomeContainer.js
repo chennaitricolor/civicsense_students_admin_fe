@@ -4,6 +4,7 @@ import { CampaignOverallStats } from '../components/CampaignOverallStats';
 import * as PropTypes from 'prop-types';
 import { CampaignIndividualStats } from '../components/CampaignIndividualStats';
 import actions from '../actions/getAllCampaignsList';
+import metadataActions from '../actions/metadataActions';
 import fetchLocationListActions from '../actions/fetchLocationList';
 import getCampaignDetailsActions from '../actions/getACampaignDetails';
 import LoadingComponent from '../components/LoadingComponent';
@@ -26,18 +27,26 @@ export const AdminHomeContainer = props => {
   const dispatch = useDispatch();
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
   const entrySubmissionStatus = useSelector(state => state.entrySubmissionReducer);
+  const getConfig = useSelector(state => state.getConfigReducer.config);
 
   useEffect(() => {
     dispatch({
       type: actions.GET_ALL_CAMPAIGNS_LIST,
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch({
       type: fetchLocationListActions.FETCH_LOCATION_LIST,
     });
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch({
+      type: metadataActions.GET_METADATA,
+      payload: { Authorization: getConfig.AUTH_HEADER },
+    });
+  }, [dispatch, getConfig.AUTH_HEADER]);
 
   const handleCampaignClickEvent = event => {
     dispatch({

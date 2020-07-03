@@ -47,6 +47,8 @@ const CreateCampaignContainer = props => {
   const dispatch = useDispatch();
   const locationListResponse = useSelector(state => state.fetchLocationListReducer);
   const createCampaignResponse = useSelector(state => state.createCampaignReducer);
+  const loginResponse = useSelector(state => state.loginResponse);
+  const metadataResponse = useSelector(state => state.getMetadataReducer);
 
   useEffect(() => disableCreateButton());
 
@@ -108,7 +110,8 @@ const CreateCampaignContainer = props => {
         campaign.description !== '' &&
         campaign.rules !== '' &&
         campaign.rewards !== '' &&
-        campaign.personas.length
+        campaign.personas.length &&
+        (campaign.needForm || campaign.needMedia)
       ),
     );
   };
@@ -166,6 +169,14 @@ const CreateCampaignContainer = props => {
     const values = [...fields];
     values.splice(i, 1);
     setFields(values);
+  };
+
+  const getPersonasList = () => {
+    if (metadataResponse.metadata && metadataResponse.metadata.region) {
+      const regionMetadata = metadataResponse.metadata.region[loginResponse.region];
+      return regionMetadata ? regionMetadata.userPersona : [];
+    }
+    return [];
   };
 
   const createCampaignEventHandler = () => {
@@ -285,8 +296,8 @@ const CreateCampaignContainer = props => {
     });
   };
 
-  if (locationListResponse.isLoading) {
-    return <LoadingComponent isLoading={locationListResponse.isLoading} style={loadingComponentStyle} />;
+  if (locationListResponse.isLoading || metadataResponse.isLoading) {
+    return <LoadingComponent isLoading={true} style={loadingComponentStyle} />;
   } else if (
     createCampaignResponse.createCampaignError !== '' &&
     createCampaignResponse.createCampaignError !== undefined
@@ -328,6 +339,7 @@ const CreateCampaignContainer = props => {
           showSnackBar={showSnackBar}
           handleSnackBarExited={handleSnackBarExited}
           createCampaignEventHandler={createCampaignEventHandler}
+          personasList={getPersonasList()}
         />
       </MuiPickersUtilsProvider>
     );
