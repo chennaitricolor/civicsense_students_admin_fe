@@ -6,6 +6,9 @@ import { Typography } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { DatePicker } from '@material-ui/pickers';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import jsonPath from 'jsonpath-plus';
 import CloseIcon from '@material-ui/icons/Close';
@@ -14,6 +17,9 @@ import Switch from '@material-ui/core/Switch';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   createCampaignHeader: {
@@ -176,6 +182,32 @@ function renderDateField(label, key, campaignDetails, handleOnChange, styles) {
   );
 }
 
+function renderMultiSelectInput(label, key, dropdownList, handleOnChange, styles, matchStyle) {
+  return (
+    <Autocomplete
+      id={key}
+      className={`create-campaign-${key} ${styles.label}`}
+      multiple
+      style={matchStyle}
+      options={dropdownList !== undefined ? dropdownList : []}
+      loadingText={'Loading'}
+      disableCloseOnSelect
+      classes={{
+        option: styles.option,
+      }}
+      getOptionLabel={option => option}
+      renderOption={(option, { selected }) => (
+        <>
+          <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+          {option}
+        </>
+      )}
+      onChange={(event, value) => handleOnChange(value, key, 'multiselect')}
+      renderInput={params => <TextField {...params} variant="outlined" label={label} />}
+    />
+  );
+}
+
 function renderDropDownField(label, key, dropdownList, handleOnChange, styles, idx, matchStyle) {
   return (
     <Autocomplete
@@ -242,9 +274,34 @@ export const CreateCampaign = props => {
             />
           )}
         />
+        {renderMultiSelectInput(
+          'Applicable Personas',
+          'personas',
+          props.personasList,
+          props.handleOnChange,
+          styles,
+          matchStyle,
+        )}
         <div>
           {renderTextField('Rules', 'rules', props.campaignDetails, props.handleOnChange, styles)}
           {renderTextField('Rewards', 'rewards', props.campaignDetails, props.handleOnChange, styles)}
+        </div>
+        <div className={styles.newFieldsDiv}>
+          <FormControlLabel
+            style={{
+              marginLeft: '1%',
+              color: '#707070',
+            }}
+            labelPlacement="start"
+            control={
+              <Switch
+                checked={props.campaignDetails.needMedia}
+                onChange={event => props.handleOnChange(event, 'needMedia', 'checkbox')}
+                name="needMedia"
+              />
+            }
+            label="Enable Media"
+          />
         </div>
         <div className={styles.newFieldsDiv}>
           <FormControlLabel
@@ -362,4 +419,5 @@ CreateCampaign.propTypes = {
   showSnackBar: PropTypes.bool,
   handleSnackBarExited: PropTypes.func,
   createCampaignEventHandler: PropTypes.func.isRequired,
+  personasList: PropTypes.array.isRequired,
 };

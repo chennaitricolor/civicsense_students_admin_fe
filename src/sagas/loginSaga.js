@@ -10,7 +10,7 @@ export default function* loginSaga(action) {
     if (response.data !== undefined && response.data.success) {
       yield put({
         type: loginActions.LOGIN_SUCCESS,
-        response: 'Authenticated',
+        payload: response.data,
       });
       yield put({
         type: routeToPathAction.ROUTE_TO_PATH,

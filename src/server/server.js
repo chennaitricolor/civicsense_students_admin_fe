@@ -69,6 +69,7 @@ app.get('/api/config', (req, res) => {
 });
 
 app.use(createProxyMiddleware(['/api/csr/**'], adminAPIProxySettings));
+app.use(createProxyMiddleware(['/api/v2/csr/**'], adminAPIProxySettings));
 
 app.listen(PORT, error => {
   if (error) {

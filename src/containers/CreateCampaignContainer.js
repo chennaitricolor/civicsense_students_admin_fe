@@ -29,6 +29,8 @@ const CreateCampaignContainer = props => {
     rules: '',
     rewards: '',
     needForm: false,
+    needMedia: false,
+    personas: [],
   });
 
   const [fields, setFields] = useState([
@@ -45,6 +47,8 @@ const CreateCampaignContainer = props => {
   const dispatch = useDispatch();
   const locationListResponse = useSelector(state => state.fetchLocationListReducer);
   const createCampaignResponse = useSelector(state => state.createCampaignReducer);
+  const loginResponse = useSelector(state => state.loginResponse);
+  const metadataResponse = useSelector(state => state.getMetadataReducer);
 
   useEffect(() => disableCreateButton());
 
@@ -89,6 +93,11 @@ const CreateCampaignContainer = props => {
         });
       }
     }
+    if (type === 'multiselect') {
+      if (event !== null) {
+        setCampaign({ [id]: event });
+      }
+    }
   };
 
   const disableCreateButton = () => {
@@ -100,7 +109,9 @@ const CreateCampaignContainer = props => {
         campaign.campaignSearchLocation !== '' &&
         campaign.description !== '' &&
         campaign.rules !== '' &&
-        campaign.rewards !== ''
+        campaign.rewards !== '' &&
+        campaign.personas.length &&
+        (campaign.needForm || campaign.needMedia)
       ),
     );
   };
@@ -160,6 +171,14 @@ const CreateCampaignContainer = props => {
     setFields(values);
   };
 
+  const getPersonasList = () => {
+    if (metadataResponse.metadata && metadataResponse.metadata.region) {
+      const regionMetadata = metadataResponse.metadata.region[loginResponse.region];
+      return regionMetadata ? regionMetadata.userPersona : [];
+    }
+    return [];
+  };
+
   const createCampaignEventHandler = () => {
     let locationIds = [];
     let dynamicFields = [];
@@ -197,6 +216,8 @@ const CreateCampaignContainer = props => {
           rewards: campaign.rewards,
           locationIds: locationIds,
           needForm: campaign.needForm,
+          needMedia: campaign.needMedia,
+          persona: campaign.personas,
           formFields: dynamicFields,
         },
       });
@@ -212,6 +233,8 @@ const CreateCampaignContainer = props => {
           rewards: campaign.rewards,
           locationIds: locationIds,
           needForm: campaign.needForm,
+          needMedia: campaign.needMedia,
+          persona: campaign.personas,
         },
       });
     }
@@ -228,6 +251,8 @@ const CreateCampaignContainer = props => {
       rules: '',
       rewards: '',
       needForm: false,
+      needMedia: false,
+      personas: [],
     });
     setFields([
       {
@@ -251,6 +276,8 @@ const CreateCampaignContainer = props => {
       rules: '',
       rewards: '',
       needForm: false,
+      needMedia: false,
+      personas: [],
     });
     props.handleCreateCampaignButtonClick();
     setFields([
@@ -269,8 +296,8 @@ const CreateCampaignContainer = props => {
     });
   };
 
-  if (locationListResponse.isLoading) {
-    return <LoadingComponent isLoading={locationListResponse.isLoading} style={loadingComponentStyle} />;
+  if (locationListResponse.isLoading || metadataResponse.isLoading) {
+    return <LoadingComponent isLoading={true} style={loadingComponentStyle} />;
   } else if (
     createCampaignResponse.createCampaignError !== '' &&
     createCampaignResponse.createCampaignError !== undefined
@@ -312,6 +339,7 @@ const CreateCampaignContainer = props => {
           showSnackBar={showSnackBar}
           handleSnackBarExited={handleSnackBarExited}
           createCampaignEventHandler={createCampaignEventHandler}
+          personasList={getPersonasList()}
         />
       </MuiPickersUtilsProvider>
     );

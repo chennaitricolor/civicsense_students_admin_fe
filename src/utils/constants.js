@@ -12,4 +12,5 @@ export const getPositiveEntriesUrl = 'api/csr/positive-reports?status=OPEN';
 export const getHotZonesUrl = '/api/csr/hotspots';
 export const getTestingCentersUrl = '/api/csr/testingCenters';
 export const getHealthCentersUrl = '/api/csr/healthCenters';
-export const reportsFileFromServerUrl = '/api/csr/v2/reports?download=true'
+export const reportsFileFromServerUrl = '/api/csr/v2/reports?download=true';
+export const getMetadataUrl = '/api/v2/csr';
