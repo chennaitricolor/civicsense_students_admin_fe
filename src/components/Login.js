@@ -128,6 +128,7 @@ export const Login = props => {
         variant="contained"
         className={styles.actionButton}
         onClick={event => props.handleLogin(event)}
+        disabled={props.getLoginResponse.inProgress}
       >
         SIGN IN
       </Button>
