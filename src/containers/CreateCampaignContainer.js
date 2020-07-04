@@ -264,6 +264,32 @@ const CreateCampaignContainer = props => {
     ]);
   };
 
+  const handleCloseDrawer = () => {
+    setShowSnackBar(false);
+    props.handleCreateCampaignButtonClick();
+    setCampaign({
+      campaignName: '',
+      campaignStartDate: null,
+      campaignEndDate: null,
+      campaignSearchLocation: '',
+      campaignSearchLocationId: '',
+      description: '',
+      rules: '',
+      rewards: '',
+      needForm: false,
+      needMedia: false,
+      personas: [],
+    });
+    setFields([
+      {
+        label: '',
+        type: '',
+        data: '',
+        isRequired: false,
+      },
+    ]);
+  };
+
   const handleSnackBarExited = () => {
     setShowSnackBar(false);
     setCampaign({
@@ -327,6 +353,7 @@ const CreateCampaignContainer = props => {
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <CreateCampaign
           createCampaign={props.createCampaign}
+          handleCloseDrawer={handleCloseDrawer}
           handleCreateCampaignButtonClick={props.handleCreateCampaignButtonClick}
           campaignDetails={campaign}
           handleOnChange={handleOnChange}

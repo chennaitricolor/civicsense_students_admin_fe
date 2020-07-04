@@ -17,12 +17,15 @@ import Switch from '@material-ui/core/Switch';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const useStyles = makeStyles(theme => ({
   createCampaignHeader: {
+    display: 'inline-block',
     padding: '2% 0 0% 2%',
     color: '#707070',
     fontSize: '24px',
@@ -56,9 +59,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   actionButton: {
-    width: '100%',
     bottom: '0',
-    height: '5%',
   },
   label: {
     '& label': {
@@ -241,8 +242,19 @@ export const CreateCampaign = props => {
   const styles = useStyles();
   return (
     <div>
-      <Drawer anchor="right" open={props.createCampaign} onClose={props.handleSnackBarExited}>
-        <Typography className={styles.createCampaignHeader}>Create Campaign</Typography>
+      <Drawer
+        anchor="right"
+        open={props.createCampaign}
+        onClose={props.handleSnackBarExited}
+        disableEscapeKeyDown={true}
+        disableBackdropClick={true}
+      >
+        <div>
+          <Typography className={styles.createCampaignHeader}>Create Campaign</Typography>
+          <IconButton aria-label="close" onClick={props.handleCloseDrawer} style={{ float: 'right' }}>
+            <CloseIcon />
+          </IconButton>
+        </div>
         {renderTextField('Campaign Name', 'campaignName', props.campaignDetails, props.handleOnChange, styles)}
         {renderTextField('Description', 'description', props.campaignDetails, props.handleOnChange, styles)}
         <div>
@@ -391,15 +403,26 @@ export const CreateCampaign = props => {
         ) : (
           ''
         )}
-        <Button
-          id={'create-campaign-create-button'}
-          variant="contained"
-          className={styles.actionButton}
-          onClick={event => props.createCampaignEventHandler(event)}
-          disabled={props.isDisabled}
-        >
-          CREATE
-        </Button>
+        <div style={{ textAlign: 'center', marginTop: '5%' }}>
+          <Button
+            id={'create-campaign-create-button'}
+            variant="contained"
+            className={styles.actionButton}
+            onClick={event => props.createCampaignEventHandler(event)}
+            disabled={props.isDisabled}
+          >
+            CREATE
+          </Button>
+          <Button
+            id={'create-campaign-cancel-button'}
+            variant="contained"
+            className={styles.actionButton}
+            onClick={props.handleCloseDrawer}
+            style={{ marginLeft: '5%' }}
+          >
+            CANCEL
+          </Button>
+        </div>
       </Drawer>
     </div>
   );
@@ -407,6 +430,7 @@ export const CreateCampaign = props => {
 
 CreateCampaign.propTypes = {
   createCampaign: PropTypes.bool.isRequired,
+  handleCloseDrawer: PropTypes.func,
   handleCreateCampaignButtonClick: PropTypes.func.isRequired,
   campaignDetails: PropTypes.object,
   handleOnChange: PropTypes.func,

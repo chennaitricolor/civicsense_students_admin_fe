@@ -76,8 +76,6 @@ export const CampaignIndividualStats = props => {
     if (getConfig !== null) setIsChennaiApp(getConfig.IS_GCC === 'true');
   }, [isChennaiApp]);
 
-  console.log(isChennaiApp);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={0} className={classes.grid}>
