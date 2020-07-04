@@ -4,18 +4,18 @@ networks:
   traefik:
     external: true
     name: ${TRAEFIK_NETWORK}
- 
+
 services:
 
   civicsense_students_fe:
     image: ${REGISTRY}/${IMAGETAG}:${GO_REVISION}
     env_file: env_files/${GO_STAGE_NAME}.env
     environment:
-      SAMPLEENV: SAMPLEENV
+      AUTH_HEADER: ${AUTH_HEADER}
     networks:
       - traefik
     deploy:
-      labels: 
+      labels:
         - traefik.frontend.rule=${TRAEFIK_FRONTEND_HOST}
         - traefik.enable=true
         - traefik.port=${TRAEFIK_PORT}
@@ -24,4 +24,4 @@ services:
         #- traefik.redirectorservice.frontend.entryPoints=http
         #- traefik.redirectorservice.frontend.redirect.entryPoint=https
         # Traefik service that listens to HTTPS
-        #- traefik.webservice.frontend.entryPoints=https   
+        #- traefik.webservice.frontend.entryPoints=https
