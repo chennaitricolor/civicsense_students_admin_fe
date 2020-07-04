@@ -294,10 +294,10 @@ export const CreateCampaign = props => {
           styles,
           matchStyle,
         )}
-        <div>
-          {renderTextField('Rules', 'rules', props.campaignDetails, props.handleOnChange, styles)}
-          {renderTextField('Rewards', 'rewards', props.campaignDetails, props.handleOnChange, styles)}
-        </div>
+        {/*<div>*/}
+        {/*  {renderTextField('Rules', 'rules', props.campaignDetails, props.handleOnChange, styles)}*/}
+        {/*  {renderTextField('Rewards', 'rewards', props.campaignDetails, props.handleOnChange, styles)}*/}
+        {/*</div>*/}
         <div className={styles.newFieldsDiv}>
           <FormControlLabel
             style={{

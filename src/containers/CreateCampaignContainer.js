@@ -26,8 +26,6 @@ const CreateCampaignContainer = props => {
     campaignSearchLocation: '',
     campaignSearchLocationId: '',
     description: '',
-    rules: '',
-    rewards: '',
     needForm: false,
     needMedia: false,
     personas: [],
@@ -108,8 +106,6 @@ const CreateCampaignContainer = props => {
         campaign.campaignEndDate !== null &&
         campaign.campaignSearchLocation !== '' &&
         campaign.description !== '' &&
-        campaign.rules !== '' &&
-        campaign.rewards !== '' &&
         campaign.personas.length &&
         (campaign.needForm || campaign.needMedia)
       ),
@@ -212,8 +208,6 @@ const CreateCampaignContainer = props => {
           startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
           endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
           description: campaign.description,
-          rules: campaign.rules,
-          rewards: campaign.rewards,
           locationIds: locationIds,
           needForm: campaign.needForm,
           needMedia: campaign.needMedia,
@@ -229,8 +223,6 @@ const CreateCampaignContainer = props => {
           startDate: formatDateToDDMMYYYYFormat(campaign.campaignStartDate),
           endDate: formatDateToDDMMYYYYFormat(campaign.campaignEndDate),
           description: campaign.description,
-          rules: campaign.rules,
-          rewards: campaign.rewards,
           locationIds: locationIds,
           needForm: campaign.needForm,
           needMedia: campaign.needMedia,
@@ -248,8 +240,6 @@ const CreateCampaignContainer = props => {
       campaignSearchLocation: '',
       campaignSearchLocationId: '',
       description: '',
-      rules: '',
-      rewards: '',
       needForm: false,
       needMedia: false,
       personas: [],
@@ -274,8 +264,6 @@ const CreateCampaignContainer = props => {
       campaignSearchLocation: '',
       campaignSearchLocationId: '',
       description: '',
-      rules: '',
-      rewards: '',
       needForm: false,
       needMedia: false,
       personas: [],
@@ -299,8 +287,6 @@ const CreateCampaignContainer = props => {
       campaignSearchLocation: '',
       campaignSearchLocationId: '',
       description: '',
-      rules: '',
-      rewards: '',
       needForm: false,
       needMedia: false,
       personas: [],
