@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-function callFetchAxios(endpoint, params, method, reqbody = {}, additionalHeaders = {}) {
+function callFetchAxios(endpoint, params, method, reqbody = {}) {
   const axiosInstance = axios.create({
     headers: {
       'Content-Type': 'application/json',
-      ...additionalHeaders,
     },
   });
 
