@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import actions from '../actions/getAcceptedEntriesForReport';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -11,6 +11,12 @@ import MomentUtils from '@date-io/moment';
 import { formatDateToMMDDYYYYFormat } from '../utils/helpers/GeneralUtils';
 import { MapWrappedComponent } from '../components/MapComponent';
 import React, { useState } from 'react';
+
+const RegionCenters = {
+  GCC: { lat: 13.0827, lng: 80.2707 },
+  CGL: { lat: 12.6729, lng: 79.9624 },
+  MDU: { lat: 9.9178, lng: 78.0527 },
+}
 
 const useStyle = makeStyles(theme => ({
   datepickerStyle: {
@@ -31,6 +37,7 @@ export const MapContainer = props => {
   const [selectedDate, setSelectedDate] = useState(null);
   const { campaignDetails } = props;
   const dispatch = useDispatch();
+  const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
 
   const handleChange = event => {
     setCampaignId(event.target.value);
@@ -101,6 +108,7 @@ export const MapContainer = props => {
           mapElement={<div style={{ height: `100%` }} />}
           selectedCampaign={campaignId}
           selectedDate={selectedDate}
+          regionCenter={RegionCenters[loginRegion]}
         />
       </div>
     </div>

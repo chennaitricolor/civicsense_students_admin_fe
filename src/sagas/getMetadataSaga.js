@@ -5,14 +5,7 @@ import * as constants from '../utils/constants';
 
 export default function* getMetadataSaga(action) {
   try {
-    const response = yield call(
-      callFetchApi,
-      constants.getMetadataUrl,
-      {},
-      'GET',
-      {},
-      { Authorization: action.payload.Authorization },
-    );
+    const response = yield call(callFetchApi, constants.getMetadataUrl, {}, 'GET');
     yield put({
       type: actions.GET_METADATA_SUCCESS,
       response: response.data,

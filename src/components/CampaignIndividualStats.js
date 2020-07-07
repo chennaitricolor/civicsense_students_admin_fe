@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -62,6 +63,8 @@ const useStyles = makeStyles(theme => ({
   selectedListItem: { paddingLeft: '0px', color: '#0084FF !important', fontWeight: 'bold' },
   unSelectedItem: { paddingLeft: '0px' },
   readonly: { opacity: '1 !important' },
+  listItem: { display: 'flex', alignItems: 'center' },
+  deleteButton: { cursor: 'pointer' },
 }));
 
 export const CampaignIndividualStats = props => {
@@ -74,7 +77,13 @@ export const CampaignIndividualStats = props => {
 
   useEffect(() => {
     if (getConfig !== null) setIsChennaiApp(getConfig.IS_GCC === 'true');
-  }, [isChennaiApp]);
+  }, [getConfig, isChennaiApp]);
+
+  const deleteCampaign = campaignId => {
+    if (window.confirm('Delete this campaign?')) {
+      props.onCampaignDelete(campaignId);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -92,33 +101,38 @@ export const CampaignIndividualStats = props => {
                     const labelId = `checkbox-list-label-${value._id}`;
 
                     return (
-                      <ListItem
-                        key={value._id}
-                        role={undefined}
-                        button
-                        classes={{
-                          root: selectedCampaign === value._id ? classes.selectedListItem : classes.unSelectedItem,
-                          disabled: classes.readonly,
-                        }}
-                        selected={selectedCampaign === value._id}
-                        onClick={() => {
-                          setSelectedCampaign(value._id);
-                          onCampaignClick(value);
-                        }}
-                        disabled={!isChennaiApp}
-                      >
-                        <ListItemText
-                          id={labelId}
-                          primary={
-                            <Typography style={{ float: 'left', paddingLeft: '10px' }}>{value.campaignName}</Typography>
-                          }
-                        />
+                      <div className={classes.listItem}>
+                        <ListItem
+                          key={value._id}
+                          role={undefined}
+                          button
+                          classes={{
+                            root: selectedCampaign === value._id ? classes.selectedListItem : classes.unSelectedItem,
+                            disabled: classes.readonly,
+                          }}
+                          selected={selectedCampaign === value._id}
+                          onClick={() => {
+                            setSelectedCampaign(value._id);
+                            onCampaignClick(value);
+                          }}
+                          disabled={!isChennaiApp}
+                        >
+                          <ListItemText
+                            id={labelId}
+                            primary={
+                              <Typography style={{ float: 'left', paddingLeft: '10px' }}>
+                                {value.campaignName}
+                              </Typography>
+                            }
+                          />
 
-                        <ListItemText
-                          id={labelId}
-                          primary={<Typography style={{ float: 'right' }}>{value.noOfEntries}</Typography>}
-                        />
-                      </ListItem>
+                          <ListItemText
+                            id={labelId}
+                            primary={<Typography style={{ float: 'right' }}>{value.noOfEntries}</Typography>}
+                          />
+                        </ListItem>
+                        <DeleteIcon className={classes.deleteButton} onClick={() => deleteCampaign(value._id)} />
+                      </div>
                     );
                   })
                 : ''}

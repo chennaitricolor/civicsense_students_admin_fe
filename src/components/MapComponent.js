@@ -57,7 +57,7 @@ export const MapWrappedComponent = withScriptjs(
     };
 
     return (
-      <GoogleMap defaultZoom={10} defaultCenter={{ lat: 13.0827, lng: 80.2707 }}>
+      <GoogleMap defaultZoom={10} defaultCenter={props.regionCenter}>
         <KmlLayer url="/Zone_Boundary.kml" options={{ preserveViewport: true }} />
         {props.selectedCampaign !== '' ? getMarkers() : ''}
 

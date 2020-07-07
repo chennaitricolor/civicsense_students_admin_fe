@@ -7,12 +7,13 @@ import routesActions from '../actions/routeToPath';
 import campaignDetailsActions from '../actions/getACampaignDetails';
 import fetchLocationListActions from '../actions/fetchLocationList';
 import createCampaignActions from '../actions/createCampaign';
+import deleteCampaignActions from '../actions/deleteCampaign';
 import entriesSubmissionActions from '../actions/approveOrRejectEntries';
 import getOTPActions from '../actions/getOTP';
 import getAcceptedEntriesForReportActions from '../actions/getAcceptedEntriesForReport';
 import getAllEntriesForReportActions from '../actions/getAllEntriesForReport';
 import getPositiveEntriesForReportActions from '../actions/getPositiveEntriesForReport';
-import metadataActions from '../actions/metadataActions'
+import metadataActions from '../actions/metadataActions';
 import getConfigSaga from './getConfigSaga';
 import loginSaga from './loginSaga';
 import routesSaga from './routeUrlsSaga';
@@ -25,6 +26,9 @@ import getAcceptedEntriesForReportSaga from './getAcceptedEntriesForReportSaga';
 import getAllEntriesForReportSaga from './getAllEntriesForReportSaga';
 import getPositiveEntriesForReportSaga from './getPositiveEntriesForReportSaga';
 import getMetaDataSaga from './getMetadataSaga';
+import getDashboardEmbedAction from '../actions/GetDashboardEmbedAction';
+import getDashboardEmbedUrlSaga from './GetDashboardEmbedSaga';
+import deleteCampaignSaga from './deleteCampaignSaga';
 
 export default function* saga() {
   yield takeLatest(configActions.GET_CONFIG, getConfigSaga);
@@ -40,4 +44,6 @@ export default function* saga() {
   yield takeLatest(getAllEntriesForReportActions.GET_ALL_ENTRIES, getAllEntriesForReportSaga);
   yield takeLatest(getPositiveEntriesForReportActions.GET_POSITIVE_ENTRIES, getPositiveEntriesForReportSaga);
   yield takeLatest(metadataActions.GET_METADATA, getMetaDataSaga);
+  yield takeLatest(getDashboardEmbedAction.GET_DASHBOARD_EMBED_URL, getDashboardEmbedUrlSaga);
+  yield takeLatest(deleteCampaignActions.DELETE_CAMPAIGN, deleteCampaignSaga);
 }

@@ -7,6 +7,7 @@ import actions from '../actions/getAllCampaignsList';
 import metadataActions from '../actions/metadataActions';
 import fetchLocationListActions from '../actions/fetchLocationList';
 import getCampaignDetailsActions from '../actions/getACampaignDetails';
+import deleteCampaign from '../actions/deleteCampaign';
 import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
@@ -27,7 +28,6 @@ export const AdminHomeContainer = props => {
   const dispatch = useDispatch();
   const getAllCampaignsResponse = useSelector(state => state.getAllCampaignsResponse);
   const entrySubmissionStatus = useSelector(state => state.entrySubmissionReducer);
-  const getConfig = useSelector(state => state.getConfigReducer.config);
 
   useEffect(() => {
     dispatch({
@@ -44,9 +44,8 @@ export const AdminHomeContainer = props => {
   useEffect(() => {
     dispatch({
       type: metadataActions.GET_METADATA,
-      payload: { Authorization: getConfig.AUTH_HEADER },
     });
-  }, [dispatch, getConfig.AUTH_HEADER]);
+  }, [dispatch]);
 
   const handleCampaignClickEvent = event => {
     dispatch({
@@ -66,6 +65,13 @@ export const AdminHomeContainer = props => {
   const handleToastClose = () => {
     dispatch({
       type: toastActions.CLOSE_NOTIFICATION_DIALOG_OR_TOAST_MESSAGE,
+    });
+  };
+
+  const handleCampaignDelete = campaignId => {
+    dispatch({
+      type: deleteCampaign.DELETE_CAMPAIGN,
+      payload: campaignId,
     });
   };
 
@@ -103,6 +109,7 @@ export const AdminHomeContainer = props => {
               onCampaignClick={handleCampaignClickEvent}
               onEntrySubmissionClick={handleEntrySubmissionClickEvent}
               handleToastClose={handleToastClose}
+              onCampaignDelete={handleCampaignDelete}
             />
             {entrySubmissionStatus &&
               entrySubmissionStatus.entrySubmissionError !== '' &&
@@ -121,9 +128,9 @@ export const AdminHomeContainer = props => {
     return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
   } else if (props.selectedTab === 2) {
     return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
+    // } else if (props.selectedTab === 3) {
+    //   return <AlertsContainer />;
   } else if (props.selectedTab === 3) {
-    return <AlertsContainer />;
-  } else if (props.selectedTab === 4) {
     return <h1>HQIMS Dashboard - in development</h1>;
   }
 };

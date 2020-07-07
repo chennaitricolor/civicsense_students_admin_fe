@@ -18,7 +18,7 @@ export default function* getAcceptedEntriesForReportSaga(action) {
       callFetchApi,
       getReportsUrl,
       {
-        status: 'OPEN',
+        status: 'ACCEPTED',
         lastRecordCreatedAt: lastRecordCreatedAtValue,
         live: true,
         applyLimit: applyLimitValue,
