@@ -7,6 +7,7 @@ import routesActions from '../actions/routeToPath';
 import campaignDetailsActions from '../actions/getACampaignDetails';
 import fetchLocationListActions from '../actions/fetchLocationList';
 import createCampaignActions from '../actions/createCampaign';
+import deleteCampaignActions from '../actions/deleteCampaign';
 import entriesSubmissionActions from '../actions/approveOrRejectEntries';
 import getOTPActions from '../actions/getOTP';
 import getAcceptedEntriesForReportActions from '../actions/getAcceptedEntriesForReport';
@@ -27,6 +28,7 @@ import getPositiveEntriesForReportSaga from './getPositiveEntriesForReportSaga';
 import getMetaDataSaga from './getMetadataSaga';
 import getDashboardEmbedAction from '../actions/GetDashboardEmbedAction';
 import getDashboardEmbedUrlSaga from './GetDashboardEmbedSaga';
+import deleteCampaignSaga from './deleteCampaignSaga';
 
 export default function* saga() {
   yield takeLatest(configActions.GET_CONFIG, getConfigSaga);
@@ -43,4 +45,5 @@ export default function* saga() {
   yield takeLatest(getPositiveEntriesForReportActions.GET_POSITIVE_ENTRIES, getPositiveEntriesForReportSaga);
   yield takeLatest(metadataActions.GET_METADATA, getMetaDataSaga);
   yield takeLatest(getDashboardEmbedAction.GET_DASHBOARD_EMBED_URL, getDashboardEmbedUrlSaga);
+  yield takeLatest(deleteCampaignActions.DELETE_CAMPAIGN, deleteCampaignSaga);
 }

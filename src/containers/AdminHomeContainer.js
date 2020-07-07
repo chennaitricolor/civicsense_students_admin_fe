@@ -7,6 +7,7 @@ import actions from '../actions/getAllCampaignsList';
 import metadataActions from '../actions/metadataActions';
 import fetchLocationListActions from '../actions/fetchLocationList';
 import getCampaignDetailsActions from '../actions/getACampaignDetails';
+import deleteCampaign from '../actions/deleteCampaign';
 import LoadingComponent from '../components/LoadingComponent';
 import ToastComponent from '../components/ToastComponent';
 import toastActions from '../actions/toastActions';
@@ -67,6 +68,13 @@ export const AdminHomeContainer = props => {
     });
   };
 
+  const handleCampaignDelete = campaignId => {
+    dispatch({
+      type: deleteCampaign.DELETE_CAMPAIGN,
+      payload: campaignId,
+    });
+  };
+
   const showToastMessage = (message, toastVariant) => {
     return (
       <ToastComponent
@@ -101,6 +109,7 @@ export const AdminHomeContainer = props => {
               onCampaignClick={handleCampaignClickEvent}
               onEntrySubmissionClick={handleEntrySubmissionClickEvent}
               handleToastClose={handleToastClose}
+              onCampaignDelete={handleCampaignDelete}
             />
             {entrySubmissionStatus &&
               entrySubmissionStatus.entrySubmissionError !== '' &&
@@ -119,8 +128,8 @@ export const AdminHomeContainer = props => {
     return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
   } else if (props.selectedTab === 2) {
     return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
-  // } else if (props.selectedTab === 3) {
-  //   return <AlertsContainer />;
+    // } else if (props.selectedTab === 3) {
+    //   return <AlertsContainer />;
   } else if (props.selectedTab === 3) {
     return <h1>HQIMS Dashboard - in development</h1>;
   }
