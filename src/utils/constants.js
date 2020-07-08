@@ -13,3 +13,4 @@ export const getHotZonesUrl = '/api/csr/hotspots';
 export const getTestingCentersUrl = '/api/csr/testingCenters';
 export const getHealthCentersUrl = '/api/csr/healthCenters';
 export const reportsFileFromServerUrl = '/api/csr/v2/reports?download=true'
+export const getDashboardEmbedUrl = '/api/csr/admin/hqims-dashboard';

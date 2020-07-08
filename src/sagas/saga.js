@@ -23,6 +23,8 @@ import getOTP from './getOTPSaga';
 import getAcceptedEntriesForReportSaga from './getAcceptedEntriesForReportSaga';
 import getAllEntriesForReportSaga from './getAllEntriesForReportSaga';
 import getPositiveEntriesForReportSaga from './getPositiveEntriesForReportSaga';
+import getDashboardEmbedAction from '../actions/GetDashboardEmbedAction';
+import getDashboardEmbedUrlSaga from './GetDashboardEmbedSaga';
 
 export default function* saga() {
   yield takeLatest(configActions.GET_CONFIG, getConfigSaga);
@@ -37,4 +39,5 @@ export default function* saga() {
   yield takeLatest(getAcceptedEntriesForReportActions.GET_ACCEPTED_ENTRIES, getAcceptedEntriesForReportSaga);
   yield takeLatest(getAllEntriesForReportActions.GET_ALL_ENTRIES, getAllEntriesForReportSaga);
   yield takeLatest(getPositiveEntriesForReportActions.GET_POSITIVE_ENTRIES, getPositiveEntriesForReportSaga);
+  yield takeLatest(getDashboardEmbedAction.GET_DASHBOARD_EMBED_URL, getDashboardEmbedUrlSaga);
 }

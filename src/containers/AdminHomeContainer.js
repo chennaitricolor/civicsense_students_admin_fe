@@ -13,6 +13,7 @@ import entrySubmissionAction from '../actions/approveOrRejectEntries';
 import ReportsContainer from './ReportsContainer';
 import MapContainer from './MapContainer';
 import AlertsContainer from './AlertsContainer';
+import ReportEmbedComponent from '../components/ReportEmbedComponent';
 
 const loadingComponentStyle = {
   top: '40%',
@@ -31,13 +32,13 @@ export const AdminHomeContainer = props => {
     dispatch({
       type: actions.GET_ALL_CAMPAIGNS_LIST,
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch({
       type: fetchLocationListActions.FETCH_LOCATION_LIST,
     });
-  }, []);
+  }, [dispatch]);
 
   const handleCampaignClickEvent = event => {
     dispatch({
@@ -112,8 +113,10 @@ export const AdminHomeContainer = props => {
     return <ReportsContainer liveCampaigns={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
   } else if (props.selectedTab === 2) {
     return <MapContainer campaignDetails={getTotalCampaignsAndEntries(getAllCampaignsResponse)} />;
+    // } else if (props.selectedTab === 3) {
+    //   return <AlertsContainer />;
   } else if (props.selectedTab === 3) {
-    return <AlertsContainer />;
+    return <ReportEmbedComponent />;
   }
 };
 

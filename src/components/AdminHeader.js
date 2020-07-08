@@ -54,7 +54,8 @@ export const AdminHeader = props => {
             <Tab className={classes.tabTitle} label="Home" />
             <Tab className={classes.tabTitle} label="Reports" />
             <Tab className={classes.tabTitle} label="Map View" />
-            <Tab className={classes.tabTitle} label="Alerts" />
+            {/* <Tab className={classes.tabTitle} label="Alerts" /> */}
+            <Tab className={classes.tabTitle} label="HQIMS" />
           </Tabs>
           <Button
             style={buttonStyle}

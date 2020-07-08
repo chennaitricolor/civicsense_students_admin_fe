@@ -11,6 +11,7 @@ import getOTPReducer from './getOTPReducer';
 import getAcceptedEntriesForReport from './getAcceptedEntriesForReportReducer';
 import getAllEntriesForReportReducer from './getAllEntriesForReportReducer';
 import getPositiveEntriesForReportReducer from './getPositiveEntriesForReportReducer';
+import getDashboardEmbedUrlReducer from './GetDashboardEmbedUrlReducer';
 
 const reducers = combineReducers({
   getConfigReducer,
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   getAcceptedEntriesForReport,
   getAllEntriesForReportReducer,
   getPositiveEntriesForReportReducer,
+  getDashboardEmbedUrlReducer,
 });
 
 export default reducers;
