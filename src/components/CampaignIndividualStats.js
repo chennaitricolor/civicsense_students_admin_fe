@@ -101,7 +101,7 @@ export const CampaignIndividualStats = props => {
                     const labelId = `checkbox-list-label-${value._id}`;
 
                     return (
-                      <div className={classes.listItem}>
+                      <div className={classes.listItem} key={value._id}>
                         <ListItem
                           key={value._id}
                           role={undefined}
