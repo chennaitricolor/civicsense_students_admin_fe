@@ -15,6 +15,7 @@ import entrySubmissionAction from '../actions/approveOrRejectEntries';
 import ReportsContainer from './ReportsContainer';
 import MapContainer from './MapContainer';
 import AlertsContainer from './AlertsContainer';
+import ReportEmbedComponent from '../components/ReportEmbedComponent';
 
 const loadingComponentStyle = {
   top: '40%',
@@ -131,7 +132,7 @@ export const AdminHomeContainer = props => {
     // } else if (props.selectedTab === 3) {
     //   return <AlertsContainer />;
   } else if (props.selectedTab === 3) {
-    return <h1>HQIMS Dashboard - in development</h1>;
+    return <ReportEmbedComponent />;
   }
 };
 
