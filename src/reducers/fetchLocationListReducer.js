@@ -15,8 +15,7 @@ const fetchLocationListReducer = (state = defaultState, { type, response }) => {
         liveCampaigns: response,
       });
     case actions.FETCH_LOCATION_LIST_SUCCESS:
-      const loginRegion = localStorage.getItem("region");
-      locationList.push({ label: loginRegion, value: 'all' });
+      locationList.push({ label: 'ALL', value: 'all' });
       response.forEach(location => {
         locationList.push({ label: location.locationNm, value: location._id });
       });
