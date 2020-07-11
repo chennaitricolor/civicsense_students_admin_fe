@@ -1,4 +1,5 @@
 import routeToPathAction from '../actions/routeToPath';
+
 const routesReducer = (state = {}, action) => {
   switch (action.type) {
     case routeToPathAction.ROUTE_TO_PATH:

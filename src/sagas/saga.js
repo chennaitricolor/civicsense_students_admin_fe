@@ -2,6 +2,7 @@ import { takeLatest } from 'redux-saga/effects';
 import getAllLiveCampaigns from './getAllCampaignsList';
 import configActions from '../actions/configActions';
 import loginActions from '../actions/login';
+import logoutActions from '../actions/logout';
 import actions from '../actions/getAllCampaignsList';
 import routesActions from '../actions/routeToPath';
 import campaignDetailsActions from '../actions/getACampaignDetails';
@@ -16,6 +17,7 @@ import getPositiveEntriesForReportActions from '../actions/getPositiveEntriesFor
 import metadataActions from '../actions/metadataActions';
 import getConfigSaga from './getConfigSaga';
 import loginSaga from './loginSaga';
+import logoutSaga from './logoutSaga';
 import routesSaga from './routeUrlsSaga';
 import getACampaignDetailsSaga from './getACampaignDetails';
 import createCampaignSaga from './createCampaignSaga';
@@ -33,6 +35,7 @@ import deleteCampaignSaga from './deleteCampaignSaga';
 export default function* saga() {
   yield takeLatest(configActions.GET_CONFIG, getConfigSaga);
   yield takeLatest(loginActions.INITIATE_LOGIN, loginSaga);
+  yield takeLatest(logoutActions.INITIATE_LOGOUT, logoutSaga);
   yield takeLatest(routesActions.ROUTE_TO_PATH, routesSaga);
   yield takeLatest(actions.GET_ALL_CAMPAIGNS_LIST, getAllLiveCampaigns);
   yield takeLatest(campaignDetailsActions.GET_CAMPAIGN_DETAILS, getACampaignDetailsSaga);

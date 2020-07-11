@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +8,10 @@ import * as PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import IconButton from '@material-ui/core/IconButton';
+import actions from '../actions/logout';
+import { Tooltip } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +42,14 @@ const buttonStyle = {
 
 export const AdminHeader = props => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
+
+  const handleLogout = () => {
+    dispatch({
+      type: actions.INITIATE_LOGOUT,
+    });
+  };
 
   return (
     <div className={classes.root}>
@@ -67,6 +78,11 @@ export const AdminHeader = props => {
           >
             CREATE CAMPAIGN
           </Button>
+          <Tooltip title={'Logout'}>
+            <IconButton aria-label="Logout" onClick={handleLogout} style={{ marginLeft: '2%' }}>
+              <ExitToAppIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     </div>
