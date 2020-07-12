@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabTitle: {
     fontSize: '20px',
+    textTransform: 'none',
   },
   title: {
     flexGrow: 1,
@@ -56,6 +57,7 @@ export const AdminHeader = props => {
             <Tab className={classes.tabTitle} label="Home" />
             <Tab className={classes.tabTitle} label="Reports" />
             <Tab className={classes.tabTitle} label="Map View" />
+            <Tab className={classes.tabTitle} label="User Management" />
             {/*<Tab className={classes.tabTitle} label="Alerts" />*/}
             {loginRegion === 'GCC' && <Tab className={classes.tabTitle} label="HQIMS" />}
           </Tabs>

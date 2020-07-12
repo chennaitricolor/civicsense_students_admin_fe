@@ -21,7 +21,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app">
       <Helmet>
         <meta charSet="utf-8" />
         <title>{`${loginRegion} - COVID Tracker`}</title>

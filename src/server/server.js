@@ -15,7 +15,7 @@ const adminAPIProxySettings = {
   changeOrigin: true,
   ws: true,
   secure: false,
-  headers: { Authorization: process.env.AUTH_HEADER },
+  // headers: { Authorization: process.env.AUTH_HEADER },
 
   onProxyReq: function onProxyReq(proxyReq, req, res) {
     if (req.method === 'POST') {

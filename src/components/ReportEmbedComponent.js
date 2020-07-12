@@ -45,7 +45,7 @@ export const ReportEmbedComponent = (props) => {
       return <LoadingComponent isLoading={getDashboardEmbedUrlResponse.isLoading} style={loadingComponentStyle} />;
     } else {
       return (
-        <div>
+      <div style={{ height: '100%', overflow: 'scroll' }}>
         <div id="dashboardContainer"></div>
       </div>
       );

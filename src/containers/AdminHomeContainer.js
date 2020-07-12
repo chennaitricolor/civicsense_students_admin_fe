@@ -16,6 +16,7 @@ import ReportsContainer from './ReportsContainer';
 import MapContainer from './MapContainer';
 import AlertsContainer from './AlertsContainer';
 import ReportEmbedComponent from '../components/ReportEmbedComponent';
+import UserManagementContainer from './UserManagementContainer';
 
 const loadingComponentStyle = {
   top: '40%',
@@ -99,7 +100,7 @@ export const AdminHomeContainer = props => {
         return showToastMessage('Error while getting Campaign details. Please try later..', 'error');
       } else if (getAllCampaignsResponse.liveCampaigns !== '' && getAllCampaignsResponse.liveCampaigns !== undefined) {
         return (
-          <div>
+          <div style={{ height: '100%', overflow: 'scroll' }}>
             <CampaignOverallStats
               selectedTab={props.selectedTab}
               liveCampaignsCount={totalCampaignsAndEntries ? totalCampaignsAndEntries.campaignsCount : 0}
@@ -132,6 +133,8 @@ export const AdminHomeContainer = props => {
     // } else if (props.selectedTab === 3) {
     //   return <AlertsContainer />;
   } else if (props.selectedTab === 3) {
+    return <UserManagementContainer />;
+  } else if (props.selectedTab === 4) {
     return <ReportEmbedComponent />;
   }
 };

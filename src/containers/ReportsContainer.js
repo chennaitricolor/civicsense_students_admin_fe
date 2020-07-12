@@ -338,7 +338,7 @@ export const ReportsContainer = props => {
       }
     }
   };
-  return (  <div>
+  return (  <div style={{ height: '100%', overflow: 'scroll' }}>
       <div style={{ display: 'flex', flexDirection: 'row', margin: '5%', justifyContent: 'space-around'}}>
         <FormControl>
           <InputLabel id='zone-name-list'>Select a Zone</InputLabel>

@@ -13,6 +13,8 @@ import getAllEntriesForReportReducer from './getAllEntriesForReportReducer';
 import getPositiveEntriesForReportReducer from './getPositiveEntriesForReportReducer';
 import getMetadataReducer from './getMetadataReducer';
 import getDashboardEmbedUrlReducer from './GetDashboardEmbedUrlReducer';
+import userManagementReducer from './userManagementReducer';
+import userModifierPaneReducer from './userModifierPaneReducer';
 
 const reducers = combineReducers({
   getConfigReducer,
@@ -29,6 +31,8 @@ const reducers = combineReducers({
   getPositiveEntriesForReportReducer,
   getMetadataReducer,
   getDashboardEmbedUrlReducer,
+  userManagementReducer,
+  userModifierPaneReducer,
 });
 
 export default reducers;

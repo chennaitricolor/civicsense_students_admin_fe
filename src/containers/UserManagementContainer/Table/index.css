@@ -1,0 +1,27 @@
+.custom-table {
+    height: auto;
+    width: 100%;
+    cursor: default;
+}
+.custom-table thead {
+    background: #F3F7F9;
+}
+.custom-table thead th {
+    padding: 1rem 1rem;
+    box-sizing: border-box;
+    color: #333940;
+    font-size: 0.8rem;
+    font-weight: bolder;
+    text-align: left;
+    text-transform: uppercase;
+}
+.custom-table tbody {
+    cursor: default;
+}
+.custom-table tbody td {
+    padding: 0.6rem 1rem;
+    box-sizing: border-box;
+    color: #333940;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #F3F7F9;
+}

@@ -54,7 +54,7 @@ export const LoginContainer = () => {
   };
 
   return (
-    <div>
+    <div style={{ height: '100%', overflow: 'auto' }}>
       <Helmet>
         <meta charSet="utf-8" />
         <title>COVID Tracker</title>
