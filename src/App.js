@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { AdminHeader } from './components/AdminHeader';
 import { AdminHomeContainer } from './containers/AdminHomeContainer';
 import CreateCampaignContainer from './containers/CreateCampaignContainer';
+import SnackbarContainer from "./containers/Snackbar";
 import './App.css';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         createCampaign={createCampaign}
         handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
       />
+      <SnackbarContainer />
     </div>
   );
 }

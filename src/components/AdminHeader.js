@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
   tabTitle: {
     fontSize: '20px',
     textTransform: 'none',
+    minWidth: '0',
   },
   title: {
     flexGrow: 1,

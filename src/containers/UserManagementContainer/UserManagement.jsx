@@ -4,12 +4,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import EditIcon from '@material-ui/icons/Create'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CloseIcon from '@material-ui/icons/Close'
+import moment from 'moment';
 import UserModifierPaneContainer from '../UserModifierPaneContainer';
 import Table from './Table';
 import Fab from './CustomFab';
 import './index.css';
-import {deleteVolunteer} from "../../actions/userManagementActions";
-import {editVolunteer} from "../../actions/userModifierPaneActions";
 
 const columns = [
     {
@@ -18,8 +17,13 @@ const columns = [
         align: 'left',
     },
     {
-        id: 'number',
+        id: 'phone_number',
         label: 'Number',
+        align: 'left',
+    },
+    {
+        id: 'address',
+        label: 'Address',
         align: 'left',
     },
     {
@@ -36,14 +40,20 @@ const columns = [
 
 const convertDataToRowsForTable = (records, selectedRecords) => records.map((record) => {
     const {
-        name, number, isolationType, daysRemaining,
+        id, name, phone_number, _quarantine_type, isolation_start_date, isolation_end_date, _address
     } = record;
-    const selectedRecord = selectedRecords.find((r) => r.number === number);
+    const selectedRecord = selectedRecords.find((r) => r.phone_number === phone_number);
+    const startDate = moment(isolation_start_date);
+    const endDate = moment(isolation_end_date);
+    const daysRemaining = endDate.diff(startDate, 'days');
+    const isolationType = _quarantine_type ? _quarantine_type.name : '';
+    const address = _address ? `${_address.street || ''} ${_address.area || ''}` : '';
     return {
-        id: number,
+        id,
         name,
-        number,
+        phone_number,
         isolationType,
+        address,
         daysRemaining,
         checked: !!selectedRecord,
     };
@@ -80,12 +90,31 @@ class UserManagement extends PureComponent{
     }
 
     handleChange = (field) => (event) => {
-        this.setState({ [field]: event.target.value })
+        if (['searchText', 'transferSearchText'].includes(field)) {
+            const value = event.target.value;
+            if (value.match(/^(\s*|\d+)$/) && value.length <= 10) {
+                this.setState({ [field]: event.target.value });
+
+                if (field === 'transferSearchText') {
+                    if (value.length === 10) {
+                        const { fetchTransferVolunteer } = this.props;
+                        fetchTransferVolunteer(value);
+                    }
+                }
+            }
+        }
     }
 
     handleSearch = () => {
         const { searchText } = this.state;
         const { searchVolunteerByNumber } = this.props;
+        this.setState({
+            dropdownView: false,
+            transferSearchText: '',
+            tableOrderBy: 'name',
+            selectedPatients: [],
+            columnChecked: false,
+        });
         searchVolunteerByNumber(searchText);
     }
 
@@ -106,14 +135,21 @@ class UserManagement extends PureComponent{
     }
 
     handleTransferPatients = () => {
+        const { selectedPatients } = this.state;
+        const { volunteer, transferVolunteer, transferPatients } = this.props;
         this.handleDropdown();
+        transferPatients({
+            patients: selectedPatients,
+            fromId: volunteer.id,
+            toId: transferVolunteer.id,
+        });
     }
 
     handleRowCheckboxClick = (row) => {
         const record = {
             id: row.id,
             name: row.name,
-            number: row.number,
+            phone_number: row.phone_number,
             isolationType: row.isolationType,
             daysRemaining: row.daysRemaining,
         };
@@ -166,6 +202,7 @@ class UserManagement extends PureComponent{
                 <button
                     type="button"
                     onClick={this.handleSearch}
+                    disabled={searchText.length !== 10}
                 >
                     Search
                 </button>
@@ -174,7 +211,7 @@ class UserManagement extends PureComponent{
     }
 
     renderVolunteerComponent = () => {
-        const { volunteer, fetchingVolunteer, fetchedVolunteer } = this.props;
+        const { volunteer, patients, fetchingVolunteer, fetchedVolunteer } = this.props;
         return (
             <div className="volunteer-information">
                 <div className="header">
@@ -184,7 +221,7 @@ class UserManagement extends PureComponent{
                     {(fetchingVolunteer && !fetchedVolunteer) && (
                         <div className="loader"><CircularProgress color="secondary" /></div>
                     )}
-                    {/*{(!fetchingVolunteer && fetchedVolunteer) && (*/}
+                    {(!fetchingVolunteer && fetchedVolunteer) && (
                         <>
                             <div className="data">
                                 <span className="key">Name</span>
@@ -192,11 +229,11 @@ class UserManagement extends PureComponent{
                             </div>
                             <div className="data">
                                 <span className="key">Phone Number</span>
-                                <span className="value">{volunteer.number || ''}</span>
+                                <span className="value">{volunteer.login || ''}</span>
                             </div>
                             <div className="data">
                                 <span className="key">Zone</span>
-                                <span className="value">{volunteer.zone || ''}</span>
+                                <span className="value">{volunteer._zone ? volunteer._zone.name : ''}</span>
                             </div>
                             <div className="data">
                                 <span className="key">Ward</span>
@@ -213,20 +250,21 @@ class UserManagement extends PureComponent{
                                 <button
                                     type="button"
                                     onClick={this.handleDelete}
+                                    disabled={patients.length > 0}
                                 >
                                     <DeleteIcon />
                                     <span>Delete</span>
                                 </button>
                             </div>
                         </>
-                    {/*)}*/}
+                    )}
                 </div>
             </div>
         );
     }
 
     renderTransferComponent = () => {
-        const { dropdownView, transferSearchText } = this.state;
+        const { dropdownView, transferSearchText, selectedPatients } = this.state;
         const { transferVolunteer, fetchingTransferVolunteer, fetchedTransferVolunteer } = this.props;
         if (!dropdownView) return <></>;
         else return (
@@ -252,22 +290,23 @@ class UserManagement extends PureComponent{
                     {(fetchingTransferVolunteer && !fetchedTransferVolunteer) && (
                         <div className="loader"><CircularProgress color="secondary" /></div>
                     )}
-                    {/*{(!fetchingTransferVolunteer && fetchedTransferVolunteer) && (*/}
+                    {(!fetchingTransferVolunteer && fetchedTransferVolunteer) && (
                         <>
                             <div>
                                 <span>{transferVolunteer.name || ''}</span>
                                 <span>{transferVolunteer.zone || ''}</span>
                             </div>
                             <div>
-                                <span>{transferVolunteer.number || ''}</span>
+                                <span>{transferVolunteer.login || ''}</span>
                                 <span>{transferVolunteer.ward || ''}</span>
                             </div>
                         </>
-                    {/*)}*/}
+                    )}
                 </div>
                 <button
                     type="button"
                     onClick={this.handleTransferPatients}
+                    disabled={selectedPatients.length === 0 || Object.keys(transferVolunteer).length === 0}
                 >
                     Transfer Patients
                 </button>
@@ -277,7 +316,7 @@ class UserManagement extends PureComponent{
 
     renderPatientsComponent = () => {
         const { tableOrderBy, columnChecked, selectedPatients } = this.state;
-        const { patients, fetchingPatients, fetchedPatients } = this.props;
+        const { volunteer, patients, fetchingPatients, fetchedPatients } = this.props;
         const rows = convertDataToRowsForTable(patients, selectedPatients);
         return (
             <div className="patient-list">
@@ -287,6 +326,7 @@ class UserManagement extends PureComponent{
                         <button
                             type="button"
                             onClick={this.handleDropdown}
+                            disabled={Object.keys(volunteer).length === 0}
                         >
                             Transfer to
                         </button>
@@ -297,7 +337,7 @@ class UserManagement extends PureComponent{
                     {(fetchingPatients && !fetchedPatients) && (
                         <div className="loader"><CircularProgress color="secondary" /></div>
                     )}
-                    {/*{(!fetchingPatients && fetchedPatients) && (*/}
+                    {(!fetchingPatients && fetchedPatients) && (
                         <Table
                             columns={columns}
                             rows={rows}
@@ -308,7 +348,7 @@ class UserManagement extends PureComponent{
                             setOrderBy={this.handleTableOrderByChange}
                             preventSortForColumns={[]}
                         />
-                    {/*)}*/}
+                    )}
                 </div>
             </div>
         );
@@ -360,6 +400,8 @@ UserManagement.propTypes = {
     editVolunteer: PropTypes.func.isRequired,
     deleteVolunteer: PropTypes.func.isRequired,
     fetchTransferVolunteer: PropTypes.func.isRequired,
+    transferPatients: PropTypes.func.isRequired,
+    toggleUserModifierPane: PropTypes.func.isRequired,
     volunteer: PropTypes.object.isRequired,
     fetchingVolunteer: PropTypes.bool.isRequired,
     fetchedVolunteer: PropTypes.bool.isRequired,
@@ -373,5 +415,4 @@ UserManagement.propTypes = {
     fetchedPatients: PropTypes.bool.isRequired,
     errorFetchingPatients: PropTypes.string.isRequired,
     showUserModifierPane: PropTypes.bool.isRequired,
-    toggleUserModifierPane: PropTypes.bool.isRequired,
 };

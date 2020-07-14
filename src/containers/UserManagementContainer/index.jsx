@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import UserManagement from './UserManagement';
-import { searchVolunteerByNumber, deleteVolunteer, fetchTransferVolunteer } from '../../actions/userManagementActions';
+import { searchVolunteerByNumber, deleteVolunteer, fetchTransferVolunteer, transferPatients } from '../../actions/userManagementActions';
 import { toggleUserModifierPane, editVolunteer } from '../../actions/userModifierPaneActions';
 
 const mapStateToProps = (state) => ({
@@ -21,7 +21,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-    searchVolunteerByNumber, deleteVolunteer, fetchTransferVolunteer, toggleUserModifierPane, editVolunteer,
+    searchVolunteerByNumber, deleteVolunteer, fetchTransferVolunteer,
+    toggleUserModifierPane, editVolunteer, transferPatients,
 }, dispatch);
 
 const UserManagementContainer = connect(mapStateToProps, mapDispatchToProps)(UserManagement);

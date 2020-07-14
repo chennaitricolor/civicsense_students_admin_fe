@@ -1,10 +1,5 @@
 const defaultState = {
-    volunteer: {
-        name: 'Jaden Smith',
-        number: '9574892759',
-        zone: 'Sholinganallur',
-        ward: '12',
-    },
+    volunteer: {},
     fetchingVolunteer: false,
     fetchedVolunteer: false,
     errorFetchingVolunteer: '',

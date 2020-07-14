@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import CloseIcon from '@material-ui/icons/Close';
+import CustomSelect from "./CustomSelect";
 import './index.css';
-import {editVolunteer, saveVolunteer} from "../../actions/userModifierPaneActions";
 
 class UserModifierPane extends PureComponent {
     constructor() {
         super();
         this.state = {
             name: '',
-            number: '',
+            login: '',
             zone: '',
             ward: '',
         };
@@ -24,13 +24,34 @@ class UserModifierPane extends PureComponent {
     }
 
     componentDidMount() {
-        const { editableVolunteer } = this.props;
-        const { name, number, zone, ward } = editableVolunteer;
-        this.setState({ name, number, zone, ward });
+        const { editableVolunteer, getZoneWardMapping } = this.props;
+        getZoneWardMapping();
+
+        const { name, login, _zone, ward } = editableVolunteer;
+        this.setState({
+            name, login,
+            zone: _zone ? _zone.name : '',
+            ward
+        });
     }
 
     handleChange = (field) => (event) => {
-        this.setState({ [field]: event.target.value });
+        if (['zone'].includes(field)) {
+            this.setState({
+                [field]: event,
+                ward: '',
+            });
+        }
+        else if (['ward'].includes(field)) {
+            this.setState({[field]: event});
+        }
+        else if (['login'].includes(field)) {
+            const value = event.target.value;
+            if (value.match(/^(\s*|\d+)$/) && value.length <= 10) {
+                this.setState({ [field]: event.target.value });
+            }
+        }
+        else this.setState({ [field]: event.target.value });
     }
 
     handleClose = () => {
@@ -40,9 +61,20 @@ class UserModifierPane extends PureComponent {
     }
 
     handleSubmit = () => {
-        const { name, number, zone, ward } = this.state;
-        const { saveVolunteer } = this.props;
-        saveVolunteer({ name, number, zone, ward });
+        const { name, login, zone, ward } = this.state;
+        const { saveVolunteer, zoneWardMapping, editableVolunteer } = this.props;
+        const zoneFound = zoneWardMapping.find(m => m.name === zone);
+        const zoneId = zoneFound.wards ? zoneFound.wards[0].zone : '';
+
+        const payload = {
+            name,
+            login,
+            password: login,
+            zone: zoneId,
+            ward,
+            active: true,
+        };
+        saveVolunteer(Object.keys(editableVolunteer) === 0 ? payload : {...payload, id: editableVolunteer.id});
         this.handleClose();
     }
 
@@ -65,7 +97,11 @@ class UserModifierPane extends PureComponent {
     }
 
     renderContent = () => {
-        const { name, number, zone, ward } = this.state;
+        const { name, login, zone, ward } = this.state;
+        const { zoneWardMapping } = this.props;
+        const wards = (zoneWardMapping.length !== 0 ? zoneWardMapping : [])
+            .filter(m => m.name === zone)
+            .map(m => m.wards);
         return (
             <div className="content-container">
                 <div className="content">
@@ -74,31 +110,31 @@ class UserModifierPane extends PureComponent {
                         <input
                             type="text"
                             onChange={this.handleChange('name')}
-                            value={name}
+                            value={name || ''}
                         />
                     </div>
                     <div className="input-container">
                         <span>Phone Number</span>
                         <input
                             type="text"
-                            onChange={this.handleChange('number')}
-                            value={number}
+                            onChange={this.handleChange('login')}
+                            value={login || ''}
                         />
                     </div>
                     <div className="input-container">
                         <span>Zone</span>
-                        <input
-                            type="text"
-                            onChange={this.handleChange('zone')}
-                            value={zone}
+                        <CustomSelect
+                            options={zoneWardMapping.map(m => m.name)}
+                            handleChange={this.handleChange('zone')}
+                            value={zone || ''}
                         />
                     </div>
                     <div className="input-container">
                         <span>Ward</span>
-                        <input
-                            type="text"
-                            onChange={this.handleChange('ward')}
-                            value={ward}
+                        <CustomSelect
+                            options={(wards.length > 0 ? wards[0] : []).map(w => w.id)}
+                            handleChange={this.handleChange('ward')}
+                            value={ward || ''}
                         />
                     </div>
                 </div>
@@ -107,13 +143,16 @@ class UserModifierPane extends PureComponent {
     }
 
     renderFooter = () => {
+        const { name, login, zone, ward } = this.state;
+        const { editableVolunteer } = this.props;
+        const editMode = Object.keys(editableVolunteer).length > 0;
         return (
             <div className="footer">
                 <button
                     onClick={() => this.handleSubmit()}
-                    disabled={false}
+                    disabled={name === '' || login === '' || zone === '' || ward === '' || login.length !== 10}
                 >
-                    Add Volunteer
+                    {editMode ? 'Edit Volunteer' : 'Add Volunteer'}
                 </button>
             </div>
         );
@@ -139,4 +178,5 @@ UserModifierPane.propTypes = {
     editVolunteer: PropTypes.func.isRequired,
     saveVolunteer: PropTypes.func.isRequired,
     editableVolunteer: PropTypes.object.isRequired,
+    zoneWardMapping: PropTypes.array.isRequired,
 };

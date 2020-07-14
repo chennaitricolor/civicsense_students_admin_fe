@@ -17,7 +17,7 @@
     "history": "^4.10.1",
     "http-proxy-middleware": "^1.0.3",
     "material-ui-image": "^3.2.2",
-    "moment": "2.24.0",
+    "moment": "^2.27.0",
     "mui-datatables": "^2.14.0",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
@@ -33,9 +33,9 @@
     "react-router-redux": "^4.0.8",
     "react-scripts": "3.2.0",
     "react-simple-infinite-scroll": "0.0.1",
+    "recompose": "latest",
     "redux": "latest",
-    "redux-saga": "^1.1.3",
-    "recompose": "latest"
+    "redux-saga": "^1.1.3"
   },
   "devDependencies": {
     "jsonpath-plus": "^0.15.0",

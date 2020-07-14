@@ -1,6 +1,7 @@
 const defaultState = {
     showUserModifierPane: false,
     editableVolunteer: {},
+    zoneWardMapping: [],
 };
 
 const userModifierPaneReducer = (state = defaultState, action) => {
@@ -12,6 +13,10 @@ const userModifierPaneReducer = (state = defaultState, action) => {
         case 'EDIT_VOLUNTEER':
             return Object.assign({}, state, {
                 editableVolunteer: action.payload,
+            });
+        case 'ZONE_WARD_MAPPING_SUCCESSFUL':
+            return Object.assign({}, state, {
+                zoneWardMapping: action.payload,
             });
         default:
             return state;

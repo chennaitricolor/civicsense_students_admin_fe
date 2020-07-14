@@ -18,9 +18,8 @@ export const deleteVolunteer = (payload) => ({
     payload,
 });
 
-export const deleteVolunteerSuccessful = (payload) => ({
-    type: 'DELETE_VOLUNTEER_SUCCESSFUL',
-    payload,
+export const deleteVolunteerSuccessful = () => ({
+    type: 'DELETE_VOLUNTEER_SUCCESSFUL'
 });
 
 export const deleteVolunteerFailed = (payload) => ({
@@ -55,5 +54,10 @@ export const fetchPatientsForVolunteerSuccessful = (payload) => ({
 
 export const fetchPatientsForVolunteerFailed = (payload) => ({
     type: 'FETCH_PATIENTS_FOR_VOLUNTEER_FAILED',
+    payload,
+});
+
+export const transferPatients = (payload) => ({
+    type: 'TRANSFER_PATIENTS',
     payload,
 });

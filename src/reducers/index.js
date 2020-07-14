@@ -15,6 +15,7 @@ import getMetadataReducer from './getMetadataReducer';
 import getDashboardEmbedUrlReducer from './GetDashboardEmbedUrlReducer';
 import userManagementReducer from './userManagementReducer';
 import userModifierPaneReducer from './userModifierPaneReducer';
+import snackbarReducer from "./snackbarReducer";
 
 const reducers = combineReducers({
   getConfigReducer,
@@ -33,6 +34,7 @@ const reducers = combineReducers({
   getDashboardEmbedUrlReducer,
   userManagementReducer,
   userModifierPaneReducer,
+  snackbarReducer,
 });
 
 export default reducers;
