@@ -1,0 +1,231 @@
+.user-management {
+  height: 100%;
+  width: 100%;
+  background: #F2F2F2;
+  overflow: auto;
+  border-top: 1px solid #ccc;
+}
+.user-management .loader {
+  height: 6rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+
+.user-management button {
+  outline: none;
+  background: none;
+  cursor: pointer;
+  border: 0;
+  transition-duration: 0.25s;
+}
+.user-management button:hover {
+  background: #ccc;
+}
+.user-management input {
+  outline: none;
+  border-radius: 0;
+  border: 1px solid #ccc;
+}
+.user-management input::placeholder {
+  font-style: italic;
+}
+
+.user-management-content {
+  min-height: 100%;
+  border-left: 2px solid #ccc;
+  border-right: 2px solid #ccc;
+  background: white;
+  margin: 0 4rem 0 4rem;
+}
+
+.floating-button {
+  display: flex;
+  flex-flow: column;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 0 1rem 1rem 0;
+}
+
+.user-management-content-header {
+  margin: 0 2rem 0 2rem;
+  padding: 2rem 0;
+}
+.user-management-content-header > span {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333333;
+}
+.user-management-content-tab-content {
+  min-height: 100%;
+  margin: 0 2rem 0 2rem;
+  background: #FBFBFB;
+  position: relative;
+}
+.user-management-content-tab-content > .tabs {
+  display: flex;
+}
+.user-management-content-tab-content > .tabs > .tab {
+  border-bottom: 2px solid #3C6886;
+  color: #3C6886;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 1rem;
+}
+.user-management-content-tab-content > .content {
+  margin: 0 2rem 0 2rem;
+  padding: 0 0 1rem 0;
+}
+
+.user-management-content-tab-content > .content > .search-container {
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-management-content-tab-content > .content > .search-container > input {
+  padding: 0.5rem;
+  width: 20rem;
+}
+.user-management-content-tab-content > .content > .search-container > button {
+  padding: 0.57rem 2rem;
+  background: #3C6886;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.user-management-content-tab-content > .content > .volunteer-information {
+  margin: 1rem 0;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .header > span {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #3C6886;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content > .data {
+  display: flex;
+  flex-flow: column;
+  margin: 1rem;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content > .data > .key {
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 100;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content > .data > .value {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content > .actions {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 1rem;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content > .actions > button {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin: 0.1rem 0;
+}
+.user-management-content-tab-content > .content > .volunteer-information > .content > .actions > button > svg {
+  margin: 0 0.2rem 0 0;
+  height: 1rem;
+}
+
+.user-management-content-tab-content > .content > .patient-list {
+  margin: 1rem 0;
+}
+.user-management-content-tab-content > .content > .patient-list > .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > span {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #3C6886;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > button {
+  padding: 0.5rem 1rem;
+  background: #3C6886;
+  color: white;
+  font-size: 0.8rem;
+  position: relative;
+}
+
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component {
+  height: 20rem;
+  width: 20rem;
+  display: flex;
+  flex-flow: column;
+  margin-left: -14.15rem;
+  border: 1px solid #ccc;
+  position: absolute;
+  background: white;
+  z-index: 1;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .header {
+  margin: 1rem 1rem 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #333333;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .header > span {
+  font-size: 1rem;
+  font-weight: bold;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .header > button:hover {
+  background: transparent;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .header > button > svg {
+  height: 1rem;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .transfer-component-search {
+  width: 100%;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .transfer-component-search > input {
+  width: 17.5rem;
+  margin: 0.5rem 1rem 1rem 1rem;
+  padding: 0.5rem;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .transfer-component-content {
+  padding: 1rem;
+  background: #3C6886;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > .transfer-component-content > div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: white;
+}
+.user-management-content-tab-content > .content > .patient-list > .header > .transfer-to > .transfer-component > button {
+  margin-top: auto;
+  padding: 0.5rem 1rem;
+  background: #3C6886;
+  color: white;
+  font-size: 0.8rem;
+}
+.user-management-content-tab-content > .content > .patient-list > .content {
+  min-height: 20rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+}

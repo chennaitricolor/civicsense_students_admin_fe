@@ -19,6 +19,8 @@ const theme = createMuiTheme({
     },
   },
   root: {
+    height: '100%',
+    width: '100%',
     color: '#333940',
   },
   palette: {

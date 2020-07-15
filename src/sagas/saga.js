@@ -31,6 +31,12 @@ import getMetaDataSaga from './getMetadataSaga';
 import getDashboardEmbedAction from '../actions/GetDashboardEmbedAction';
 import getDashboardEmbedUrlSaga from './GetDashboardEmbedSaga';
 import deleteCampaignSaga from './deleteCampaignSaga';
+import {
+  workerGetVolunteerByNumberSaga, workerGetTransferVolunteerSaga,
+  workerGetPatientsByVolunteerSaga, workerSaveVolunteerSaga,
+  workerTransferPatientsToVolunteerSaga, workerDeleteVolunteerSaga,
+  workerGetZoneWardMappingSaga
+} from './userManagementSagas';
 
 export default function* saga() {
   yield takeLatest(configActions.GET_CONFIG, getConfigSaga);
@@ -49,4 +55,11 @@ export default function* saga() {
   yield takeLatest(metadataActions.GET_METADATA, getMetaDataSaga);
   yield takeLatest(getDashboardEmbedAction.GET_DASHBOARD_EMBED_URL, getDashboardEmbedUrlSaga);
   yield takeLatest(deleteCampaignActions.DELETE_CAMPAIGN, deleteCampaignSaga);
+  yield takeLatest('SEARCH_VOLUNTEER_BY_NUMBER', workerGetVolunteerByNumberSaga);
+  yield takeLatest('FETCH_TRANSFER_VOLUNTEER', workerGetTransferVolunteerSaga);
+  yield takeLatest('FETCH_PATIENTS_FOR_VOLUNTEER', workerGetPatientsByVolunteerSaga);
+  yield takeLatest('SAVE_VOLUNTEER', workerSaveVolunteerSaga);
+  yield takeLatest('TRANSFER_PATIENTS', workerTransferPatientsToVolunteerSaga);
+  yield takeLatest('DELETE_VOLUNTEER', workerDeleteVolunteerSaga);
+  yield takeLatest('ZONE_WARD_MAPPING', workerGetZoneWardMappingSaga);
 }

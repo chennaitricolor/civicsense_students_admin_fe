@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import { AdminHeader } from './components/AdminHeader';
 import { AdminHomeContainer } from './containers/AdminHomeContainer';
 import CreateCampaignContainer from './containers/CreateCampaignContainer';
+import SnackbarContainer from "./containers/Snackbar";
 import './App.css';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app">
       <Helmet>
         <meta charSet="utf-8" />
         <title>{`${loginRegion} - COVID Tracker`}</title>
@@ -37,6 +38,7 @@ function App() {
         createCampaign={createCampaign}
         handleCreateCampaignButtonClick={handleCreateCampaignButtonClick}
       />
+      <SnackbarContainer />
     </div>
   );
 }

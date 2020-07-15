@@ -55,7 +55,7 @@ export const MapContainer = props => {
   };
 
   return (
-    <div>
+    <div style={{ height: '100%', overflow: 'scroll' }}>
       <div
         style={{
           float: 'right',
