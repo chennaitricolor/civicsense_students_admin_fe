@@ -28,6 +28,24 @@ const adminAPIProxySettings = {
   },
 };
 
+const HQIMSAPIProxySettings = {
+  target: process.env.HQIMS_API_URL !== undefined ? process.env.HQIMS_API_URL : 'https://focusdev.gccservice.in',
+  changeOrigin: true,
+  ws: true,
+  secure: false,
+  headers: { Authorization: process.env.HQIMS_AUTH_HEADER },
+
+  onProxyReq: function onProxyReq(proxyReq, req, res) {
+    if (req.method === 'POST') {
+      if (req.body) {
+        let bodyData = JSON.stringify(req.body);
+        proxyReq.setHeader('Content-Type', 'application/json');
+        proxyReq.write(bodyData);
+      }
+    }
+  },
+};
+
 app.use((req, res, next) => {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   res.header('Expires', '-1');
@@ -71,6 +89,7 @@ app.get('/api/config', (req, res) => {
 
 app.use(createProxyMiddleware(['/api/csr/**'], adminAPIProxySettings));
 app.use(createProxyMiddleware(['/api/v2/csr/**'], adminAPIProxySettings));
+app.use(createProxyMiddleware(['/api/admin/**'], HQIMSAPIProxySettings));
 
 app.listen(PORT, error => {
   if (error) {

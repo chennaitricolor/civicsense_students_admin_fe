@@ -12,6 +12,7 @@ services:
     env_file: env_files/${GO_STAGE_NAME}.env
     environment:
       AUTH_HEADER: ${AUTH_HEADER}
+      HQIMS_AUTH_HEADER: ${HQIMS_AUTH_HEADER}
     networks:
       - traefik
     deploy:
