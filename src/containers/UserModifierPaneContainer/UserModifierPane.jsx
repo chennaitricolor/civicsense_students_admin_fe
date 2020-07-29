@@ -28,11 +28,13 @@ class UserModifierPane extends PureComponent {
         getZoneWardMapping();
 
         const { name, login, _zone, ward } = editableVolunteer;
-        this.setState({
-            name, login,
-            zone: _zone ? _zone.name : '',
-            ward
-        });
+        if (login) {
+            this.setState({
+                name, login,
+                zone: _zone ? _zone.name : '',
+                ward
+            });
+        }
     }
 
     handleChange = (field) => (event) => {

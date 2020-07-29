@@ -33,6 +33,7 @@ const HQIMSAPIProxySettings = {
   changeOrigin: true,
   ws: true,
   secure: false,
+  pathRewrite: { '^/hqimsAdmin': '' },
   headers: { Authorization: process.env.HQIMS_AUTH_HEADER },
 
   onProxyReq: function onProxyReq(proxyReq, req, res) {
@@ -89,7 +90,7 @@ app.get('/api/config', (req, res) => {
 
 app.use(createProxyMiddleware(['/api/csr/**'], adminAPIProxySettings));
 app.use(createProxyMiddleware(['/api/v2/csr/**'], adminAPIProxySettings));
-app.use(createProxyMiddleware(['/api/admin/**'], HQIMSAPIProxySettings));
+app.use(createProxyMiddleware(['/hqimsAdmin/**'], HQIMSAPIProxySettings));
 
 app.listen(PORT, error => {
   if (error) {
