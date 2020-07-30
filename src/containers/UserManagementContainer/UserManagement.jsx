@@ -239,23 +239,25 @@ class UserManagement extends PureComponent{
                                 <span className="key">Ward</span>
                                 <span className="value">{volunteer.ward || ''}</span>
                             </div>
-                            <div className="actions">
-                                <button
-                                    type="button"
-                                    onClick={this.handleEdit}
-                                >
-                                    <EditIcon />
-                                    <span>Edit</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={this.handleDelete}
-                                    disabled={patients.length > 0}
-                                >
-                                    <DeleteIcon />
-                                    <span>Delete</span>
-                                </button>
-                            </div>
+                            {volunteer.login && (
+                                <div className="actions">
+                                    <button
+                                        type="button"
+                                        onClick={this.handleEdit}
+                                    >
+                                        <EditIcon />
+                                        <span>Edit</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={this.handleDelete}
+                                        disabled={patients.length > 0}
+                                    >
+                                        <DeleteIcon />
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            )}
                         </>
                     )}
                 </div>

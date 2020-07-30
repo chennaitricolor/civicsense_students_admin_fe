@@ -20,7 +20,10 @@ export function* workerGetVolunteerByNumberSaga(action) {
             yield put(fetchPatientsForVolunteer(response.id));
             yield put(showSnackbar({ variant: 'success', message: `Volunteer Found` }));
         }
-        else yield put(showSnackbar({ variant: 'warning', message: `Volunteer Not Found` }));
+        else {
+            yield put(showSnackbar({ variant: 'warning', message: `Volunteer Not Found` }));
+            yield put(searchVolunteerByNumberFailed());
+    };
     } catch (error) {
         yield put(searchVolunteerByNumberFailed(error));
         yield put(showSnackbar({ variant: 'error', message: `An error occurred while fetching volunteer` }));

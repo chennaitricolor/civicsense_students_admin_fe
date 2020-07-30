@@ -13,9 +13,7 @@
     border: 0;
     transition-duration: 0.25s;
 }
-.request-form-container button:hover {
-    background: transparent !important;
-}
+
 .request-form-container input {
     outline: none;
     border-radius: 0;

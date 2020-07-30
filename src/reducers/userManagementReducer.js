@@ -37,6 +37,7 @@ const userManagementReducer = (state = defaultState, action) => {
                 volunteer: {},
                 fetchingVolunteer: true,
                 fetchedVolunteer: false,
+                patients: [],
                 errorFetchingVolunteer: '',
             });
         case 'SEARCH_VOLUNTEER_BY_NUMBER_SUCCESSFUL':
