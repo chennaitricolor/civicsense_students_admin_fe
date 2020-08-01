@@ -12,6 +12,7 @@ class UserModifierPane extends PureComponent {
             login: '',
             zone: '',
             ward: '',
+            fieldsChanged: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -38,6 +39,10 @@ class UserModifierPane extends PureComponent {
     }
 
     handleChange = (field) => (event) => {
+        const { fieldsChanged } = this.state;
+        const { editableVolunteer } = this.props;
+        const editMode = Object.keys(editableVolunteer).length > 0;
+
         if (['zone'].includes(field)) {
             this.setState({
                 [field]: event,
@@ -54,6 +59,29 @@ class UserModifierPane extends PureComponent {
             }
         }
         else this.setState({ [field]: event.target.value });
+
+        if (editMode) {
+            const { name, login, _zone, ward } = editableVolunteer;
+            const mirrorInitialState = {
+                name, login,
+                zone: _zone ? _zone.name : '',
+                ward
+            };
+
+            if (['zone', 'ward'].includes(field) && mirrorInitialState[field] !== event && !fieldsChanged) {
+                this.setState({ fieldsChanged: true });
+            }
+            else if (['zone', 'ward'].includes(field) && mirrorInitialState[field] === event && fieldsChanged) {
+                this.setState({ fieldsChanged: false });
+            }
+
+            if (['name', 'login'].includes(field) && mirrorInitialState[field] !== event.target.value && !fieldsChanged) {
+                this.setState({ fieldsChanged: true });
+            }
+            else if (['name', 'login'].includes(field) && mirrorInitialState[field] === event.target.value && fieldsChanged) {
+                this.setState({ fieldsChanged: false });
+            }
+        }
     }
 
     handleClose = () => {
@@ -145,16 +173,16 @@ class UserModifierPane extends PureComponent {
     }
 
     renderFooter = () => {
-        const { name, login, zone, ward } = this.state;
+        const { name, login, zone, ward, fieldsChanged } = this.state;
         const { editableVolunteer } = this.props;
         const editMode = Object.keys(editableVolunteer).length > 0;
         return (
             <div className="footer">
                 <button
                     onClick={() => this.handleSubmit()}
-                    disabled={name === '' || login === '' || zone === '' || ward === '' || login.length !== 10}
+                    disabled={(name === '' || login === '' || zone === '' || ward === '' || login.length !== 10) || (editMode && !fieldsChanged)}
                 >
-                    {editMode ? 'Edit Volunteer' : 'Add Volunteer'}
+                    {editMode ? 'Save Volunteer' : 'Add Volunteer'}
                 </button>
             </div>
         );
