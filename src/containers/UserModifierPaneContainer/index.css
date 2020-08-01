@@ -80,3 +80,7 @@
     background: #3C6886;
     color: white;
 }
+.request-form-container .request-form .footer button:disabled {
+    background: #cccccc;
+    cursor: default;
+}

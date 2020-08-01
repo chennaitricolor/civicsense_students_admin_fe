@@ -42,7 +42,7 @@ const convertDataToRowsForTable = (records, selectedRecords) => records.map((rec
     const {
         id, name, phone_number, _quarantine_type, isolation_start_date, isolation_end_date, _address
     } = record;
-    const selectedRecord = selectedRecords.find((r) => r.phone_number === phone_number);
+    const selectedRecord = selectedRecords.find((r) => r.id === id);
     const startDate = moment(isolation_start_date);
     const endDate = moment(isolation_end_date);
     const daysRemaining = endDate.diff(startDate, 'days');
@@ -136,13 +136,17 @@ class UserManagement extends PureComponent{
 
     handleTransferPatients = () => {
         const { selectedPatients } = this.state;
-        const { volunteer, transferVolunteer, transferPatients } = this.props;
+        const { volunteer, transferVolunteer, transferPatients, showSnackbar } = this.props;
         this.handleDropdown();
-        transferPatients({
-            patients: selectedPatients,
-            fromId: volunteer.id,
-            toId: transferVolunteer.id,
-        });
+        if (volunteer.id === transferVolunteer.id) {
+            showSnackbar({ variant: 'warning', message: `Can't transfer patients to the same Volunteer` })
+        } else {
+            transferPatients({
+                patients: selectedPatients,
+                fromId: volunteer.id,
+                toId: transferVolunteer.id,
+            });
+        }
     }
 
     handleRowCheckboxClick = (row) => {
@@ -404,6 +408,7 @@ UserManagement.propTypes = {
     fetchTransferVolunteer: PropTypes.func.isRequired,
     transferPatients: PropTypes.func.isRequired,
     toggleUserModifierPane: PropTypes.func.isRequired,
+    showSnackbar: PropTypes.func.isRequired,
     volunteer: PropTypes.object.isRequired,
     fetchingVolunteer: PropTypes.bool.isRequired,
     fetchedVolunteer: PropTypes.bool.isRequired,
