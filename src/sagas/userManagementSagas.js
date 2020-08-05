@@ -60,7 +60,11 @@ export function* workerSaveVolunteerSaga(action) {
         const response = yield call(saveVolunteer, action.payload);
         yield put(showSnackbar({ variant: 'success', message: `Volunteer Changes Saved` }));
     } catch (error) {
-        yield put(showSnackbar({ variant: 'error', message: `An error occurred while saving volunteer changes` }));
+        if (error.statusCode === 409) {
+            yield put(showSnackbar({ variant: 'error', message: error.message }));
+        } else {
+            yield put(showSnackbar({ variant: 'error', message: `An error occurred while saving volunteer changes` }));
+        }
     }
 }
 

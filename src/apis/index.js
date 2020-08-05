@@ -6,6 +6,14 @@ export const getVolunteerByNumber = async (payload) => {
 };
 
 export const saveVolunteer = async (payload) => {
+    if (!payload.id) {
+      const isDuplicateVolunteer = await getVolunteerByNumber(payload.login);
+      if (isDuplicateVolunteer) {
+        const error = new Error('Volunteer already exists');
+        error.statusCode = 409;
+        throw error;
+      }
+    }
     const response = await axios.post('/hqimsAdmin/api/admin/users', payload);
     return response.data;
 };
