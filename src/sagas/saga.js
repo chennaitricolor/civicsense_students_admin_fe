@@ -35,7 +35,7 @@ import {
   workerGetVolunteerByNumberSaga, workerGetTransferVolunteerSaga,
   workerGetPatientsByVolunteerSaga, workerSaveVolunteerSaga,
   workerTransferPatientsToVolunteerSaga, workerDeleteVolunteerSaga,
-  workerGetZoneWardMappingSaga
+  workerGetZoneWardMappingSaga, workerGetZoneListingSaga
 } from './userManagementSagas';
 
 export default function* saga() {
@@ -62,4 +62,5 @@ export default function* saga() {
   yield takeLatest('TRANSFER_PATIENTS', workerTransferPatientsToVolunteerSaga);
   yield takeLatest('DELETE_VOLUNTEER', workerDeleteVolunteerSaga);
   yield takeLatest('ZONE_WARD_MAPPING', workerGetZoneWardMappingSaga);
+  yield takeLatest('ZONE_LISTING', workerGetZoneListingSaga);
 }

@@ -70,7 +70,7 @@ export const AdminHeader = props => {
             <Tab className={classes.tabTitle} label="Reports" />
             <Tab className={classes.tabTitle} label="Map View" />
             {/*<Tab className={classes.tabTitle} label="Alerts" />*/}
-            {loginRegion === 'GCC' && <Tab className={classes.tabTitle} label="User Management" />}
+            {loginRegion !== 'MDU' && <Tab className={classes.tabTitle} label="User Management" />}
             {loginRegion === 'GCC' && <Tab className={classes.tabTitle} label="HQIMS" />}
           </Tabs>
           <Button

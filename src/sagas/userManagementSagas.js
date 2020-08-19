@@ -1,7 +1,7 @@
 import { takeLatest, takeEvery, put, call } from 'redux-saga/effects';
 import {
     getVolunteerByNumber, getPatientsByVolunteer, saveVolunteer,
-    transferPatientsToVolunteer, deleteVolunteer, getZoneWardMapping
+    transferPatientsToVolunteer, deleteVolunteer, getZoneWardMapping, getZoneListing
 } from '../apis';
 import {
     searchVolunteerByNumberSuccessful, searchVolunteerByNumberFailed,
@@ -9,7 +9,7 @@ import {
     fetchTransferVolunteerSuccessful, fetchTransferVolunteerFailed,
     deleteVolunteerSuccessful, deleteVolunteerFailed,
 } from '../actions/userManagementActions';
-import { getZoneWardMappingSuccessful, getZoneWardMappingFailed } from '../actions/userModifierPaneActions';
+import { getZoneWardMappingSuccessful, getZoneWardMappingFailed, getZoneListingSuccessful, getZoneListingFailed } from '../actions/userModifierPaneActions';
 import { showSnackbar } from '../actions/snackbarAction';
 
 export function* workerGetVolunteerByNumberSaga(action) {
@@ -95,6 +95,15 @@ export function* workerGetZoneWardMappingSaga(action) {
         yield put(getZoneWardMappingSuccessful(response));
     } catch (error) {
         yield put(getZoneWardMappingFailed(error));
+    }
+}
+
+export function* workerGetZoneListingSaga(action) {
+    try {
+        const response = yield call(getZoneListing, action.payload);
+        yield put(getZoneListingSuccessful(response));
+    } catch (error) {
+        yield put(getZoneListingFailed(error));
     }
 }
 

@@ -58,6 +58,7 @@
     font-size: 0.9rem;
     font-weight: bold;
     margin: 0.2rem 0;
+    text-transform: capitalize;
 }
 .request-form-container .request-form .content-container .content input {
     width: 100%;
@@ -83,4 +84,8 @@
 .request-form-container .request-form .footer button:disabled {
     background: #cccccc;
     cursor: default;
+}
+
+.zoneLabel {
+    text-transform: capitalize;
 }
