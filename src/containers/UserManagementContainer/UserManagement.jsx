@@ -237,7 +237,7 @@ class UserManagement extends PureComponent{
                             </div>
                             <div className="data">
                                 <span className="key">Address</span>
-                                <span className="value">{volunteer._zone ? volunteer._zone.name : ''} {volunteer.ward ? `, ${volunteer.ward}` : ''}</span>
+                                <span className="value">{volunteer._zone ? volunteer._zone.name : ''} {volunteer.ward ? `, ${volunteer._ward.name}` : ''}</span>
                             </div>
                             {volunteer.login && (
                                 <div className="actions">

@@ -158,7 +158,7 @@ class UserModifierPane extends PureComponent {
               />
             </div>
           )}
-          {zoneWardMapping.length > 0 && (
+          {zone && type && zoneWardMapping.length > 0 && (
             <div className="input-container">
               <span>Ward</span>
               <CustomSelect
