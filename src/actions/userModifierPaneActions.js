@@ -8,6 +8,21 @@ export const editVolunteer = (payload) => ({
     payload,
 });
 
+export const getZoneListing = (payload) => ({
+    type: 'ZONE_LISTING',
+    payload,
+});
+
+export const getZoneListingSuccessful = (payload) => ({
+    type: 'ZONE_LISTING_SUCCESSFUL',
+    payload,
+});
+
+export const getZoneListingFailed = (payload) => ({
+    type: 'ZONE_LISTING_FAILED',
+    payload,
+});
+
 export const getZoneWardMapping = (payload) => ({
     type: 'ZONE_WARD_MAPPING',
     payload,

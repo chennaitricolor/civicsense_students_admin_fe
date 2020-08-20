@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const axiosInstance = axios.create({
+    headers: { region: localStorage.getItem('region') }
+})
+
 export const getVolunteerByNumber = async (payload) => {
-    const response = await axios.get(`/hqimsAdmin/api/admin/users/${payload}`);
+    const response = await axiosInstance.get(`/hqimsAdmin/api/admin/users/${payload}`);
     return response.data;
 };
 
@@ -14,26 +18,31 @@ export const saveVolunteer = async (payload) => {
         throw error;
       }
     }
-    const response = await axios.post('/hqimsAdmin/api/admin/users', payload);
+    const response = await axiosInstance.post('/hqimsAdmin/api/admin/users', payload);
     return response.data;
 };
 
 export const deleteVolunteer = async (payload) => {
-    const response = await axios.delete(`/hqimsAdmin/api/admin/users/${payload}`);
+    const response = await axiosInstance.delete(`/hqimsAdmin/api/admin/users/${payload}`);
     return response.data;
 };
 
 export const getPatientsByVolunteer = async (payload) => {
-    const response = await axios.get(`/hqimsAdmin/api/admin/users/${payload}/persons`);
+    const response = await axiosInstance.get(`/hqimsAdmin/api/admin/users/${payload}/persons`);
     return response.data;
 };
 
 export const transferPatientsToVolunteer = async (payload) => {
-    const response = await axios.post(`/hqimsAdmin/api/admin/users/persons/transfer`, payload);
+    const response = await axiosInstance.post(`/hqimsAdmin/api/admin/users/persons/transfer`, payload);
     return response.data;
 };
 
-export const getZoneWardMapping = async () => {
-    const response = await axios.get(`/hqimsAdmin/api/wards`);
+export const getZoneWardMapping = async (payload) => {
+    const response = await axiosInstance.get(`/hqimsAdmin/api/wards/${payload}`);
+    return response.data;
+};
+
+export const getZoneListing = async (payload) => {
+    const response = await axiosInstance.get(`/hqimsAdmin/api/zones/${payload}`);
     return response.data;
 };
