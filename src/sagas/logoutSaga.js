@@ -12,6 +12,8 @@ export default function* logoutSaga() {
         type: logoutActions.LOGOUT_SUCCESS,
         payload: response.data,
       });
+      localStorage.removeItem('persona');
+      localStorage.removeItem('region');
       yield put({
         type: routeToPathAction.ROUTE_TO_PATH,
         payload: { path: '/' },

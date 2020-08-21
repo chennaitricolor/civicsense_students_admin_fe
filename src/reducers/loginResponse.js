@@ -16,6 +16,8 @@ const loginResponse = (state = defaultState, action) => {
       localStorage.setItem('region', action.payload.region);
       return Object.assign({}, state, { ...action.payload, inProgress: false });
     case actions.LOGIN_FAILURE:
+      localStorage.removeItem('persona');
+      localStorage.removeItem('region');
       return Object.assign({}, state, {
         loginMessage: action.response,
         success: false,
