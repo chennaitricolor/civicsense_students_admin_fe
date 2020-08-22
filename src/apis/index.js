@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const region = localStorage.getItem('region');
+
 const axiosInstance = axios.create({
-    headers: { region: localStorage.getItem('region') }
+    headers: {
+        region: region,
+    },
 })
 
 export const getVolunteerByNumber = async (payload) => {
