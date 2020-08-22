@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton';
 import actions from '../actions/logout';
 import { Tooltip } from '@material-ui/core';
+import metadataActions from '../actions/metadataActions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,7 +46,28 @@ const buttonStyle = {
 export const AdminHeader = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const loginRegion = useSelector(state => state.loginResponse.region) || localStorage.getItem('region');
+  const metadata = useSelector(state => state.getMetadataReducer.metadata);
+  const [isHqims, setIsHqims] = useState(false);
+
+  useEffect(() => {
+    dispatch({
+      type: metadataActions.GET_METADATA,
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (JSON.stringify(metadata) !== '{}') {
+      Object.entries(metadata.region).forEach(key => {
+        if (key[0] === loginRegion) {
+          if (key[1] !== null && key[1].userPersona !== null) {
+            setIsHqims(key[1].userPersona.includes('HQIMS Volunteer'));
+          }
+        }
+      });
+    }
+  }, [metadata]);
 
   const handleLogout = () => {
     dispatch({
@@ -71,7 +93,7 @@ export const AdminHeader = props => {
             <Tab className={classes.tabTitle} label="Map View" />
             {/*<Tab className={classes.tabTitle} label="Alerts" />*/}
             {loginRegion !== 'MDU' && <Tab className={classes.tabTitle} label="User Management" />}
-            {loginRegion === 'GCC' && <Tab className={classes.tabTitle} label="HQIMS" />}
+            {isHqims && <Tab className={classes.tabTitle} label="HQIMS" />}
           </Tabs>
           <Button
             style={buttonStyle}

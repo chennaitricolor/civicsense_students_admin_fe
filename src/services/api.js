@@ -1,11 +1,22 @@
 import axios from 'axios';
 
-function callFetchAxios(endpoint, params, method, reqbody = {}) {
-  const axiosInstance = axios.create({
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+function callFetchAxios(endpoint, params, method, reqbody = {}, isHeaderRegionRequired = false) {
+  let axiosInstance;
+  if (isHeaderRegionRequired) {
+    const region = localStorage.getItem('region');
+    axiosInstance = axios.create({
+      headers: {
+        'Content-Type': 'application/json',
+        region: region,
+      },
+    });
+  } else {
+    axiosInstance = axios.create({
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
 
   switch (method) {
     case 'GET':

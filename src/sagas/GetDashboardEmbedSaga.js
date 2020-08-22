@@ -6,7 +6,7 @@ import routeToPathAction from '../actions/routeToPath';
 
 export default function* getDashboardEmbedUrlSaga() {
   try {
-    const response = yield call(callFetchApi, getDashboardEmbedUrl, {}, 'GET');
+    const response = yield call(callFetchApi, getDashboardEmbedUrl, {}, 'GET', {}, true);
     if (response.data !== undefined) {
       yield put({
         type: actions.GET_DASHBOARD_EMBED_URL_SUCCESS,
