@@ -4,7 +4,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import CustomSelect from './CustomSelect';
 import './index.css';
 
-const AddressTypes = ['zone', 'municipality', 'town panchayat', 'panchayat', 'block'];
+const AddressTypes = ['zone', 'municipality', 'town panchayat', 'cantonment', 'block'];
 
 class UserModifierPane extends PureComponent {
   constructor() {
