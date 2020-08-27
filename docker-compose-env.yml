@@ -2,7 +2,4 @@ version: "3.7"
 services:
   civicsense_students_fe:
     image: ${REGISTRY}/${IMAGETAG}:${GO_REVISION}
-    environment:
-      AUTH_HEADER: ${AUTH_HEADER}
-      HQIMS_AUTH_HEADER: ${HQIMS_AUTH_HEADER}
 
