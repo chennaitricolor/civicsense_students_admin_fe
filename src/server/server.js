@@ -11,7 +11,7 @@ app.use(cookieParser());
 
 const adminAPIProxySettings = {
   target:
-    process.env.AGENT_ADMIN_API_URL !== undefined ? process.env.AGENT_ADMIN_API_URL : 'https://api.dev.gccservice.in',
+    process.env.AGENT_ADMIN_API_URL !== undefined ? process.env.AGENT_ADMIN_API_URL : 'https://civicapidev.gcchqims.in',
   changeOrigin: true,
   ws: true,
   secure: false,
@@ -29,7 +29,7 @@ const adminAPIProxySettings = {
 };
 
 const HQIMSAPIProxySettings = {
-  target: process.env.HQIMS_API_URL !== undefined ? process.env.HQIMS_API_URL : 'https://focusdev.gccservice.in',
+  target: process.env.HQIMS_API_URL !== undefined ? process.env.HQIMS_API_URL : 'https://isolationdev.gcchqims.in',
   changeOrigin: true,
   ws: true,
   secure: false,

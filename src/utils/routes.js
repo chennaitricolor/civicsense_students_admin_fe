@@ -10,7 +10,7 @@ const AsyncLogin = Loadable({
 });
 
 const AsyncHome = Loadable({
-  loader: () => import('../App'),
+  loader: () => import('../components/ReportEmbedComponent'),
   loading: LoadingComponent,
 });
 
@@ -32,12 +32,12 @@ const AsyncHealthCenters = Loadable({
 export default props => (
   <Router history={history}>
     <Switch>
-      <Route exact path="/" component={AsyncLogin} />
+      {/*<Route exact path="/" component={AsyncLogin} />*/}
       <Route exact path="/dashboard" component={AsyncHome} />
-      <Route exact path="/hotzones" component={AsyncHotZones} />
-      <Route exact path="/containmentzones" component={AsyncHotZones} />
-      <Route exact path="/testingCenters" component={AsyncTestingCenters} />
-      <Route exact path="/healthCenters" component={AsyncHealthCenters} />
+      {/*<Route exact path="/hotzones" component={AsyncHotZones} />*/}
+      {/*<Route exact path="/containmentzones" component={AsyncHotZones} />*/}
+      {/*<Route exact path="/testingCenters" component={AsyncTestingCenters} />*/}
+      {/*<Route exact path="/healthCenters" component={AsyncHealthCenters} />*/}
     </Switch>
   </Router>
 );
