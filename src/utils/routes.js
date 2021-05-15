@@ -32,8 +32,8 @@ const AsyncHealthCenters = Loadable({
 export default props => (
   <Router history={history}>
     <Switch>
-      {/*<Route exact path="/" component={AsyncLogin} />*/}
-      <Route exact path="/dashboard" component={AsyncHome} />
+      <Route exact path="/" component={AsyncHome} />
+      {/*<Route exact path="/dashboard" component={AsyncHome} />*/}
       {/*<Route exact path="/hotzones" component={AsyncHotZones} />*/}
       {/*<Route exact path="/containmentzones" component={AsyncHotZones} />*/}
       {/*<Route exact path="/testingCenters" component={AsyncTestingCenters} />*/}
