@@ -39,7 +39,7 @@ export const LoginContainer = () => {
       type: actions.INITIATE_LOGIN,
       payload: {
         userId: loginDetails.userId,
-        otp: loginDetails.password,
+        password: loginDetails.password,
       },
     });
   };
